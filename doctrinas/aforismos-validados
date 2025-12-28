@@ -1,0 +1,31 @@
+# 📜 Aforismos técnicos validados
+
+Este documento recopila aforismos que condensan principios estratégicos, advertencias y lecciones aprendidas en ciberseguridad. Cada uno ha sido validado doctrinalmente y puede usarse en glosarios, simuladores, fichas y formación.
+
+---
+
+## 🔐 Criptografía post-cuántica
+
+> “La invulnerabilidad criptográfica no se decreta, se demuestra. Los algoritmos post-cuánticos aún no han enfrentado al enemigo real.”
+
+📚 Contexto:  
+Este aforismo recuerda que la seguridad de un algoritmo no se basa en su promesa, sino en su resistencia probada. Aplica especialmente a tecnologías emergentes aún no enfrentadas a ataques reales.
+
+🧪 Validación cruzada:  
+- NIST PQC Project  
+- CIS Control 3.4  
+- NIST SP 800-208
+
+---
+
+## 🔁 Rotación periódica de contraseñas
+
+> “Cambiar la cerradura cada mes no sirve si todos siguen escondiendo la llave bajo el felpudo.”
+
+📚 Contexto:  
+Critica la práctica obsoleta de rotar contraseñas sin mejorar su calidad ni el comportamiento del usuario.
+
+🧪 Validación cruzada:  
+- CIS Control 5.2  
+- NIST SP 800-63B §5.1.1.2  
+- OWASP Authentication Cheat Sheet
