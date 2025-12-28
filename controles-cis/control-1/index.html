@@ -42,43 +42,322 @@
   </style>
 </head>
 <body>
-  <h1>Control 01 – Inventario de Activos Empresariales</h1>
-
-  <nav>
-    <a href="../../index.html">🏠 Inicio</a>
-    <a href="../control-2/">➡️ Control 02</a>
-  </nav>
-
-  <section>
-    <h2>🎯 Objetivo del Control</h2>
-    <p>Establecer y mantener un inventario preciso de todos los activos empresariales (hardware, dispositivos, sistemas) para apoyar la gestión de seguridad y operaciones.</p>
-  </section>
-
-  <section>
-    <h2>📘 Descripción técnica</h2>
-    <p>Este control requiere identificar, clasificar y mantener actualizado el listado de todos los activos físicos y virtuales que forman parte de la infraestructura de la organización. Incluye servidores, estaciones de trabajo, dispositivos móviles, dispositivos IoT, y cualquier otro componente que procese o almacene información.</p>
-  </section>
-
-  <section>
-    <h2>🧩 Fichas doctrinales asociadas</h2>
-    <ul>
-      <li><a href="../../simulador/pregunta-01.html">🧠 Pregunta 01 – ¿Qué define un activo empresarial?</a></li>
-      <li><a href="../../simulador/pregunta-02.html">🧠 Pregunta 02 – Herramientas de descubrimiento de activos</a></li>
-    </ul>
-  </section>
-
-  <section class="aforismo">
-    “Lo que no se inventaría, no se puede proteger. El olvido es la primera brecha.”
-  </section>
-
-  <section>
-    <h2>📚 Referencias normativas</h2>
-    <ul>
-      <li>CIS Control 01 – Inventory and Control of Enterprise Assets</li>
-      <li>NIST SP 800-53 Rev. 5 – CM-8: Information System Component Inventory</li>
-      <li>ISO/IEC 27001:2022 – A.5.9: Inventory of information and other associated assets</li>
-    </ul>
-  </section>
+  <h1 id="-control-1-inventario-y-control-de-activos-de-la-empresa"> Control 1: Inventario y Control de Activos Empresariales</h1>
+<p><em>(CIS Control 1 – Inventory and Control of Enterprise Assets)</em></p>
+<h2 id="-definici-n-oficial-resumida-">📘 Definición oficial (resumida)</h2>
+<p>“Gestionar activamente (inventariar, rastrear y corregir) todos los activos de la empresa (dispositivos de usuario, de red, IoT y servidores) conectados a la infraestructura, físicos, virtuales, remotos o en la nube, para saber exactamente qué hay que proteger e identificar activos no autorizados o no gestionados para eliminarlos o corregirlos.”</p>
+<hr>
+<h1 id="1-prop-sito-del-control">1. Propósito del control</h1>
+<h3 id="-objetivo-principal"> Objetivo principal</h3>
+<p>Saber <strong>qué existe</strong>, <strong>dónde está</strong>, <strong>quién lo usa</strong> y <strong>en qué estado se encuentra</strong> cada activo conectado a la infraestructura.</p>
+<h3 id="-motivaci-n">⚠️ Motivación</h3>
+<p>Nadie puede defender lo que no conoce. Un inventario incompleto abre la puerta a:</p>
+<ul>
+<li>Activos huérfanos sin parches ni hardening.  </li>
+<li>Dispositivos ocultos usados como pivote por un atacante.  </li>
+<li>Shadow IT: equipos o servicios fuera de control corporativo.</li>
+</ul>
+<h3 id="-resultado-esperado">Resultado esperado</h3>
+<p>Un inventario <strong>centralizado, fiable y demostrable</strong> que sirva de base para:</p>
+<ul>
+<li>Monitorización y logging.  </li>
+<li>Gestión de vulnerabilidades.  </li>
+<li>Respuesta a incidentes.  </li>
+<li>Continuidad de negocio y backups.</li>
+</ul>
+<hr>
+<h1 id="2-alcance-del-control">2. Alcance del control</h1>
+<h3 id="-tipos-de-activos-cubiertos">Tipos de activos cubiertos</h3>
+<ul>
+<li>Dispositivos de usuario: portátiles, sobremesas, móviles, tablets.  </li>
+<li>Dispositivos de red: switches, routers, firewalls, AP WiFi.  </li>
+<li>Servidores: físicos, virtuales, on‑prem y cloud.  </li>
+<li>IoT / OT: cámaras, sensores, impresoras, dispositivos especiales.  </li>
+<li>Activos lógicos asociados: IP, FQDN, etiquetas, dueño, ubicación.</li>
+</ul>
+<h3 id="-entornos-incluidos"> Entornos incluidos</h3>
+<ul>
+<li><strong>Físico:</strong> oficinas, CPD, laboratorios.  </li>
+<li><strong>Virtual:</strong> hipervisores, VMs, contenedores.  </li>
+<li><strong>Remoto:</strong> teletrabajo con VPN o acceso directo.  </li>
+<li><strong>Cloud:</strong> IaaS, PaaS, SaaS (cuando aplique).</li>
+</ul>
+<hr>
+<h1 id="3-desarrollo-por-niveles-de-madurez-ig1-ig2-ig3-">3. Desarrollo por niveles de madurez (IG1, IG2, IG3)</h1>
+<hr>
+<h2 id="-ig1-fundacional-visibilidad-b-sica-">🟢 IG1 – Fundacional (Visibilidad básica)</h2>
+<h3 id="3-1-acciones-t-cnicas-clave">3.1. Acciones técnicas clave</h3>
+<h4 id="-descubrimiento-t-cnico-de-red-b-sico">🔍 Descubrimiento técnico de red básico</h4>
+<p><strong>Objetivo:</strong> detectar dispositivos vivos en la red.</p>
+<p><strong>Herramientas sugeridas:</strong></p>
+<ul>
+<li>Nmap (escaneo de rangos IP, detección de SO).  </li>
+<li>Angry IP Scanner (rápido y visual para labs).  </li>
+<li>Escáneres del firewall/router (si los tiene).</li>
+</ul>
+<p><strong>Acciones:</strong></p>
+<ul>
+<li>Definir rangos:<ul>
+<li>LAN oficinas (ej. <code>192.168.0.0/24</code>)  </li>
+<li>VLAN servidores  </li>
+<li>Red WiFi corporativa  </li>
+</ul>
+</li>
+<li>Ejecutar escaneos periódicos (semanales o mensuales).  </li>
+<li>Guardar resultados exportados (CSV, XML, HTML).</li>
+</ul>
+<hr>
+<h4 id="-inventario-dual-red-f-sico">Inventario dual: red + físico</h4>
+<p><strong>Objetivo:</strong> unir lo que “ve la red” con lo que “ves con los ojos”.</p>
+<p><strong>Herramientas:</strong></p>
+<ul>
+<li>Hoja de cálculo (Excel, LibreOffice, Google Sheets).  </li>
+<li>Etiquetas físicas (códigos internos, pegatinas, QR).</li>
+</ul>
+<p><strong>Campos mínimos recomendados:</strong></p>
+<ul>
+<li>ID de activo, tipo, modelo, nº de serie.  </li>
+<li>IP, MAC, hostname.  </li>
+<li>Ubicación física (sala, mesa, rack).  </li>
+<li>Propietario / usuario responsable.  </li>
+<li>Estado (en producción, en stock, retirado).</li>
+</ul>
+<hr>
+<h4 id="-pol-ticas-b-sicas-de-alta-baja">Políticas básicas de alta/baja</h4>
+<p><strong>Alta de activo:</strong></p>
+<ul>
+<li>Asignar ID.  </li>
+<li>Registrar en inventario.  </li>
+<li>Asociar a usuario/área.  </li>
+<li>Configurar en AD (si aplica).</li>
+</ul>
+<p><strong>Baja de activo:</strong></p>
+<ul>
+<li>Borrado seguro de datos (wipe).  </li>
+<li>Actualizar estado a “retirado”.  </li>
+<li>Documentar fecha y responsable.</li>
+</ul>
+<hr>
+<h3 id="3-2-herramientas-simples-recomendadas">3.2. Herramientas simples recomendadas</h3>
+<p><strong>Para inventario técnico inicial:</strong></p>
+<ul>
+<li>Nmap  </li>
+<li>Angry IP Scanner  </li>
+<li>Advanced IP Scanner  </li>
+</ul>
+<p><strong>Para inventario lógico:</strong></p>
+<ul>
+<li>Hojas de cálculo bien estructuradas  </li>
+<li>GLPI u OCS Inventory NG (modo sencillo)</li>
+</ul>
+<hr>
+<h3 id="3-3-evidencias-sugeridas-para-el-pergamino">3.3. Evidencias sugeridas para el Pergamino</h3>
+<p><strong>Capturas:</strong></p>
+<ul>
+<li>Escaneo de Nmap mostrando hosts.  </li>
+<li>Excel/Sheet con inventario dual.  </li>
+<li>Foto de etiqueta física en un equipo.</li>
+</ul>
+<p><strong>Checklists:</strong></p>
+<ul>
+<li>Lista de verificación de alta/baja de activos.  </li>
+<li>Plantilla de campos mínimos de inventario.</li>
+</ul>
+<hr>
+<h2 id="-ig2-gesti-n-activa">🟡 IG2 – Gestión activa</h2>
+<p>Aquí empieza la <strong>gestión consciente</strong>: el inventario deja de ser una tabla estática y se convierte en un sistema vivo.</p>
+<h3 id="3-4-acciones-t-cnicas-clave">3.4. Acciones técnicas clave</h3>
+<h4 id="-cmdb-conectada-y-actualizada">CMDB conectada y actualizada</h4>
+<p><strong>Objetivo:</strong> disponer de una CMDB como <strong>fuente única de verdad</strong>.</p>
+<p><strong>Herramientas:</strong></p>
+<ul>
+<li>GLPI con plugin de inventario  </li>
+<li>OCS Inventory NG + GLPI  </li>
+<li>iTop, Lansweeper, Snipe-IT  </li>
+<li>ServiceNow, ManageEngine, SolarWinds (entornos grandes)</li>
+</ul>
+<p><strong>Acciones:</strong></p>
+<ul>
+<li>Integrar datos de:<ul>
+<li>Escáneres de red  </li>
+<li>Directorio activo (AD)  </li>
+<li>DHCP (reservas y leases)  </li>
+<li>Virtualización (vCenter, Hyper‑V)  </li>
+</ul>
+</li>
+<li>Definir procesos de:<ul>
+<li>Alta automática  </li>
+<li>Revisión periódica (mensual/trimestral)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="-escaneos-peri-dicos-y-reconciliaci-n">Escaneos periódicos y reconciliación</h4>
+<p><strong>Objetivo:</strong> detectar cambios y activos no gestionados.</p>
+<p><strong>Herramientas:</strong></p>
+<ul>
+<li>Lansweeper  </li>
+<li>OCS  </li>
+<li>Nmap programado  </li>
+<li>Nessus (vista de hosts)</li>
+</ul>
+<p><strong>Acciones:</strong></p>
+<ul>
+<li>Programar escaneos automáticos.  </li>
+<li>Comparar resultados con CMDB.  </li>
+<li>Marcar activos “no gestionados”.</li>
+</ul>
+<hr>
+<h4 id="-integraci-n-con-ticketing">Integración con ticketing</h4>
+<p><strong>Objetivo:</strong> que cada cambio relevante genere evidencia.</p>
+<p><strong>Herramientas:</strong></p>
+<ul>
+<li>GLPI Helpdesk  </li>
+<li>Jira Service Management  </li>
+<li>ServiceNow  </li>
+<li>OTRS, Zammad</li>
+</ul>
+<p><strong>Ejemplos:</strong></p>
+<ul>
+<li>Alta de portátil → ticket + registro en CMDB  </li>
+<li>Equipo desconocido → ticket de investigación</li>
+</ul>
+<hr>
+<h3 id="3-5-evidencias-y-m-tricas">3.5. Evidencias y métricas</h3>
+<p><strong>Dashboards clave:</strong></p>
+<ul>
+<li>Número total de activos por tipo  </li>
+<li>Activos sin propietario  </li>
+<li>Activos no vistos en X días  </li>
+<li>Equipos fuera de soporte (EoL)</li>
+</ul>
+<p><strong>Capturas sugeridas:</strong></p>
+<ul>
+<li>Panel GLPI/Lansweeper  </li>
+<li>Ficha completa de un activo  </li>
+<li>Ticket de alta/baja vinculado</li>
+</ul>
+<hr>
+<h2 id="-ig3-madurez-avanzada">🔴 IG3 – Madurez avanzada</h2>
+<p>Aquí la infraestructura se vuelve <strong>trazable y resistente</strong>.</p>
+<h3 id="3-6-acciones-t-cnicas-clave">3.6. Acciones técnicas clave</h3>
+<h4 id="-integraci-n-con-siem"> Integración con SIEM</h4>
+<p><strong>Objetivo:</strong> correlacionar eventos con activos concretos.</p>
+<p><strong>Herramientas:</strong></p>
+<ul>
+<li>Splunk  </li>
+<li>Elastic  </li>
+<li>QRadar  </li>
+<li>Sentinel  </li>
+<li>Graylog</li>
+</ul>
+<p><strong>Acciones:</strong></p>
+<ul>
+<li>Enviar al SIEM:<ul>
+<li>Listado de activos  </li>
+<li>Criticidad, dueño, tipo  </li>
+</ul>
+</li>
+<li>Usar esta info para:<ul>
+<li>Priorizar alertas  </li>
+<li>Detectar actividad desde activos no gestionados</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="-network-access-control-nac-"> Network Access Control (NAC)</h4>
+<p><strong>Objetivo:</strong> que ningún activo entre en la red sin control.</p>
+<p><strong>Herramientas:</strong></p>
+<ul>
+<li>Cisco ISE  </li>
+<li>Aruba ClearPass  </li>
+<li>FortiNAC  </li>
+<li>pfSense con portal</li>
+</ul>
+<p><strong>Acciones:</strong></p>
+<ul>
+<li>Autenticación 802.1X  </li>
+<li>VLAN dinámica  </li>
+<li>Cuarentena de dispositivos desconocidos</li>
+</ul>
+<hr>
+<h4 id="-integraci-n-con-cloud-y-teletrabajo">Integración con Cloud y teletrabajo</h4>
+<p><strong>Herramientas:</strong></p>
+<ul>
+<li>Microsoft Intune  </li>
+<li>Azure AD  </li>
+<li>Defender for Endpoint  </li>
+<li>AWS Systems Manager  </li>
+<li>AWS Config  </li>
+<li>GCP Asset Inventory</li>
+</ul>
+<p><strong>Acciones:</strong></p>
+<ul>
+<li>Inventario de VMs y endpoints remotos  </li>
+<li>Etiquetado por criticidad y entorno</li>
+</ul>
+<hr>
+<h4 id="-planos-f-sico-l-gicos-unificados">Planos físico‑lógicos unificados</h4>
+<p><strong>Objetivo:</strong> ver en una sola vista:</p>
+<ul>
+<li>Ubicación física  </li>
+<li>Conexiones de red  </li>
+<li>Rol del activo  </li>
+</ul>
+<p><strong>Herramientas:</strong></p>
+<ul>
+<li>draw.io  </li>
+<li>Visio  </li>
+<li>Lucidchart  </li>
+<li>netbox  </li>
+<li>RackTables</li>
+</ul>
+<hr>
+<h3 id="3-7-evidencias-de-alta-madurez">3.7. Evidencias de alta madurez</h3>
+<p><strong>Ejemplos:</strong></p>
+<ul>
+<li>Diagrama con segmentación (usuarios, servidores, DMZ, OT)  </li>
+<li>Dispositivos etiquetados con ID  </li>
+<li>Alerta SIEM:<ul>
+<li>Equipo desconocido conectándose  </li>
+<li>Correlación con ausencia en CMDB</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="4-relaci-n-con-otros-marcos-y-normas">4. Relación con otros marcos y normas</h1>
+<h3 id="-nist-csf">📘 NIST CSF</h3>
+<p>Relacionado con funciones <strong>Identificar (ID)</strong> y <strong>Detectar (DE)</strong>:</p>
+<ul>
+<li>ID.AM‑1  </li>
+<li>ID.AM‑2  </li>
+<li>ID.AM‑3  </li>
+</ul>
+<h3 id="-nist-sp-800-53">📘 NIST SP 800‑53</h3>
+<ul>
+<li>CM‑8 (Inventario de componentes)  </li>
+<li>PM‑5 (Inventario del sistema)</li>
+</ul>
+<h3 id="-cis-v8">📘 CIS v8</h3>
+<p>El Control 1 abre el camino a:</p>
+<ul>
+<li>Control 2 (Inventario y control de software)  </li>
+<li>Control 7 (Gestión de vulnerabilidades)  </li>
+<li>Control 8 (Logging y monitoreo)</li>
+</ul>
+<hr>
+<h2 id="-referencias-del-control-1">📚 Referencias del Control 1</h2>
+<ul>
+<li><p><strong>CIS Controls v8 – Control 1: Inventory and Control of Enterprise Assets</strong><br><a href="https://www.cisecurity.org/controls/inventory-and-control-of-enterprise-assets">https://www.cisecurity.org/controls/inventory-and-control-of-enterprise-assets</a></p>
+</li>
+<li><p><strong>CIS Documentation Hub – Control 1 (v8)</strong><br><a href="https://cas.docs.cisecurity.org/en/latest/source/Controls1/">https://cas.docs.cisecurity.org/en/latest/source/Controls1/</a></p>
+</li>
+<li><p><strong>CSF Tools – CSC 1: Inventory and Control of Enterprise Assets</strong><br><a href="https://csf.tools/reference/critical-security-controls/v8-1/csc-1/">https://csf.tools/reference/critical-security-controls/v8-1/csc-1/</a></p>
+</li>
+<li><p><strong>NIST SP 800-53 Rev.5 – CM-8: Information System Component Inventory</strong><br><a href="https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final">https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final</a></p>
+</li>
+<li><p><strong>NIST Cybersecurity Framework – ID.AM (Asset Management)</strong><br><a href="https://www.nist.gov/cyberframework">https://www.nist.gov/cyberframework</a></p>
+</li>
 
   <footer>
     Parte del repositorio doctrinal <strong>El Pergamino Digital</strong> – Julio César Abreu · GitHub Pages
