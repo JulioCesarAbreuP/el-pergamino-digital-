@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const backToTop = document.getElementById("back-to-top");
-  if (!backToTop) return;
 
+  // Mostrar/ocultar botón volver arriba
   window.addEventListener("scroll", () => {
     if (window.scrollY > 180) {
       backToTop.classList.add("visible");
@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Acción del botón
   backToTop.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
