@@ -4,100 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>El Pergamino Digital — Archivo doctrinal y pedagógico de ciberseguridad</title>
+
     <!-- SEO -->
     <meta name="description" content="El Pergamino Digital — Archivo doctrinal y pedagógico de ciberseguridad. Controles CIS, glosario aforístico, simulador técnico y laboratorios.">
-    <meta name="theme-color" content="#0d0d0d">
 
     <!-- PWA -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/el-pergamino-digital/manifest.json">
+    <meta name="theme-color" content="#0d0d0d">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     <!-- Seguridad -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self';">
 
-    <!-- Tipografía -->
-    <link rel="preload" href="/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- Tipografía (opcional si no existe la fuente aún) -->
+    <!-- <link rel="preload" href="/el-pergamino-digital/assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin> -->
 
-    <!-- CSS externo -->
-    <link rel="stylesheet" href="/assets/css/style.css">
-
-    <title>El Pergamino Digital — Archivo doctrinal y pedagógico de ciberseguridad</title>
+    <!-- CSS global -->
+    <link rel="stylesheet" href="/el-pergamino-digital/assets/css/style.css">
 </head>
 
 <body>
 
-    <header>
-        <h1>El Pergamino Digital</h1>
-        <p class="subtitle">Archivo doctrinal y pedagógico de ciberseguridad</p>
-    </header>
+<header class="site-header">
+    <h1>El Pergamino Digital</h1>
+    <p class="subtitle">Archivo doctrinal y pedagógico de ciberseguridad</p>
 
-    <nav aria-label="Navegación principal">
-        <ul class="main-nav">
-            <li><a href="/index.html">Inicio</a></li>
-            <li><a href="/controles/">Controles CIS</a></li>
-            <li><a href="/glosario/">Glosario</a></li>
-            <li><a href="/labs/">Laboratorios</a></li>
-            <li><a href="/sobre/">Sobre el proyecto</a></li>
-        </ul>
+    <nav aria-label="Navegación principal" class="main-nav">
+        <a href="/el-pergamino-digital/">Inicio</a>
+        <a href="/el-pergamino-digital/controles/">Controles CIS</a>
+        <a href="/el-pergamino-digital/glosario/">Glosario</a>
+        <a href="/el-pergamino-digital/labs/">Laboratorios</a>
+        <a href="/el-pergamino-digital/sobre/">Sobre el proyecto</a>
+    </nav>
+</header>
+
+<main class="site-main">
+
+    <section class="intro">
+        <h2>Bienvenido al Pergamino Digital</h2>
+        <p>
+            Este archivo doctrinal reúne controles CIS, glosario aforístico, preguntas certificadoras,
+            laboratorios prácticos y contenido pedagógico diseñado para formación modular en ciberseguridad.
+        </p>
+    </section>
+
+    <section class="controls-index">
+        <h2>Índice de Controles CIS v8</h2>
+
+        <div class="controls-grid">
+            <a href="/el-pergamino-digital/controles/01/">Control 01 — Inventario de Activos</a>
+            <a href="/el-pergamino-digital/controles/02/">Control 02 — Inventario de Software</a>
+            <a href="/el-pergamino-digital/controles/03/">Control 03 — Gestión de Datos</a>
+            <a href="/el-pergamino-digital/controles/04/">Control 04 — Configuración Segura</a>
+            <a href="/el-pergamino-digital/controles/05/">Control 05 — Gestión de Cuentas</a>
+            <a href="/el-pergamino-digital/controles/06/">Control 06 — Control de Acceso</a>
+            <a href="/el-pergamino-digital/controles/07/">Control 07 — Protección de Email</a>
+            <a href="/el-pergamino-digital/controles/08/">Control 08 — Gestión de Malware</a>
+            <a href="/el-pergamino-digital/controles/09/">Control 09 — Navegadores y Email</a>
+            <a href="/el-pergamino-digital/controles/10/">Control 10 — Recuperación de Datos</a>
+            <a href="/el-pergamino-digital/controles/11/">Control 11 — Configuración de Red</a>
+            <a href="/el-pergamino-digital/controles/12/">Control 12 — Infraestructura de Red</a>
+            <a href="/el-pergamino-digital/controles/13/">Control 13 — Monitoreo de Red</a>
+            <a href="/el-pergamino-digital/controles/14/">Control 14 — Capacitación</a>
+            <a href="/el-pergamino-digital/controles/15/">Control 15 — Proveedores</a>
+            <a href="/el-pergamino-digital/controles/16/">Control 16 — Seguridad de Software</a>
+            <a href="/el-pergamino-digital/controles/17/">Control 17 — Respuesta a Incidentes</a>
+            <a href="/el-pergamino-digital/controles/18/">Control 18 — Pruebas de Penetración</a>
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <p class="footer-text">
+        Esto forma parte de <strong>El Pergamino Digital — Archivo doctrinal y pedagógico de ciberseguridad.</strong>
+    </p>
+
+    <nav aria-label="Navegación inferior" class="footer-nav">
+        <a href="/el-pergamino-digital/accesibilidad/">Accesibilidad</a>
+        <a href="/el-pergamino-digital/privacidad/">Privacidad</a>
+        <a href="/el-pergamino-digital/licencia/">Licencia</a>
+        <a href="https://github.com/JulioCesarAbreuP/el-pergamino-digital" target="_blank" rel="noopener noreferrer">Repositorio</a>
     </nav>
 
-    <main>
+    <button id="back-to-top" aria-label="Volver arriba">↑</button>
+</footer>
 
-        <section class="intro">
-            <h2>Bienvenido al Pergamino Digital</h2>
-            <p>
-                Este archivo doctrinal reúne controles CIS, glosario aforístico, preguntas certificadoras,
-                laboratorios prácticos y contenido pedagógico diseñado para formación modular en ciberseguridad.
-            </p>
-        </section>
-
-        <section class="controls-index">
-            <h2>Índice de Controles CIS v8</h2>
-
-            <div class="controls-grid">
-                <a href="/controles/01/">Control 01 — Inventario de Activos</a>
-                <a href="/controles/02/">Control 02 — Inventario de Software</a>
-                <a href="/controles/03/">Control 03 — Gestión de Datos</a>
-                <a href="/controles/04/">Control 04 — Configuración Segura</a>
-                <a href="/controles/05/">Control 05 — Gestión de Cuentas</a>
-                <a href="/controles/06/">Control 06 — Control de Acceso</a>
-                <a href="/controles/07/">Control 07 — Protección de Email</a>
-                <a href="/controles/08/">Control 08 — Gestión de Malware</a>
-                <a href="/controles/09/">Control 09 — Navegadores y Email</a>
-                <a href="/controles/10/">Control 10 — Recuperación de Datos</a>
-                <a href="/controles/11/">Control 11 — Configuración de Red</a>
-                <a href="/controles/12/">Control 12 — Infraestructura de Red</a>
-                <a href="/controles/13/">Control 13 — Monitoreo de Red</a>
-                <a href="/controles/14/">Control 14 — Capacitación</a>
-                <a href="/controles/15/">Control 15 — Proveedores</a>
-                <a href="/controles/16/">Control 16 — Seguridad de Software</a>
-                <a href="/controles/17/">Control 17 — Respuesta a Incidentes</a>
-                <a href="/controles/18/">Control 18 — Pruebas de Penetración</a>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <p class="footer-text">
-            Esto forma parte de <strong>El Pergamino Digital — Archivo doctrinal y pedagógico de ciberseguridad.</strong>
-        </p>
-
-        <nav aria-label="Navegación inferior" class="footer-nav">
-            <a href="/accesibilidad/">Accesibilidad</a>
-            <a href="/privacidad/">Privacidad</a>
-            <a href="/licencia/">Licencia</a>
-            <a href="/github/" rel="noopener noreferrer">Repositorio</a>
-        </nav>
-
-        <button id="back-to-top" aria-label="Volver arriba">↑</button>
-    </footer>
-
-    <!-- JS externo -->
-    <script src="/assets/js/main.js" defer></script>
+<script src="/el-pergamino-digital/assets/js/main.js" defer></script>
 
 </body>
 </html>
-
