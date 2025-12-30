@@ -13,41 +13,70 @@
   <div class="bloque">
     <span class="etiqueta">🎯 Objetivo del laboratorio:</span>
     <div class="respuesta">
-      Aprender a utilizar OpenVAS para identificar vulnerabilidades en sistemas y servicios expuestos, interpretar los resultados y priorizar acciones correctivas.
+      Este laboratorio tiene como propósito introducir al profesional en el uso sistemático de <strong>OpenVAS</strong> (Greenbone Vulnerability Management) como herramienta de escaneo de vulnerabilidades en entornos controlados. Se busca desarrollar competencias en la <em>identificación, clasificación y priorización de exposiciones técnicas</em> mediante análisis automatizados, alineados con estándares como <strong>CVE, CVSS v3.1</strong> y marcos como <strong>CIS Controls v8</strong> y <strong>NIST SP 800-115</strong>.
     </div>
   </div>
 
   <div class="bloque">
-    <span class="etiqueta">🧪 Herramientas utilizadas:</span>
+    <span class="etiqueta">🧪 Herramientas y entorno técnico:</span>
     <div class="respuesta">
       <ul>
-        <li>OpenVAS / Greenbone Vulnerability Manager</li>
-        <li>Máquina objetivo vulnerable (por ejemplo, Metasploitable)</li>
+        <li><strong>OpenVAS / GVM</strong> (última versión estable)</li>
+        <li>Distribución Linux con soporte para escaneo (Kali, Parrot, Debian)</li>
+        <li>Máquina objetivo vulnerable (por ejemplo, Metasploitable2 o DVWA expuesta en red local)</li>
+        <li>Acceso a red segmentada o entorno virtualizado (VirtualBox, VMware, Proxmox)</li>
       </ul>
     </div>
   </div>
 
   <div class="bloque">
-    <span class="etiqueta">📌 Pasos principales:</span>
+    <span class="etiqueta">📌 Procedimiento técnico:</span>
     <div class="respuesta">
       <ol>
-        <li>Configurar escaneo en OpenVAS</li>
-        <li>Ejecutar análisis contra la IP objetivo</li>
-        <li>Revisar resultados y clasificaciones CVSS</li>
-        <li>Documentar hallazgos y recomendaciones</li>
+        <li>Instalar y configurar OpenVAS, asegurando la actualización del feed de vulnerabilidades (NVTs).</li>
+        <li>Definir un nuevo <strong>target</strong> con la IP de la máquina vulnerable.</li>
+        <li>Crear una política de escaneo personalizada (si aplica) o utilizar una plantilla predefinida.</li>
+        <li>Ejecutar el escaneo y monitorizar el progreso desde el panel de GVM.</li>
+        <li>Analizar los resultados: severidad, vectores de ataque, referencias CVE y recomendaciones.</li>
+        <li>Exportar el informe en formato PDF o HTML para documentación y trazabilidad.</li>
       </ol>
     </div>
   </div>
 
   <div class="bloque">
-    <span class="etiqueta">📂 Volver al índice de laboratorios:</span>
+    <span class="etiqueta">📚 Referencias normativas y técnicas:</span>
     <div class="respuesta">
-      <a href="/el-pergamino-digital/labs/">🧪 Ver todos los laboratorios</a>
+      <ul>
+        <li><a href="https://www.cisecurity.org/controls/">CIS Controls v8 – Control 07: Continuous Vulnerability Management</a></li>
+        <li><a href="https://nvd.nist.gov/">NIST NVD – National Vulnerability Database</a></li>
+        <li><a href="https://csrc.nist.gov/publications/detail/sp/800-115/final">NIST SP 800-115 – Technical Guide to Information Security Testing</a></li>
+        <li><a href="https://www.greenbone.net/en/">Greenbone OpenVAS – Documentación oficial</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bloque">
+    <span class="etiqueta">🧬 Observación técnica:</span>
+    <div class="respuesta">
+      El escaneo de vulnerabilidades no implica explotación activa. Su objetivo es <strong>detectar debilidades sin comprometer la integridad del sistema</strong>. La interpretación de resultados debe considerar el contexto operativo, la superficie de exposición y la criticidad del activo evaluado.
+    </div>
+  </div>
+
+  <div class="bloque">
+    <span class="etiqueta">📂 Navegación transversal:</span>
+    <div class="respuesta">
+      <ul>
+        <li><a href="/el-pergamino-digital/labs/">⬅️ Volver al índice de laboratorios</a></li>
+        <li><a href="/el-pergamino-digital/">🏠 Portada doctrinal</a></li>
+        <li><a href="/el-pergamino-digital/glosario/">📚 Glosario técnico-aforístico</a></li>
+        <li><a href="/el-pergamino-digital/simulador/">🎓 Simulador certificador</a></li>
+        <li><a href="/el-pergamino-digital/modulos/">🧭 Módulos de formación</a></li>
+      </ul>
     </div>
   </div>
 
   <footer>
-    Este laboratorio forma parte de <strong>El Pergamino Digital</strong> · Proyecto doctrinal y pedagógico de Julio César Abreu.
+    Este laboratorio forma parte de <strong>El Pergamino Digital</strong> · Proyecto doctrinal, técnico y pedagógico de Julio César Abreu. Su contenido está alineado con prácticas de auditoría técnica, gestión de vulnerabilidades y preparación certificadora.
   </footer>
 
 </body>
