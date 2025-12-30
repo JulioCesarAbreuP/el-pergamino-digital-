@@ -88,41 +88,7 @@
   <section>
     <h2>🔍 Sniffing con Wireshark y tcpdump</h2>
 
-    <article>
-  <h3>🧪 Sniffing con Wireshark y tcpdump</h3>
-
-  <p><strong>🎯 Objetivo:</strong> Capturar y analizar tráfico de red para identificar protocolos, credenciales en texto plano y patrones de comunicación.</p>
-
-  <p><strong>🛠️ Herramientas:</strong> 
-    <ul>
-      <li><code>tcpdump</code> — captura en terminal, exporta a .pcap</li>
-      <li><code>Wireshark</code> — análisis visual, filtros avanzados</li>
-    </ul>
-  </p>
-
-  <p><strong>📜 Procedimiento:</strong></p>
-  <ol>
-    <li>Ejecutar <code>sudo tcpdump -i eth0 -w captura.pcap</code> durante 30 segundos.</li>
-    <li>Detener con <code>Ctrl+C</code> y abrir <code>captura.pcap</code> en Wireshark.</li>
-    <li>Aplicar filtro <code>http.request</code> o <code>ftp</code> para buscar credenciales en texto plano.</li>
-    <li>Identificar IPs, puertos, protocolos y posibles vectores de ataque.</li>
-  </ol>
-
-  <p><strong>🧪 Validación cruzada:</strong> 
-    <ul>
-      <li>MITRE ATT&CK: <code>T1040 – Network Sniffing</code></li>
-      <li>CIS Control 13.1 – Monitorización del tráfico de red</li>
-      <li>OWASP WSTG-INPV-01 – Validación de entrada en protocolos inseguros</li>
-    </ul>
-  </p>
-
-  <p><strong>🛡️ Contramedida:</strong> Implementar segmentación de red, cifrado TLS y detección de sniffers mediante ARP scanning.</p>
-
-  <p><strong>📸 Evidencia visual:</strong> Captura de Wireshark mostrando credenciales en HTTP o tráfico FTP sin cifrar.</p>
-
-  <p><strong>🎓 Certificación asociada:</strong> CompTIA Security+, CEH, CySA+, IBM Cybersecurity Analyst</p>
-</article>
-
+    
     <article>
       <h3>🧪 Sniffing con Wireshark y tcpdump</h3>
 
