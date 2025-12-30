@@ -2,123 +2,52 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab 05 – Escaneo de vulnerabilidades con OpenVAS</title>
   <link rel="stylesheet" href="/el-pergamino-digital/estilos.css">
 </head>
 <body>
 
-  <h1 class="titulo-principal">🧪 Lab 05 – Escaneo de vulnerabilidades con OpenVAS y análisis de resultados</h1>
+  <h1 class="titulo-principal">🧪 Lab 05 – Escaneo de vulnerabilidades con OpenVAS</h1>
 
   <div class="bloque">
-    <span class="etiqueta">🎯 Propósito doctrinal:</span>
+    <span class="etiqueta">🎯 Objetivo del laboratorio:</span>
     <div class="respuesta">
-      Detectar vulnerabilidades conocidas en sistemas simulados mediante el uso de OpenVAS. Este laboratorio permite comprender la exposición técnica de activos, interpretar reportes de escaneo y priorizar acciones correctivas.
+      Aprender a utilizar OpenVAS para identificar vulnerabilidades en sistemas y servicios expuestos, interpretar los resultados y priorizar acciones correctivas.
     </div>
   </div>
 
   <div class="bloque">
-    <span class="etiqueta">🧰 Herramientas necesarias:</span>
+    <span class="etiqueta">🧪 Herramientas utilizadas:</span>
     <div class="respuesta">
       <ul>
-        <li>OpenVAS (Greenbone Vulnerability Management)</li>
-        <li>Sistema objetivo con servicios expuestos (Ubuntu, Windows)</li>
-        <li>Navegador web para acceder a la consola GVM</li>
-        <li>Red interna o NAT</li>
+        <li>OpenVAS / Greenbone Vulnerability Manager</li>
+        <li>Máquina objetivo vulnerable (por ejemplo, Metasploitable)</li>
       </ul>
     </div>
   </div>
 
   <div class="bloque">
-    <span class="etiqueta">🧱 Arquitectura del entorno:</span>
-    <div class="respuesta">
-      <ul>
-        <li><strong>VM1 (Escáner):</strong> Kali Linux o Greenbone Community Edition</li>
-        <li><strong>VM2 (Objetivo):</strong> Ubuntu con Apache, SSH, Samba, etc.</li>
-        <li>Red interna sin acceso a internet</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="bloque">
-    <span class="etiqueta">🧪 Medidas técnicas (procedimientos):</span>
+    <span class="etiqueta">📌 Pasos principales:</span>
     <div class="respuesta">
       <ol>
-        <li>Instalar y configurar OpenVAS:
-          <pre><code>sudo gvm-setup
-sudo gvm-check-setup
-sudo gvm-start</code></pre>
-        </li>
-        <li>Acceder a la consola web:
-          <ul>
-            <li>URL: https://127.0.0.1:9392</li>
-            <li>Usuario: admin (por defecto)</li>
-          </ul>
-        </li>
-        <li>Crear un nuevo escaneo:
-          <ul>
-            <li>Targets → New Target → IP del objetivo</li>
-            <li>Tasks → New Task → Seleccionar target y configuración</li>
-          </ul>
-        </li>
-        <li>Ejecutar el escaneo y esperar resultados</li>
-        <li>Analizar el reporte generado:
-          <ul>
-            <li>CVEs detectados</li>
-            <li>Severidad (CVSS)</li>
-            <li>Servicios vulnerables</li>
-          </ul>
-        </li>
-        <li>Exportar reporte en PDF o HTML</li>
+        <li>Configurar escaneo en OpenVAS</li>
+        <li>Ejecutar análisis contra la IP objetivo</li>
+        <li>Revisar resultados y clasificaciones CVSS</li>
+        <li>Documentar hallazgos y recomendaciones</li>
       </ol>
     </div>
   </div>
 
   <div class="bloque">
-    <span class="etiqueta">🖼️ Evidencia visual (GUI):</span>
-    <div class="respuesta evidencia">
-      <img src="/el-pergamino-digital/labs/labs05/openvas-target.png" alt="Captura de configuración del target en OpenVAS">
-      <img src="/el-pergamino-digital/labs/labs05/openvas-resultados.png" alt="Captura de resultados del escaneo en OpenVAS">
-      <img src="/el-pergamino-digital/labs/labs05/openvas-cve.png" alt="Captura de CVE detectado con descripción">
-    </div>
-  </div>
-
-  <div class="bloque">
-    <span class="etiqueta">🛡️ Contramedidas:</span>
+    <span class="etiqueta">📂 Volver al índice de laboratorios:</span>
     <div class="respuesta">
-      <ul>
-        <li>Aplicar parches y actualizaciones</li>
-        <li>Deshabilitar servicios innecesarios</li>
-        <li>Configurar firewalls y segmentación</li>
-        <li>Validar exposición con escaneos recurrentes</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="bloque">
-    <span class="etiqueta">🧪 Validación cruzada:</span>
-    <div class="respuesta">
-      <ul>
-        <li><a href="https://www.cisecurity.org/controls/vulnerability-management" target="_blank">CIS Control 7.1 – Vulnerability Management</a></li>
-        <li><a href="https://www.first.org/cvss/" target="_blank">CVE/CVSS – Common Vulnerabilities and Scoring System</a></li>
-        <li><a href="https://csrc.nist.gov/publications/detail/sp/800-40/rev-3/final" target="_blank">NIST SP 800-40 – Patch Management</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="bloque">
-    <span class="etiqueta">🎓 Certificaciones asociadas:</span>
-    <div class="respuesta">
-      <ul>
-        <li>CompTIA Security+</li>
-        <li>ISC2 CC / CISSP</li>
-        <li>CEH</li>
-        <li>OSCP (enumeración y explotación de vulnerabilidades)</li>
-      </ul>
+      <a href="/el-pergamino-digital/labs/">🧪 Ver todos los laboratorios</a>
     </div>
   </div>
 
   <footer>
-    Esta ficha forma parte de <strong>El Pergamino Digital</strong> · Laboratorios técnicos con trazabilidad normativa y propósito pedagógico.
+    Este laboratorio forma parte de <strong>El Pergamino Digital</strong> · Proyecto doctrinal y pedagógico de Julio César Abreu.
   </footer>
 
 </body>
