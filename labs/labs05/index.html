@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab 05 – Escaneo de vulnerabilidades con OpenVAS</title>
+</head>
+<body>
+
+  <h1>🧪 Lab 05 – Escaneo de vulnerabilidades con OpenVAS y análisis de resultados</h1>
+
+  <h2>🎯 Propósito doctrinal</h2>
+  <p>Detectar vulnerabilidades conocidas en sistemas simulados mediante el uso de OpenVAS. Este laboratorio permite comprender la exposición técnica de activos, interpretar reportes de escaneo y priorizar acciones correctivas.</p>
+
+  <h2>🧰 Herramientas necesarias</h2>
+  <ul>
+    <li>OpenVAS (Greenbone Vulnerability Management)</li>
+    <li>Sistema objetivo con servicios expuestos (Ubuntu, Windows)</li>
+    <li>Navegador web para acceder a la consola GVM</li>
+    <li>Red interna o NAT</li>
+  </ul>
+
+  <h2>🧱 Arquitectura del entorno</h2>
+  <ul>
+    <li><strong>VM1 (Escáner):</strong> Kali Linux o Greenbone Community Edition</li>
+    <li><strong>VM2 (Objetivo):</strong> Ubuntu con Apache, SSH, Samba, etc.</li>
+    <li>Red interna sin acceso a internet</li>
+  </ul>
+
+  <h2>🧪 Medidas técnicas (procedimientos)</h2>
+  <ol>
+    <li>Instalar y configurar OpenVAS:
+      <pre><code>sudo gvm-setup
+sudo gvm-check-setup
+sudo gvm-start</code></pre>
+    </li>
+    <li>Acceder a la consola web:
+      <ul>
+        <li>URL: https://127.0.0.1:9392</li>
+        <li>Usuario: admin (por defecto)</li>
+      </ul>
+    </li>
+    <li>Crear un nuevo escaneo:
+      <ul>
+        <li>Targets → New Target → IP del objetivo</li>
+        <li>Tasks → New Task → Seleccionar target y configuración</li>
+      </ul>
+    </li>
+    <li>Ejecutar el escaneo y esperar resultados</li>
+    <li>Analizar el reporte generado:
+      <ul>
+        <li>CVEs detectados</li>
+        <li>Severidad (CVSS)</li>
+        <li>Servicios vulnerables</li>
+      </ul>
+    </li>
+    <li>Exportar reporte en PDF o HTML</li>
+  </ol>
+
+  <h2>🖼️ Evidencia visual (GUI)</h2>
+  <ul>
+    <li>Captura de configuración del target</li>
+    <li>Captura de resultados del escaneo</li>
+    <li>Captura de CVE con descripción</li>
+  </ul>
+
+  <h2>🛡️ Contramedidas</h2>
+  <ul>
+    <li>Aplicar parches y actualizaciones</li>
+    <li>Deshabilitar servicios innecesarios</li>
+    <li>Configurar firewalls y segmentación</li>
+    <li>Validar exposición con escaneos recurrentes</li>
+  </ul>
+
+  <h2>🧪 Validación cruzada</h2>
+  <ul>
+    <li><a href="https://www.cisecurity.org/controls/vulnerability-management">CIS Control 7.1 – Vulnerability Management</a></li>
+    <li><a href="https://www.first.org/cvss/">CVE/CVSS – Common Vulnerabilities and Scoring System</a></li>
+    <li><a href="https://csrc.nist.gov/publications/detail/sp/800-40/rev-3/final">NIST SP 800-40 – Patch Management</a></li>
+  </ul>
+
+  <h2>🎓 Certificaciones asociadas</h2>
+  <ul>
+    <li>CompTIA Security+</li>
+    <li>ISC2 CC / CISSP</li>
+    <li>CEH</li>
+    <li>OSCP (enumeración y explotación de vulnerabilidades)</li>
+  </ul>
+
+  <footer>
+    Esta ficha forma parte de <strong>El Pergamino Digital</strong> · Laboratorios técnicos con trazabilidad normativa y propósito pedagógico.
+  </footer>
+
+</body>
+</html>
