@@ -1,146 +1,120 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Laboratorios doctrinales | El Pergamino Digital</title>
-  <meta name="description" content="Laboratorios técnicos con evidencia, validación cruzada y propósito certificador.">
+  <meta charset="UTF-8">
+  <title>Laboratorios técnicos | El Pergamino Digital</title>
+  <link rel="stylesheet" href="/el-pergamino-digital/estilos.css">
   <style>
-    :root {
-      --bg: #ffffff;
-      --text: #1a1a1a;
-      --accent: #004466;
-      --highlight: #e0f7fa;
-      --border: #cccccc;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #121212;
-        --text: #e0e0e0;
-        --accent: #80d8ff;
-        --highlight: #1e1e1e;
-        --border: #333333;
-      }
-    }
     body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: system-ui, sans-serif;
-      line-height: 1.6;
-      margin: 2rem;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #ffffff;
+      color: #1a1a1a;
+      margin: 2rem auto;
       max-width: 960px;
+      line-height: 1.7;
+      font-size: 1.05rem;
     }
-    h1, h2, h3 {
-      color: var(--accent);
+
+    .titulo-principal {
+      font-size: 2.4rem;
+      color: #003366;
+      border-bottom: 3px solid #0078d4;
+      padding-bottom: 0.4rem;
+      margin-bottom: 2.5rem;
     }
-    a {
-      color: var(--accent);
+
+    .bloque {
+      background-color: #f4faff;
+      border-left: 6px solid #0078d4;
+      border-radius: 6px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2.2rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .etiqueta {
+      font-weight: 600;
+      color: #0078d4;
+      font-size: 1.15rem;
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+
+    .respuesta {
+      font-size: 1.05rem;
+    }
+
+    .respuesta ul {
+      margin-top: 0.5rem;
+      padding-left: 1.4rem;
+    }
+
+    .enlace-normativo {
+      color: #005a9e;
       text-decoration: none;
+      border-bottom: 1px dotted #005a9e;
     }
-    a:hover {
+
+    .enlace-normativo:hover {
       text-decoration: underline;
     }
-    nav {
-      margin-bottom: 2rem;
-    }
-    section {
-      margin-top: 2rem;
-    }
-    article {
-      margin-bottom: 2.5rem;
-      padding: 1rem;
-      background-color: var(--highlight);
-      border-left: 4px solid var(--accent);
-    }
+
     footer {
       margin-top: 4rem;
       padding-top: 1rem;
-      border-top: 1px solid var(--border);
-      font-style: italic;
-      color: var(--accent);
-    }
-    img.placeholder {
-      display: block;
-      width: 100%;
-      max-width: 600px;
-      height: 300px;
-      background-color: #ccc;
-      border: 2px dashed #999;
-      margin: 1em 0;
-      object-fit: contain;
+      border-top: 1px solid #ccc;
+      font-size: 0.9rem;
+      color: #666;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>🧪 Laboratorios doctrinales</h1>
-    <p>Esta sección documenta prácticas técnicas con propósito pedagógico, evidencia visual y validación cruzada. Cada laboratorio es replicable, certificable y parte del legado del <strong>Pergamino Digital</strong>.</p>
-  </header>
+  <h1 class="titulo-principal">🧪 Laboratorios doctrinales</h1>
 
-  <nav>
-    <p>
-      <a href="/el-pergamino-digital/">← Volver al índice general</a> ·
-      <a href="/el-pergamino-digital/sobre/">Sobre este proyecto</a>
-    </p>
-  </nav>
+  <div class="bloque">
+    <span class="etiqueta">🎯 Propósito:</span>
+    <div class="respuesta">
+      Esta sección reúne laboratorios técnicos diseñados para reforzar habilidades prácticas en ciberseguridad, con trazabilidad normativa y validación cruzada. Cada laboratorio incluye objetivos, herramientas, procedimientos, evidencias y enlaces a normas oficiales.
+    </div>
+  </div>
 
-  <section>
-    <h2>🔍 Sniffing con Wireshark y tcpdump</h2>
+  <div class="bloque">
+    <span class="etiqueta">📂 Laboratorio destacado:</span>
+    <div class="respuesta">
+      <strong>Sniffing de red con Wireshark y tcpdump</strong><br>
+      Técnica MITRE: <a href="https://juliocesarabreup.github.io/el-pergamino-digital/mitre/t1040/" class="enlace-normativo">T1040 – Network Sniffing</a><br>
+      Control CIS: <a href="https://juliocesarabreup.github.io/el-pergamino-digital/controles/cis/13/" class="enlace-normativo">CIS Control 13.1 – Monitorización del tráfico de red</a><br>
+      Prueba OWASP: <a href="https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/07-Input_Validation_Testing/01-Testing_for_Reflected_Cross_Site_Scripting" class="enlace-normativo" target="_blank">OWASP WSTG-INPV-01 – Testing for Reflected Cross Site Scripting (XSS)</a>
+    </div>
+  </div>
 
-    
-    <article>
-      <h3>🧪 Sniffing con Wireshark y tcpdump</h3>
-
-      <p><strong>🎯 Objetivo:</strong> Capturar y analizar tráfico de red para identificar protocolos, credenciales en texto plano y patrones de comunicación.</p>
-
-      <p><strong>🛠️ Herramientas:</strong></p>
+  <div class="bloque">
+    <span class="etiqueta">📚 Referencias oficiales:</span>
+    <div class="respuesta">
       <ul>
-        <li><code>tcpdump</code> — captura en terminal, exporta a .pcap</li>
-        <li><code>Wireshark</code> — análisis visual, filtros avanzados</li>
+        <li>
+          <a href="https://attack.mitre.org/techniques/T1040/" class="enlace-normativo" target="_blank">
+            MITRE ATT&CK: T1040 – Network Sniffing
+          </a>
+        </li>
+        <li>
+          <a href="https://www.cisecurity.org/controls/monitor-and-record-network-traffic" class="enlace-normativo" target="_blank">
+            CIS Control 13.1 – Monitorización del tráfico de red
+          </a>
+        </li>
+        <li>
+          <a href="https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/07-Input_Validation_Testing/01-Testing_for_Reflected_Cross_Site_Scripting" class="enlace-normativo" target="_blank">
+            OWASP WSTG-INPV-01 – Testing for Reflected Cross Site Scripting (XSS)
+          </a>
+        </li>
       </ul>
-
-      <p><strong>📜 Procedimiento:</strong></p>
-      <ol>
-        <li>Ejecutar <code>sudo tcpdump -i eth0 -w captura.pcap</code> durante 30 segundos.</li>
-        <li>Detener con <code>Ctrl+C</code> y abrir <code>captura.pcap</code> en Wireshark.</li>
-        <li>Aplicar filtro <code>http.request</code> o <code>ftp</code> para buscar credenciales en texto plano.</li>
-        <li>Identificar IPs, puertos, protocolos y posibles vectores de ataque.</li>
-      </ol>
-<ul>
-        
-      <p><strong>🧪 Validación cruzada:</strong></p>
-      <ul>
-        <ul>
-        <li><a href="/el-pergamino-digital/controles/cis/13/">CIS Control 13.1 – Monitorización del tráfico de red</a></li>
-        <li><a href="/el-pergamino-digital/mitre/t1040/">MITRE ATT&CK: T1040 – Network Sniffing</a></li>
-        <li><a href="/el-pergamino-digital/owasp/wstg-inpv-01/">OWASP WSTG-INPV-01 – Validación de entrada en protocolos inseguros</a></li>
-</ul>
-
-
-      </ul>
-
-      <p><strong>🛡️ Contramedida:</strong> Implementar segmentación de red, cifrado TLS y detección de sniffers mediante ARP scanning.</p>
-
-      <p><strong>📸 Evidencia visual:</strong></p>
-      <img src="captura-sniffing.png" alt="Captura pendiente del laboratorio de sniffing" title="Sube aquí la evidencia visual del laboratorio" class="placeholder" />
-
-      <p><strong>🎓 Certificación asociada:</strong> CompTIA Security+, CEH, CySA+, IBM Cybersecurity Analyst</p>
-    </article>
-  </section>
+    </div>
+  </div>
 
   <footer>
-    <hr>
-    <p><strong>🧭 Esta sección forma parte del legado doctrinal del Pergamino Digital.</strong></p>
-    <p>Última actualización: diciembre 2025 · <a href="/el-pergamino-digital/sobre/">Sobre este proyecto</a></p>
-    <p style="font-style: italic; color: #004466; margin-top: 1em;">
-      “El conocimiento no se memoriza, se encarna. Cada término es una coordenada en tu mapa de dominio.”
-    </p>
-    <p style="margin-top: 2em;">
-      <a href="/el-pergamino-digital/" style="display: inline-block; text-decoration: none; background-color: #004466; color: #ffffff; padding: 0.6em 1.2em; border-radius: 5px; font-weight: bold;">
-        ← Volver al índice general
-      </a>
-    </p>
+    Esta sección forma parte de <strong>El Pergamino Digital</strong> · Laboratorios técnicos con trazabilidad normativa y propósito pedagógico
   </footer>
 
 </body>
