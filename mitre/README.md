@@ -23,3 +23,26 @@ Cada técnica se documenta con los siguientes bloques:
 ## 📁 Estructura
 
 Cada técnica se ubica en una subcarpeta con su ID, por ejemplo:
+
+/mitre/ └── t1040/ └── index.html
+
+
+---
+
+## 📌 Convenciones
+
+- Los nombres de carpeta siguen el formato `tXXXX` (ID MITRE).
+- Los enlaces se validan contra fuentes oficiales.
+- El contenido está alineado con el estilo editorial del repositorio.
+- Se prioriza la trazabilidad normativa y la utilidad pedagógica.
+
+---
+
+## 🧭 Estado actual
+
+- [T1040 – Network Sniffing](https://juliocesarabreup.github.io/el-pergamino-digital/mitre/t1040/)
+
+---
+
+Este índice crecerá conforme se documenten nuevas técnicas.  
+**Cada ficha es parte del legado doctrinal y del simulador certificador.**
