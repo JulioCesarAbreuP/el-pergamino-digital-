@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>MITRE ATT&CK T1040 – Network Sniffing</title>
+  <link rel="stylesheet" href="/el-pergamino-digital/estilos.css">
+</head>
+<body>
+
+<h1>MITRE ATT&CK T1040 – Network Sniffing</h1>
+
+<div class="bloque">
+  <span class="etiqueta">🧩 Respuesta técnica:</span>
+  <div class="respuesta">
+    La técnica <strong>T1040 – Network Sniffing</strong> del marco MITRE ATT&CK consiste en la captura pasiva de tráfico de red con el fin de obtener información sensible como credenciales, tokens de sesión, comandos o datos transmitidos sin cifrado. Esta técnica permite al atacante observar el tráfico sin interferir directamente en él.
+  </div>
+</div>
+
+<div class="bloque">
+  <span class="etiqueta">🧠 Explicación ampliada:</span>
+  <div class="respuesta">
+    El sniffing de red se basa en colocar una interfaz de red en modo promiscuo o monitor, permitiendo recibir todos los paquetes que atraviesan un segmento de red. Es común en fases de reconocimiento, movimiento lateral o exfiltración. Herramientas como <strong>Wireshark</strong>, <strong>tcpdump</strong>, <strong>Ettercap</strong> o <strong>TShark</strong> son utilizadas para capturar y analizar paquetes. Esta técnica es especialmente efectiva en redes mal segmentadas o que no cifran adecuadamente sus comunicaciones.
+  </div>
+</div>
+
+<div class="bloque">
+  <span class="etiqueta">🎯 Ejemplo claro:</span>
+  <div class="respuesta">
+    Un atacante conectado a una red Wi-Fi corporativa sin aislamiento de clientes activa su tarjeta en modo monitor y captura tráfico DNS, HTTP y Telnet. En pocos minutos, obtiene credenciales en texto claro y estructuras internas de red.
+  </div>
+</div>
+
+<div class="bloque">
+  <span class="etiqueta">🛡️ Contramedida:</span>
+  <div class="respuesta">
+    <ul>
+      <li>Segmentación de red y aislamiento de dispositivos</li>
+      <li>Cifrado de extremo a extremo (TLS 1.3)</li>
+      <li>Desactivación del modo promiscuo en interfaces no autorizadas</li>
+      <li>Detección de sniffers mediante ARP tests o herramientas como AntiSniff</li>
+      <li>Monitorización de interfaces en modo promiscuo desde el SIEM</li>
+    </ul>
+  </div>
+</div>
+
+<div class="bloque">
+  <span class="etiqueta">📚 Referencia normativa:</span>
+  <div class="respuesta" style="font-family: 'Comic Sans MS'; font-size: 10pt;">
+    <a href="https://attack.mitre.org/techniques/T1040/" target="_blank">MITRE ATT&CK – T1040: Network Sniffing</a><br>
+    <a href="https://cas.docs.cisecurity.org/en/latest/source/Controls13/#131-monitor-and-record-network-traffic" target="_blank">CIS Control 13.1 – Monitorización del tráfico de red</a><br>
+    <a href="https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/07-Input_Validation_Testing/01-Testing_for_Reflected_Cross_Site_Scripting" target="_blank">OWASP WSTG-INPV-01 – Validación de entrada en protocolos inseguros</a>
+  </div>
+</div>
+
+<div class="bloque">
+  <span class="etiqueta">🎓 Certificación asociada:</span>
+  <div class="respuesta">
+    CompTIA Security+ (Objetivo 3.2), ISC2 CC – Fundamentos de seguridad de red, OSCP – Reconocimiento y explotación de red, CEH – Network Scanning & Sniffing
+  </div>
+</div>
+
+<div class="bloque">
+  <span class="etiqueta">🧪 Validación cruzada:</span>
+  <div class="respuesta" style="font-family: 'Comic Sans MS'; font-size: 10pt;">
+    ✔️ <strong>NIST SP 800-53 Rev. 5:</strong> <a href="https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final" target="_blank">SC-7(3), AC-17(2)</a><br>
+    ✔️ <strong>CIS Control 13.1:</strong> <a href="https://cas.docs.cisecurity.org/en/latest/source/Controls13/#131-monitor-and-record-network-traffic" target="_blank">Monitorización del tráfico de red</a><br>
+    ✔️ <strong>OWASP WSTG:</strong> <a href="https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/07-Input_Validation_Testing/01-Testing_for_Reflected_Cross_Site_Scripting" target="_blank">WSTG-INPV-01</a>
+  </div>
+</div>
+
+<div class="bloque">
+  <span class="etiqueta">🧬 Analogía técnica:</span>
+  <div class="respuesta" style="font-family: 'Comic Sans MS'; font-size: 12pt;">
+    “Escuchar el tráfico de red sin permiso es como colocar un micrófono oculto en una sala de reuniones: no interrumpes la conversación, pero capturas todo lo que importa.”
+  </div>
+</div>
+
+</body>
+</html>
