@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 14 – Escalada de privilegios en sistemas Windows</title>
+  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background-color: #1f1f1f;
+      padding: 1em;
+      text-align: center;
+    }
+    nav a {
+      color: #e0e0e0;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    nav a.activo {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 1.5em;
+      color: #ffffff;
+    }
+    .subtitulo {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 2em;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
+    }
+    section {
+      margin-bottom: 2em;
+    }
+    h2 {
+      color: #90caf9;
+    }
+    code {
+      background-color: #1e1e1e;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    footer {
+      text-align: center;
+      padding: 2em;
+      background-color: #1e1e1e;
+      font-size: 0.9em;
+      color: #aaaaaa;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 1.1em; }
+      h1 { font-size: 1.8em; }
+      .subtitulo { font-size: 1.1em; }
+      nav a { display: block; margin: 0.5em 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/el-pergamino-digital/index.html">Inicio</a>
+    <a href="/el-pergamino-digital/labs/" class="activo">Laboratorios</a>
+    <a href="/el-pergamino-digital/glosario/">Glosario</a>
+    <a href="/el-pergamino-digital/simulador/">Simulador</a>
+    <a href="/el-pergamino-digital/modulos/">Módulos</a>
+  </nav>
+
+  <h1>Lab 14 – Escalada de privilegios en sistemas Windows</h1>
+  <p class="subtitulo">Identificación y explotación de vectores de escalada de privilegios en entornos Windows vulnerables</p>
+
+  <main>
+    <section>
+      <h2>Objetivo</h2>
+      <p>Analizar y explotar vulnerabilidades o configuraciones inseguras en sistemas Windows para obtener privilegios elevados, desde usuario estándar hasta SYSTEM.</p>
+    </section>
+
+    <section>
+      <h2>Alcance y limitaciones</h2>
+      <p><strong>Alcance:</strong> Enumeración de privilegios, análisis de servicios, binarios vulnerables, tareas programadas, y técnicas de explotación local.</p>
+      <p><strong>Limitaciones:</strong> No se permite el uso de exploits destructivos. El laboratorio se ejecuta en entornos virtuales controlados.</p>
+      <p><strong>Escenario sugerido:</strong> Acceso inicial como usuario limitado en Windows 10 vulnerable, con herramientas locales y remotas disponibles.</p>
+    </section>
+
+    <section>
+      <h2>Requisitos previos</h2>
+      <ul>
+        <li>Conocimientos de arquitectura Windows, servicios, permisos y UAC</li>
+        <li>Familiaridad con PowerShell, cmd, y herramientas de post-explotación</li>
+        <li>Entorno: Kali Linux, Windows 10 vulnerable, red interna</li>
+        <li>Herramientas instaladas: <code>whoami</code>, <code>accesschk</code>, <code>winPEAS</code>, <code>PowerUp</code>, <code>SharpUp</code>, <code>exploit suggester</code></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Arquitectura del entorno</h2>
+      <pre>
+[ Kali (192.168.1.10) ]
+        ↓
+[ Windows 10 (192.168.1.20) – Usuario limitado ]
+      </pre>
+      <p>El atacante ya tiene acceso inicial y busca vectores para escalar privilegios a SYSTEM.</p>
+    </section>
+
+    <section>
+      <h2>Herramientas y entorno técnico</h2>
+      <ul>
+        <li><strong>winPEAS</strong>: enumeración de vectores de escalada</li>
+        <li><strong>PowerUp</strong>: detección de configuraciones inseguras</li>
+        <li><strong>accesschk</strong>: revisión de permisos en servicios y archivos</li>
+        <li><strong>exploit suggester</strong>: sugerencia de exploits locales</li>
+        <li><strong>SharpUp</strong>: alternativa en C# para entornos restringidos</li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Procedimiento técnico paso a paso</h2>
+      <ol>
+        <li>Ejecutar <code>whoami /priv</code> para identificar privilegios actuales</li>
+        <li>Usar <code>winPEAS.exe</code> para enumerar configuraciones inseguras:
+          <pre><code>.\winPEAS.exe quiet</code></pre>
+        </li>
+        <li>Buscar servicios con permisos de escritura:
+          <pre><code>accesschk.exe -uwcqv "Usuarios" *</code></pre>
+        </li>
+        <li>Analizar tareas programadas con privilegios elevados</li>
+        <li>Buscar binarios con la vulnerabilidad “Unquoted Service Path”</li>
+        <li>Ejecutar <code>exploit suggester</code> si se sospecha de vulnerabilidad local</li>
+        <li>Simular explotación controlada (por ejemplo, reemplazo de binario en ruta vulnerable)</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Resultados esperados</h2>
+      <ul>
+        <li>Identificación de vectores de escalada viables</li>
+        <li>Confirmación de permisos inseguros en servicios o tareas</li>
+        <li>Simulación de escalada a SYSTEM en entorno controlado</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Análisis de resultados</h2>
+      <p>La escalada de privilegios en Windows suele depender de configuraciones incorrectas más que de vulnerabilidades puras. Servicios mal configurados, tareas programadas con binarios modificables o privilegios heredados permiten al atacante ejecutar código con permisos elevados. La enumeración precisa es clave para detectar estos vectores.</p>
+    </section>
+
+    <section>
+      <h2>Medidas</h2>
+      <ul>
+        <li>Documentar cada hallazgo con captura y descripción</li>
+        <li>Clasificar vectores por tipo: servicio, tarea, binario, token, etc.</li>
+        <li>Evaluar impacto y reproducibilidad</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contramedidas</h2>
+      <ul>
+        <li>Revisar permisos de servicios y tareas programadas</li>
+        <li>Eliminar privilegios innecesarios a usuarios estándar</li>
+        <li>Aplicar UAC en modo estricto y restringir ejecución de binarios no firmados</li>
+        <li>Monitorear cambios en rutas de servicios y tareas</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Riesgos y advertencias</h2>
+      <p>Algunas técnicas de escalada pueden dañar el sistema si se aplican incorrectamente. Este laboratorio debe realizarse en entornos virtuales controlados. No se deben ejecutar exploits reales en sistemas de producción o sin autorización explícita.</p>
+    </section>
+
+    <section>
+      <h2>Evidencias</h2>
+      <p><em>Espacio reservado para capturas de pantalla de winPEAS, accesschk, servicios vulnerables, tareas elevadas y simulación de escalada.</em></p>
+    </section>
+
+    <section>
+      <h2>Validación cruzada</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1055/" target="_blank">MITRE ATT&CK T1055 – Process Injection</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1548/" target="_blank">MITRE ATT&CK T1548 – Abuse Elevation Control Mechanism</a></li>
+        <li><a href="https://www.cisecurity.org/controls/4" target="_blank">CIS Control 4 – Access Control Management</a></li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Referencias normativas y técnicas</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1548/" target="_blank">MITRE ATT&CK T1548 – Abuse Elevation Control Mechanism</a></li>
+        <li><a href="https://book.hacktricks.xyz/windows-hardening/windows-local-privilege-escalation" target="_blank">HackTricks – Windows Privilege Escalation</a></li>
+        <li><a href="https://www.cisecurity.org/controls/4" target="_blank">CIS Control 4 – Access Control Management</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Certificaciones asociadas</h2>
+      <ul>
+        <li>OSCP – Windows Privilege Escalation</li>
+        <li>eCPPT – Local Exploitation Techniques</li>
+        <li>CompTIA PenTest+ – Domain 3.0: Attacks and Exploits</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Analogía técnica</h2>
+      <p style="font-family: 'Comic Sans MS'; font-size: 12pt;">
+        Escalar privilegios es como encontrar una escalera olvidada en un edificio: si sabes dónde buscar, puedes llegar al ático sin tener la llave.
+      </p>
+    </section>
+
+    <section>
+      <h2>Nivel de dificultad</h2>
+      <p>Avanzado</p>
+    </section>
+
+    <section>
+      <h2>Checklist final</h2>
+      <ul>
+        <li>[ ] winPEAS ejecutado y resultados analizados</li>
+        <li>[ ] Servicios o tareas vulnerables identificadas</li>
+        <li>[ ] Simulación de escalada realizada</li>
+        <li>[ ] Evidencias documentadas</li>
+        <li>[ ] Validación cruzada registrada</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Navegación transversal</h2>
+      <ul>
+        <li><a href="/el-pergamino-digital/index.html">Portada</a></li>
+        <li><a href="/el-pergamino-digital/glosario/">Glosario</a></li>
+        <li><a href="/el-pergamino-digital/simulador/">Simulador</a></li>
+        <li><a href="/el-pergamino-digital/modulos/">Módulos</a></li>
+        <li><a href="/el-pergamino-digital/labs/">Laboratorios</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Reflexión estratégica</h2>
+      <p>La escalada de privilegios es una de las fases más críticas en una intrusión. Dominar su detección y explotación permite comprender cómo los errores de configuración pueden ser tan peligrosos como las vulnerabilidades. Este conocimiento es esencial tanto para ofensores éticos como para defensores proactivos.</p>
+    </section>
+
+    <section>
+      <h2>Disclaimer de advertencia</h2>
+      <p><strong>Advertencia:</strong> Este laboratorio está diseñado exclusivamente para fines educativos y debe ejecutarse en entornos controlados. La explotación de sistemas reales sin autorización constituye una violación legal y ética. El Pergamino Digital no se responsabiliza por el uso indebido de las técnicas aquí descritas.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>, alineado con estándares internacionales y diseñado para fortalecer competencias técnicas en ciberseguridad.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll("nav a");
+      links.forEach(link => {
+        if (link.href === window.location.href) {
+          link.classList.add("activo");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
