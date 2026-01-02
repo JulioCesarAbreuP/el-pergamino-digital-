@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 06 – Análisis de logs y correlación de eventos sospechosos</title>
+  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background-color: #1f1f1f;
+      padding: 1em;
+      text-align: center;
+    }
+    nav a {
+      color: #e0e0e0;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    nav a.activo {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 1.5em;
+      color: #ffffff;
+    }
+    .subtitulo {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 2em;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
+    }
+    section {
+      margin-bottom: 2em;
+    }
+    h2 {
+      color: #90caf9;
+    }
+    code {
+      background-color: #1e1e1e;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    footer {
+      text-align: center;
+      padding: 2em;
+      background-color: #1e1e1e;
+      font-size: 0.9em;
+      color: #aaaaaa;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 1.1em; }
+      h1 { font-size: 1.8em; }
+      .subtitulo { font-size: 1.1em; }
+      nav a { display: block; margin: 0.5em 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/el-pergamino-digital/index.html">Inicio</a>
+    <a href="/el-pergamino-digital/labs/" class="activo">Laboratorios</a>
+    <a href="/el-pergamino-digital/glosario/">Glosario</a>
+    <a href="/el-pergamino-digital/simulador/">Simulador</a>
+    <a href="/el-pergamino-digital/modulos/">Módulos</a>
+  </nav>
+
+  <h1>Lab 06 – Análisis de logs y correlación de eventos sospechosos</h1>
+  <p class="subtitulo">Identificación de patrones de ataque mediante el análisis estructurado de registros del sistema y servicios</p>
+
+  <main>
+    <section>
+      <h2>Objetivo</h2>
+      <p>Analizar registros del sistema y servicios para detectar eventos sospechosos, correlacionar accesos anómalos y construir una narrativa técnica que permita identificar posibles compromisos o actividades maliciosas en entornos Linux y Windows.</p>
+    </section>
+
+    <section>
+      <h2>Alcance y limitaciones</h2>
+      <p><strong>Alcance:</strong> Revisión de logs locales, correlación de eventos, identificación de patrones de ataque, uso de herramientas CLI y visuales.</p>
+      <p><strong>Limitaciones:</strong> No se emplean SIEM empresariales ni se realiza análisis forense profundo. El enfoque es técnico y pedagógico.</p>
+      <p><strong>Máquinas sugeridas:</strong> Kali Linux, Ubuntu Server, Windows 10 con eventos generados manualmente.</p>
+    </section>
+
+    <section>
+      <h2>Requisitos previos</h2>
+      <ul>
+        <li>Conocimientos básicos de sistemas Linux y Windows</li>
+        <li>Familiaridad con logs como <code>/var/log/auth.log</code>, <code>eventvwr.msc</code>, <code>journalctl</code></li>
+        <li>Entorno: máquinas virtuales con actividad generada (intentos de login, escaneos, errores)</li>
+        <li>Herramientas instaladas: `logwatch`, `ausearch`, `journalctl`, `Event Viewer`, `PowerShell`</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Arquitectura del entorno</h2>
+      <pre>[ Kali (192.168.1.10) ] ←→ [ Ubuntu Server (192.168.1.20) ] ←→ [ Windows 10 (192.168.1.30) ]</pre>
+      <p>Se simulan accesos remotos, escaneos y fallos de autenticación entre máquinas para generar eventos reales.</p>
+    </section>
+
+    <section>
+      <h2>Herramientas y entorno técnico</h2>
+      <ul>
+        <li><strong>journalctl</strong>: revisión de logs del sistema en Linux</li>
+        <li><strong>auth.log</strong>: autenticaciones exitosas y fallidas</li>
+        <li><strong>logwatch</strong>: resumen diario de eventos</li>
+        <li><strong>Event Viewer</strong>: visor de eventos en Windows</li>
+        <li><strong>PowerShell</strong>: extracción y filtrado de eventos</li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Procedimiento técnico paso a paso</h2>
+      <ol>
+        <li>Generar eventos sospechosos en Linux:
+          <pre><code>for i in {1..5}; do ssh usuario@192.168.1.20; done</code></pre>
+          <p>Simula múltiples intentos fallidos de autenticación.</p>
+        </li>
+        <li>Revisar <code>auth.log</code>:
+          <pre><code>sudo cat /var/log/auth.log | grep "Failed password"</code></pre>
+        </li>
+        <li>Filtrar eventos con <code>journalctl</code>:
+          <pre><code>sudo journalctl -u ssh --since "10 minutes ago"</code></pre>
+        </li>
+        <li>Generar resumen con <code>logwatch</code>:
+          <pre><code>sudo logwatch --detail High --range Today --service sshd</code></pre>
+        </li>
+        <li>En Windows, abrir <code>eventvwr.msc</code> y revisar:
+          <ul>
+            <li>Security → ID 4625 (login fallido)</li>
+            <li>System → ID 7045 (servicio instalado)</li>
+          </ul>
+        </li>
+        <li>Filtrar eventos con PowerShell:
+          <pre><code>Get-WinEvent -LogName Security | Where-Object {$_.Id -eq 4625}</code></pre>
+        </li>
+        <li>Correlacionar eventos por IP, hora, usuario y tipo de error</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Resultados esperados</h2>
+      <ul>
+        <li>Detección de múltiples intentos fallidos de autenticación</li>
+        <li>Identificación de eventos críticos en logs de sistema</li>
+        <li>Correlación de eventos entre Linux y Windows</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Análisis de resultados</h2>
+      <p>Los logs muestran intentos de acceso no autorizados desde una IP específica. La correlación temporal entre eventos en distintas máquinas permite inferir un patrón de ataque distribuido. La repetición de errores de login y la instalación de servicios sospechosos indican posible persistencia o escalada.</p>
+    </section>
+
+    <section>
+      <h2>Medidas</h2>
+      <ul>
+        <li>Documentar eventos críticos y su contexto</li>
+        <li>Establecer umbrales de alerta para intentos fallidos</li>
+        <li>Implementar rotación y retención segura de logs</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contramedidas</h2>
+      <ul>
+        <li>Configurar <code>fail2ban</code> o <code>auditd</code> para bloqueo automático</li>
+        <li>Habilitar autenticación multifactor (MFA)</li>
+        <li>Centralizar logs con SIEM o syslog remoto</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Riesgos y advertencias</h2>
+      <p>La falta de revisión periódica de logs permite que ataques pasen desapercibidos. La manipulación o borrado de registros puede ocultar compromisos. Es fundamental proteger la integridad de los archivos de log y limitar su acceso.</p>
+    </section>
+
+    <section>
+      <h2>Evidencias</h2>
+      <p><em>Espacio reservado para capturas de pantalla de <code>auth.log</code>, <code>journalctl</code>, visor de eventos de Windows y PowerShell.</em></p>
+    </section>
+
+    <section>
+      <h2>Validación cruzada</h2>
+      <ul>
+        <li><a href="https://www.cisecurity.org/controls/8" target="_blank">CIS Control 8 – Audit Log Management</a></li>
+        <li><a href="https://csrc.nist.gov/publications/detail/sp/800-92/final" target="_blank">NIST SP 800-92 – Guide to Computer Security Log Management</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1005/" target="_blank">MITRE ATT&CK T1005 – Data from Local System</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1078/" target="_blank">MITRE ATT&CK T1078 – Valid Accounts</a></li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Referencias normativas y técnicas</h2>
+      <ul>
+        <li><a href="https://man7.org/linux/man-pages/man5/auth.log.5.html" target="_blank">auth.log – Manual de logs de autenticación</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/basic-security-audit-events" target="_blank">Microsoft – Eventos de auditoría de seguridad</a></li>
+        <li><a href="https://www.rsyslog.com/doc/" target="_blank">Documentación oficial de rsyslog</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Certificaciones asociadas</h2>
+      <ul>
+        <li>ISC2 Certified in Cybersecurity (CC) – Security Operations</li>
+        <li>CompTIA Security+ – Domain 3.4</li>
+        <li>CHFI – Computer Hacking Forensic Investigator</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Analogía técnica</h2>
+      <p style="font-family: 'Comic Sans MS'; font-size: 12pt;">
+        Analizar logs es como leer el diario de un castillo: cada entrada revela quién intentó entrar, qué puertas forzó y qué secretos dejó tras de sí.
+      </p>
+    </section>
+
+    <section>
+      <h2>Nivel de dificultad</h2>
+      <p>Intermedio</p>
+    </section>
+
+    <section>
+      <h2>Checklist final</h2>
+      <ul>
+        <li>[ ] Eventos generados en Linux y Windows</li>
+        <li>[ ] Logs revisados con herramientas CLI y GUI</li>
+        <li>[ ] Eventos correlacionados por IP, hora y tipo</li>
+        <li>[ ] Evidencias documentadas</li>
+        <li>[ ] Validación cruzada registrada</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Navegación transversal</h2>
+      <ul>
+        <li><a href="/el-pergamino-digital/index.html">Portada</a></li>
+        <li><a href="/el-pergamino-digital/glosario/">Glosario</a></li>
+        <li><a href="/el-pergamino-digital/simulador/">Simulador</a></li>
+        <li><a href="/el-pergamino-digital/modulos/">Módulos</a></li>
+        <li><a href="/el-pergamino-digital/labs/">Laboratorios</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Reflexión estratégica</h2>
+      <p>El análisis de logs no es solo una tarea técnica, sino una herramienta de inteligencia. Permite reconstruir ataques, detectar anomalías y anticipar amenazas. En un entorno donde cada segundo cuenta, saber leer los registros es como tener visión nocturna en el campo de batalla digital.</p>
+    </section>
+
+    <section>
+      <h2>Disclaimer de advertencia</h2>
+      <p><strong>Advertencia:</strong> Este laboratorio está diseñado exclusivamente para fines educativos y debe ejecutarse en entornos controlados. El acceso no autorizado a logs de sistemas reales puede violar políticas de privacidad y normativas legales. El Pergamino Digital no se responsabiliza por el uso indebido de las técnicas aquí descritas.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>, alineado con estándares internacionales y diseñado para fortalecer competencias técnicas en ciberseguridad.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll("nav a");
+      links.forEach(link => {
+        if (link.href === window.location.href) {
+          link.classList.add("activo");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
