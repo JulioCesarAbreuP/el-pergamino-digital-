@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 16 – Análisis de tráfico malicioso y detección de C2</title>
+  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background-color: #1f1f1f;
+      padding: 1em;
+      text-align: center;
+    }
+    nav a {
+      color: #e0e0e0;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    nav a.activo {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 1.5em;
+      color: #ffffff;
+    }
+    .subtitulo {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 2em;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
+    }
+    section {
+      margin-bottom: 2em;
+    }
+    h2 {
+      color: #90caf9;
+    }
+    code {
+      background-color: #1e1e1e;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    footer {
+      text-align: center;
+      padding: 2em;
+      background-color: #1e1e1e;
+      font-size: 0.9em;
+      color: #aaaaaa;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 1.1em; }
+      h1 { font-size: 1.8em; }
+      .subtitulo { font-size: 1.1em; }
+      nav a { display: block; margin: 0.5em 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/el-pergamino-digital/index.html">Inicio</a>
+    <a href="/el-pergamino-digital/labs/" class="activo">Laboratorios</a>
+    <a href="/el-pergamino-digital/glosario/">Glosario</a>
+    <a href="/el-pergamino-digital/simulador/">Simulador</a>
+    <a href="/el-pergamino-digital/modulos/">Módulos</a>
+  </nav>
+
+  <h1>Lab 16 – Análisis de tráfico malicioso y detección de C2</h1>
+  <p class="subtitulo">Inspección de tráfico de red para identificar patrones de malware y canales de comando y control</p>
+
+  <main>
+    <section>
+      <h2>Objetivo</h2>
+      <p>Analizar capturas de tráfico de red para identificar indicadores de compromiso, comportamientos anómalos y patrones asociados a canales de comando y control (C2).</p>
+    </section>
+
+    <section>
+      <h2>Alcance y limitaciones</h2>
+      <p><strong>Alcance:</strong> Análisis de archivos PCAP, detección de tráfico malicioso, extracción de IoCs, identificación de patrones de beaconing y uso de protocolos sospechosos.</p>
+      <p><strong>Limitaciones:</strong> No se realiza análisis en tiempo real ni respuesta activa. El laboratorio se centra en análisis post-mortem de tráfico capturado.</p>
+      <p><strong>Escenario sugerido:</strong> Captura de tráfico de una máquina comprometida con malware que establece comunicación con un servidor C2.</p>
+    </section>
+
+    <section>
+      <h2>Requisitos previos</h2>
+      <ul>
+        <li>Conocimientos de protocolos de red (TCP/IP, DNS, HTTP, HTTPS)</li>
+        <li>Familiaridad con herramientas de análisis de tráfico y detección de amenazas</li>
+        <li>Entorno: Kali Linux o Windows con Wireshark, Zeek, Suricata, tshark</li>
+        <li>Archivos: PCAP con tráfico malicioso simulado o real (p. ej. Cobalt Strike, Metasploit, Emotet)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Arquitectura del entorno</h2>
+      <pre>
+[ Máquina comprometida ] → [ Tráfico capturado (PCAP) ] → [ Análisis en Kali o Windows ]
+      </pre>
+      <p>El análisis se realiza offline sobre capturas de red obtenidas en entornos controlados.</p>
+    </section>
+
+    <section>
+      <h2>Herramientas y entorno técnico</h2>
+      <ul>
+        <li><strong>Wireshark</strong>: análisis visual de tráfico</li>
+        <li><strong>Zeek</strong>: extracción de logs y eventos de red</li>
+        <li><strong>Suricata</strong>: detección basada en firmas y comportamiento</li>
+        <li><strong>tshark</strong>: análisis por línea de comandos</li>
+        <li><strong>CyberChef</strong>: decodificación de payloads y patrones</li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Procedimiento técnico paso a paso</h2>
+      <ol>
+        <li>Abrir el archivo PCAP en Wireshark y aplicar filtros:
+          <pre><code>http || dns || tls || tcp.port == 4444</code></pre>
+        </li>
+        <li>Buscar patrones de beaconing: intervalos regulares, paquetes pequeños, conexiones repetidas</li>
+        <li>Extraer dominios, IPs, User-Agents y URIs sospechosas</li>
+        <li>Correlacionar con listas de IoCs públicas (AbuseIPDB, VirusTotal, ThreatFox)</li>
+        <li>Usar <code>Zeek</code> para generar logs:
+          <pre><code>zeek -r captura.pcap</code></pre>
+        </li>
+        <li>Analizar <code>conn.log</code>, <code>http.log</code>, <code>dns.log</code> y <code>ssl.log</code></li>
+        <li>Aplicar reglas de Suricata sobre el PCAP:
+          <pre><code>suricata -r captura.pcap -l ./logs</code></pre>
+        </li>
+        <li>Decodificar payloads con CyberChef si hay tráfico ofuscado</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Resultados esperados</h2>
+      <ul>
+        <li>Identificación de tráfico malicioso o anómalo</li>
+        <li>Extracción de IoCs: dominios, IPs, URIs, hashes</li>
+        <li>Detección de patrones de C2 (beaconing, cifrado, exfiltración)</li>
+        <li>Correlación con firmas y amenazas conocidas</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Análisis de resultados</h2>
+      <p>El análisis de tráfico permite detectar amenazas que evaden antivirus o EDR. Los canales C2 suelen usar protocolos legítimos (HTTP, DNS, TLS) para camuflarse. La detección se basa en patrones de comportamiento, frecuencia, tamaño de paquetes y metadatos. Herramientas como Zeek y Suricata permiten automatizar esta detección.</p>
+    </section>
+
+    <section>
+      <h2>Medidas</h2>
+      <ul>
+        <li>Documentar cada hallazgo con timestamp, IP, dominio y tipo de tráfico</li>
+        <li>Clasificar IoCs por criticidad y tipo (infraestructura, comportamiento, contenido)</li>
+        <li>Comparar hallazgos entre herramientas (Wireshark, Zeek, Suricata)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contramedidas</h2>
+      <ul>
+        <li>Implementar detección de beaconing y tráfico anómalo en NDR o SIEM</li>
+        <li>Bloquear dominios e IPs maliciosas en DNS y firewall</li>
+        <li>Aplicar inspección profunda de paquetes (DPI) y TLS fingerprinting</li>
+        <li>Correlacionar tráfico con eventos de endpoint y logs de autenticación</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Riesgos y advertencias</h2>
+      <p>El análisis de tráfico puede revelar datos sensibles. Asegúrate de anonimizar capturas si se comparten. Este laboratorio debe realizarse con PCAPs simulados o públicos. No analizar tráfico real sin autorización explícita.</p>
+    </section>
+
+    <section>
+      <h2>Evidencias</h2>
+      <p><em>Espacio reservado para capturas de pantalla de Wireshark, logs de Zeek y alertas de Suricata.</em></p>
+    </section>
+
+    <section>
+      <h2>Validación cruzada</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1071/" target="_blank">MITRE ATT&CK T1071 – Application Layer Protocol</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1001/" target="_blank">MITRE ATT&CK T1001 – Data Obfuscation</a></li>
+        <li><a href="https://cas.docs.cisecurity.org/en/latest/source/Controls13/" target="_blank">CIS Control 13 – Network Monitoring and Defense</a></li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Referencias normativas y técnicas</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1071/" target="_blank">MITRE ATT&CK T1071 – Application Layer Protocol</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1001/" target="_blank">MITRE ATT&CK T1001 – Data Obfuscation</a></li>
+        <li><a href="https://cas.docs.cisecurity.org/en/latest/source/Controls13/" target="_blank">CIS Control 13 – Network Monitoring and Defense</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Certificaciones asociadas</h2>
+      <ul>
+        <li>GCIA – Intrusion Analysis</li>
+        <li>eCIR – Cyber Incident Responder</li>
+        <li>CompTIA CySA+ – Domain 2.0: Security Operations and Monitoring</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Analogía técnica</h2>
+      <p style="font-family: 'Comic Sans MS'; font-size: 12pt;">
+        Analizar tráfico malicioso es como escuchar una conversación entre espías en una frecuencia olvidada: hay que saber dónde sintonizar y cómo interpretar los silencios.
+      </p>
+    </section>
+
+    <section>
+      <h2>Nivel de dificultad</h2>
+      <p>Avanzado</p>
+    </section>
+
+    <section>
+      <h2>Checklist final</h2>
+      <ul>
+        <li>[ ] PCAP analizado con Wireshark y Zeek</li>
+        <li>[ ] IoCs extraídos y documentados</li>
+        <li>[ ] Patrón de C2 identificado (beaconing, cifrado, exfiltración)</li>
+        <li>[ ] Correlación con firmas y amenazas conocidas</li>
+        <li>[ ] Validación cruzada registrada</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Navegación transversal</h2>
+      <ul>
+        <li><a href="/el-pergamino-digital/index.html">Portada</a></li>
+        <li><a href="/el-pergamino-digital/glosario/">Glosario</a></li>
+        <li><a href="/el-pergamino-digital/simulador/">Simulador</a></li>
+        <li><a href="/el-pergamino-digital/modulos/">Módulos</a></li>
+        <li><a href="/el-pergamino-digital/labs/">Laboratorios</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Reflexión estratégica</h2>
+      <p>El tráfico de red es el lenguaje de los sistemas. Aprender a leerlo permite descubrir lo que las máquinas no dicen en voz alta. Este laboratorio entrena la mirada analítica para detectar lo invisible: los susurros de un C2, los patrones de un malware, las huellas de una intrusión.</p>
+    </section>
+
+    <section>
+      <h2>Disclaimer de advertencia</h2>
+      <p><strong>Advertencia:</strong> Este laboratorio está diseñado exclusivamente para fines educativos y debe ejecutarse en entornos controlados. El análisis de tráfico real sin autorización puede violar políticas de privacidad y leyes de protección de datos. El Pergamino Digital no se responsabiliza por el uso indebido de las técnicas aquí descritas.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>, alineado con estándares internacionales y diseñado para fortalecer competencias técnicas en ciberseguridad.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll("nav a");
+      links.forEach(link => {
+        if (link.href === window.location.href) {
+          link.classList.add("activo");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
