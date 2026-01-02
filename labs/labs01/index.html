@@ -1,4 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 01 – Monitorización de tráfico</title>
+  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background-color: #1f1f1f;
+      padding: 1em;
+      text-align: center;
+    }
+    nav a {
+      color: #e0e0e0;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    nav a.activo {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 1.5em;
+      color: #ffffff;
+    }
+    .subtitulo {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 2em;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
+    }
+    section {
+      margin-bottom: 2em;
+    }
+    h2 {
+      color: #90caf9;
+    }
+    code {
+      background-color: #1e1e1e;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    footer {
+      text-align: center;
+      padding: 2em;
+      background-color: #1e1e1e;
+      font-size: 0.9em;
+      color: #aaaaaa;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 1.1em; }
+      h1 { font-size: 1.8em; }
+      .subtitulo { font-size: 1.1em; }
+      nav a { display: block; margin: 0.5em 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/el-pergamino-digital/index.html">Inicio</a>
+    <a href="/el-pergamino-digital/labs/" class="activo">Laboratorios</a>
+    <a href="/el-pergamino-digital/glosario/">Glosario</a>
+    <a href="/el-pergamino-digital/simulador/">Simulador</a>
+    <a href="/el-pergamino-digital/modulos/">Módulos</a>
+  </nav>
+
+  <h1>Lab 01 – Monitorización de tráfico con Wireshark y tcpdump</h1>
+  <p class="subtitulo">Captura y análisis de paquetes para detección de amenazas en red</p>
+
+  <main>
     <section>
+      <h2>Objetivo</h2>
+      <p>Capturar, visualizar y analizar tráfico de red en tiempo real utilizando herramientas de inspección profunda de paquetes, con el fin de identificar patrones sospechosos, validar configuraciones de red y detectar posibles amenazas.</p>
+    </section>
+
+    <section>
+      <h2>Alcance y limitaciones</h2>
+      <p><strong>Alcance:</strong> Captura de tráfico en redes locales, análisis de protocolos HTTP, DNS y ARP, uso de filtros y exportación de capturas.</p>
+      <p><strong>Limitaciones:</strong> No se cubre tráfico cifrado (HTTPS, TLS), no se realiza explotación activa, solo se ejecuta en entornos controlados.</p>
+      <p><strong>Máquina vulnerable sugerida:</strong> <a href="https://sourceforge.net/projects/metasploitable/" target="_blank">Metasploitable 2 (descarga oficial)</a></p>
+    </section>
+
+    <section>
+      <h2>Requisitos previos</h2>
+      <ul>
+        <li>Conocimientos básicos de redes TCP/IP</li>
+        <li>Familiaridad con la terminal de Linux</li>
+        <li>Wireshark v4.0+, tcpdump v4.99+</li>
+        <li>Kali Linux o Ubuntu, 2 GB RAM, 2 CPU, adaptador en modo puente o NAT</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Arquitectura del entorno</h2>
+      <pre>[ Kali ] ←→ [ Router ] ←→ [ Metasploitable2 ]</pre>
+      <p>Kali Linux (192.168.1.10) – atacante/analista<br>Metasploitable2 (192.168.1.20) – máquina vulnerable<br>Gateway: 192.168.1.1</p>
+    </section>
+
+    <section>
+      <h2>Herramientas y entorno técnico</h2>
+      <ul>
+        <li>tcpdump</li>
+        <li>Wireshark</li>
+        <li>ping, curl, dig</li>
+        <li>Nmap</li>
+      </ul>
+    </section>
+
+          <section>
+      <h2>Procedimiento técnico paso a paso</h2>
+      <ol>
+        <li>Verificar interfaces disponibles:
+          <pre><code>ip a</code></pre>
+        </li>
+        <li>Capturar tráfico general durante 60 segundos:
+          <pre><code>sudo tcpdump -i eth0 -w captura_general.pcap -G 60 -W 1</code></pre>
+        </li>
+        <li>Generar tráfico desde la máquina atacante:
+          <pre><code>
+ping -c 4 8.8.8.8
+curl http://example.com
+dig @8.8.8.8 google.com
+          </code></pre>
+        </li>
+        <li>Capturar tráfico HTTP y DNS:
+          <pre><code>sudo tcpdump -i eth0 port 80 or port 53 -w filtrado_http_dns.pcap</code></pre>
+        </li>
+        <li>Abrir Wireshark:
+          <pre><code>sudo wireshark &</code></pre>
+        </li>
+        <li>Seleccionar interfaz activa y aplicar filtro:
+          <pre><code>http || dns</code></pre>
+        </li>
+        <li>Analizar cabeceras HTTP, consultas/respuestas DNS y exportar paquetes sospechosos.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Resultados esperados</h2>
+      <ul>
+        <li>Archivos <code>.pcap</code> y <code>.pcapng</code> con tráfico capturado</li>
+        <li>Visualización de cabeceras HTTP y consultas DNS</li>
+        <li>Identificación de tráfico no cifrado</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Análisis de resultados</h2>
+      <p>Se detecta tráfico HTTP sin cifrar. Se observan cabeceras como <code>User-Agent</code>, <code>Host</code> y <code>Authorization</code>. Las consultas DNS revelan dominios externos y servidores públicos como <code>8.8.8.8</code>. Se identifican posibles credenciales en texto plano.</p>
+    </section>
+
+    <section>
+      <h2>Medidas</h2>
+      <ul>
+        <li>Documentar hallazgos en informe técnico</li>
+        <li>Configurar alertas para tráfico HTTP en IDS/IPS</li>
+        <li>Establecer políticas de cifrado obligatorio en servidores internos</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contramedidas</h2>
+      <ul>
+        <li>Redirigir todo el tráfico HTTP a HTTPS mediante reglas en el servidor web</li>
+        <li>Implementar DNSSEC o DNS sobre HTTPS (DoH)</li>
+        <li>Bloquear puertos 80 y 53 en redes internas no autorizadas</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Riesgos y advertencias</h2>
+      <p>La captura de tráfico en redes reales puede violar políticas de privacidad y normativas legales. tcpdump puede generar archivos de gran tamaño rápidamente. El análisis incorrecto puede llevar a falsos positivos o interpretaciones erróneas.</p>
+    </section>
+
+    <section>
+      <h2>Evidencias</h2>
+      <p><em>Espacio reservado para capturas de pantalla de Wireshark, consola de tcpdump, y fragmentos de paquetes sospechosos.</em></p>
+    </section>
+
+    <section>
+      <h2>Validación cruzada</h2>
+      <ul>
+        <li><a href="https://www.cisecurity.org/controls/monitor-network-traffic" target="_blank">CIS Control 13.1 – Monitor Network Traffic</a></li>
+        <li><a href="https://csrc.nist.gov/publications/detail/sp/800-115/final" target="_blank">NIST SP 800-115 – Technical Guide to Information Security Testing</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1040/" target="_blank">MITRE ATT&CK T1040 – Network Sniffing</a></li>
+      </ul>
+    </section>
+
+          <section>
       <h2>Referencias normativas y técnicas</h2>
       <ul>
         <li><a href="https://www.wireshark.org/docs/" target="_blank">Wireshark Documentation</a></li>
