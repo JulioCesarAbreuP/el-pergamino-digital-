@@ -1,1 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 09 – Correlación de vulnerabilidades con exploits conocidos</title>
+  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background-color: #1f1f1f;
+      padding: 1em;
+      text-align: center;
+    }
+    nav a {
+      color: #e0e0e0;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    nav a.activo {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 1.5em;
+      color: #ffffff;
+    }
+    .subtitulo {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 2em;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
+    }
+    section {
+      margin-bottom: 2em;
+    }
+    h2 {
+      color: #90caf9;
+    }
+    code {
+      background-color: #1e1e1e;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    footer {
+      text-align: center;
+      padding: 2em;
+      background-color: #1e1e1e;
+      font-size: 0.9em;
+      color: #aaaaaa;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 1.1em; }
+      h1 { font-size: 1.8em; }
+      .subtitulo { font-size: 1.1em; }
+      nav a { display: block; margin: 0.5em 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/el-pergamino-digital/index.html">Inicio</a>
+    <a href="/el-pergamino-digital/labs/" class="activo">Laboratorios</a>
+    <a href="/el-pergamino-digital/glosario/">Glosario</a>
+    <a href="/el-pergamino-digital/simulador/">Simulador</a>
+    <a href="/el-pergamino-digital/modulos/">Módulos</a>
+  </nav>
 
+  <h1>Lab 09 – Correlación de vulnerabilidades con exploits conocidos</h1>
+  <p class="subtitulo">Asociación de CVEs detectados con exploits públicos y evaluación de su aplicabilidad técnica</p>
+
+  <main>
+    <section>
+      <h2>Objetivo</h2>
+      <p>Aprender a correlacionar vulnerabilidades detectadas con exploits públicos disponibles, evaluando su aplicabilidad, criticidad y condiciones de explotación en entornos reales.</p>
+    </section>
+
+    <section>
+      <h2>Alcance y limitaciones</h2>
+      <p><strong>Alcance:</strong> Análisis de resultados de escaneo, búsqueda de exploits asociados, evaluación de condiciones de explotación, uso de bases de datos públicas.</p>
+      <p><strong>Limitaciones:</strong> No se ejecutan exploits reales. El enfoque es analítico y pedagógico.</p>
+      <p><strong>Escenario sugerido:</strong> Resultados de OpenVAS, Nessus o Nmap con scripts NSE.</p>
+    </section>
+
+    <section>
+      <h2>Requisitos previos</h2>
+      <ul>
+        <li>Conocimiento básico de CVEs, CVSS y bases de datos de vulnerabilidades</li>
+        <li>Familiaridad con herramientas como searchsploit, Metasploit y ExploitDB</li>
+        <li>Entorno: Kali Linux, resultados de escaneo previos (OpenVAS o Nmap)</li>
+        <li>Herramientas instaladas: <code>searchsploit</code>, <code>msfconsole</code>, navegador web</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Arquitectura del entorno</h2>
+      <pre>[ Kali (192.168.1.10) ] ←→ [ Objetivo escaneado con vulnerabilidades conocidas ]</pre>
+      <p>Se parte de un informe de escaneo con CVEs identificados para buscar exploits públicos relacionados.</p>
+    </section>
+
+    <section>
+      <h2>Herramientas y entorno técnico</h2>
+      <ul>
+        <li><strong>searchsploit</strong>: búsqueda local de exploits en ExploitDB</li>
+        <li><strong>Metasploit</strong>: verificación de módulos disponibles</li>
+        <li><strong>ExploitDB</strong>: base de datos pública de exploits</li>
+        <li><strong>NVD</strong>: base de datos nacional de vulnerabilidades (NIST)</li>
+        <li><strong>CVSS Calculator</strong>: evaluación de criticidad</li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Procedimiento técnico paso a paso</h2>
+      <ol>
+        <li>Obtener un informe de escaneo con CVEs (por ejemplo, desde OpenVAS o Nmap NSE)</li>
+        <li>Seleccionar una vulnerabilidad con CVE específico (ej: CVE-2021-3156)</li>
+        <li>Buscar exploits con <code>searchsploit</code>:
+          <pre><code>searchsploit CVE-2021-3156</code></pre>
+        </li>
+        <li>Verificar si existe módulo en Metasploit:
+          <pre><code>msfconsole -q -x "search CVE-2021-3156"</code></pre>
+        </li>
+        <li>Consultar detalles en ExploitDB:
+          <pre><code>https://www.exploit-db.com/exploits/49403</code></pre>
+        </li>
+        <li>Consultar criticidad en NVD:
+          <pre><code>https://nvd.nist.gov/vuln/detail/CVE-2021-3156</code></pre>
+        </li>
+        <li>Evaluar condiciones de explotación (SO, privilegios, interacción, red, etc.)</li>
+        <li>Documentar hallazgos y clasificar por riesgo</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Resultados esperados</h2>
+      <ul>
+        <li>Identificación de exploits públicos asociados a vulnerabilidades detectadas</li>
+        <li>Evaluación de la viabilidad técnica de explotación</li>
+        <li>Clasificación de vulnerabilidades según criticidad y exposición</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Análisis de resultados</h2>
+      <p>La correlación entre CVEs y exploits permite priorizar riesgos reales. No todas las vulnerabilidades detectadas son explotables en el entorno actual. Evaluar condiciones como versión del sistema, configuración, y privilegios requeridos es clave para determinar el impacto real.</p>
+    </section>
+
+    <section>
+      <h2>Medidas</h2>
+      <ul>
+        <li>Documentar cada CVE con su exploit asociado (si existe)</li>
+        <li>Clasificar por criticidad (CVSS), facilidad de explotación y disponibilidad pública</li>
+        <li>Recomendar parches, mitigaciones o segmentación</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contramedidas</h2>
+      <ul>
+        <li>Aplicar parches de seguridad oficiales</li>
+        <li>Deshabilitar servicios vulnerables si no son necesarios</li>
+        <li>Implementar control de acceso y segmentación de red</li>
+        <li>Monitorear intentos de explotación conocidos</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Riesgos y advertencias</h2>
+      <p>La disponibilidad pública de un exploit aumenta el riesgo de explotación automatizada. No todas las vulnerabilidades con CVE tienen exploits funcionales. La explotación sin autorización es ilegal. Este laboratorio es exclusivamente para fines educativos.</p>
+    </section>
+
+    <section>
+      <h2>Evidencias</h2>
+      <p><em>Espacio reservado para capturas de pantalla de searchsploit, Metasploit, ExploitDB y NVD.</em></p>
+    </section>
+
+    <section>
+      <h2>Validación cruzada</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1203/" target="_blank">MITRE ATT&CK T1203 – Exploitation for Client Execution</a></li>
+        <li><a href="https://www.cisecurity.org/controls/07" target="_blank">CIS Control 7 – Continuous Vulnerability Management</a></li>
+        <li><a href="https://nvd.nist.gov/" target="_blank">NIST NVD – National Vulnerability Database</a></li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Referencias normativas y técnicas</h2>
+      <ul>
+        <li><a href="https://www.exploit-db.com/" target="_blank">Exploit Database – Exploits públicos</a></li>
+        <li><a href="https://nvd.nist.gov/" target="_blank">NIST NVD – National Vulnerability Database</a></li>
+        <li><a href="https://www.first.org/cvss/" target="_blank">CVSS Calculator – FIRST.org</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Certificaciones asociadas</h2>
+      <ul>
+        <li>ISC2 Certified in Cybersecurity (CC) – Vulnerability Management</li>
+        <li>CompTIA Security+ – Domain 1.5</li>
+        <li>eJPT / eCPPT – Vulnerability Analysis</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Analogía técnica</h2>
+      <p style="font-family: 'Comic Sans MS'; font-size: 12pt;">
+        Correlacionar un CVE con su exploit es como encontrar la llave exacta para una cerradura oxidada: no basta con saber que existe una vulnerabilidad, hay que saber si realmente se puede abrir.
+      </p>
+    </section>
+
+    <section>
+      <h2>Nivel de dificultad</h2>
+      <p>Intermedio</p>
+    </section>
+
+    <section>
+      <h2>Checklist final</h2>
+      <ul>
+        <li>[ ] Informe de escaneo con CVEs disponible</li>
+        <li>[ ] Exploits buscados en ExploitDB y Metasploit</li>
+        <li>[ ] Criticidad evaluada con CVSS</li>
+        <li>[ ] Condiciones de explotación analizadas</li>
+        <li>[ ] Validación cruzada registrada</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Navegación transversal</h2>
+      <ul>
+        <li><a href="/el-pergamino-digital/index.html">Portada</a></li>
+        <li><a href="/el-pergamino-digital/glosario/">Glosario</a></li>
+        <li><a href="/el-pergamino-digital/simulador/">Simulador</a></li>
+        <li><a href="/el-pergamino-digital/modulos/">Módulos</a></li>
+        <li><a href="/el-pergamino-digital/labs/">Laboratorios</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Reflexión estratégica</h2>
+      <p>La correlación de vulnerabilidades con exploits reales permite priorizar acciones de mitigación con criterio técnico. No basta con detectar fallos: hay que entender su impacto, su explotabilidad y su contexto. Esta habilidad distingue al analista que reacciona del que anticipa.</p>
+    </section>
+
+    <section>
+      <h2>Disclaimer de advertencia</h2>
+      <p><strong>Advertencia:</strong> Este laboratorio está diseñado exclusivamente para fines educativos y debe ejecutarse en entornos controlados. La búsqueda, descarga o ejecución de exploits en sistemas reales sin autorización puede constituir una violación legal. El Pergamino Digital no se responsabiliza por el uso indebido de las técnicas aquí descritas.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>, alineado con estándares internacionales y diseñado para fortalecer competencias técnicas en ciberseguridad.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll("nav a");
+      links.forEach(link => {
+        if (link.href === window.location.href) {
+          link.classList.add("activo");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
