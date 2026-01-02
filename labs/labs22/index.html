@@ -18,10 +18,6 @@
     h1, h2 {
       color: #90caf9;
     }
-    h3 {
-      color: #64b5f6;
-      margin-top: 2em;
-    }
     code {
       background-color: #1e1e1e;
       padding: 0.2em 0.4em;
@@ -45,11 +41,51 @@
   <h2>Identificación de IPS en red, análisis de respuestas y aplicación de técnicas de evasión para evitar detección</h2>
 
   <section>
-    <h2>Procedimiento técnico paso a paso</h2>
+    <h2>1. Objetivo</h2>
+    <p>En entornos protegidos por sistemas de prevención de intrusos (IPS), el reconocimiento activo tradicional puede ser detectado y bloqueado. Este laboratorio permite al analista ofensivo identificar la presencia de un IPS, analizar su comportamiento ante distintos patrones de tráfico y aplicar técnicas evasivas para evitar su detección. Comprender cómo responde un IPS ante fragmentación, manipulación de TTL o inserción de datos aleatorios es esencial para avanzar hacia fases de explotación sin activar alertas. Además, este conocimiento fortalece la capacidad de diseñar pruebas controladas y evaluar la eficacia de las defensas en entornos reales.</p>
+  </section>
+
+  <section>
+    <h2>2. Nivel de dificultad</h2>
+    <p>Intermedio</p>
+  </section>
+
+  <section>
+    <h2>3. Herramientas utilizadas</h2>
+    <ul>
+      <li><code>nmap</code></li>
+      <li><code>hping3</code></li>
+      <li><code>fragroute</code></li>
+      <li><code>Wireshark</code></li>
+      <li><code>Snort</code> o <code>Suricata</code> (como IPS en entorno controlado)</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>4. Entorno de laboratorio</h2>
+    <p>Máquina atacante con Kali Linux, máquina víctima con un IPS activo (Snort o Suricata), red virtual controlada con capacidad de inspección de tráfico.</p>
+  </section>
+
+  <section>
+    <h2>5. Escenario</h2>
+    <p>Un analista ofensivo necesita realizar reconocimiento en una red protegida por un IPS. El objetivo es identificar la presencia del sistema de prevención, analizar su comportamiento y aplicar técnicas evasivas para evitar ser detectado durante la fase de escaneo.</p>
+  </section>
+
+  <section>
+    <h2>6. Pasos previos</h2>
+    <ul>
+      <li>Verificar conectividad entre atacante y víctima</li>
+      <li>Instalar y configurar el IPS (Snort o Suricata) en la máquina víctima</li>
+      <li>Actualizar reglas del IPS y activar el modo de prevención</li>
+      <li>Iniciar Wireshark en la máquina atacante para capturar tráfico</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>7. Desarrollo</h2>
     <ol>
       <li>Escaneo lento para evitar detección por firmas:
         <pre><code>nmap -T1 -p 22,80,443 192.168.1.30</code></pre>
-        <p>Reducir velocidad para evitar alertas por comportamiento agresivo.</p>
       </li>
       <li>Fragmentación de paquetes para evadir inspección:
         <pre><code>nmap -f -p 80,443 192.168.1.30</code></pre>
@@ -60,16 +96,15 @@
       <li>Inserción de datos aleatorios en los paquetes:
         <pre><code>nmap --data-length 50 -p 80,443 192.168.1.30</code></pre>
       </li>
-      <li>Uso de <code>hping3</code> para enviar paquetes personalizados:
+      <li>Envío de paquetes con <code>hping3</code>:
         <pre><code>hping3 -S -p 80 --flood 192.168.1.30</code></pre>
-        <p>Observar si el IPS bloquea o responde con RST/ICMP.</p>
       </li>
-      <li>Captura de tráfico con Wireshark para analizar respuestas del IPS</li>
+      <li>Captura y análisis del tráfico con Wireshark</li>
     </ol>
   </section>
 
-  <section>
-    <h2>Resultados esperados</h2>
+    <section>
+    <h2>8. Resultados esperados</h2>
     <ul>
       <li>Detección de respuestas anómalas o silencios ante técnicas evasivas</li>
       <li>Identificación de firmas activas del IPS</li>
@@ -79,17 +114,17 @@
   </section>
 
   <section>
-    <h2>Análisis de resultados</h2>
+    <h2>9. Análisis de resultados</h2>
     <p>Los sistemas IPS analizan patrones de tráfico para detectar comportamientos sospechosos. Técnicas como la fragmentación, manipulación de TTL o inserción de datos aleatorios pueden evitar que el IPS detecte el escaneo. Comparar respuestas permite inferir qué mecanismos de defensa están activos y cómo adaptarse a ellos.</p>
   </section>
 
-    <section>
-    <h2>Conclusiones</h2>
+  <section>
+    <h2>10. Conclusiones</h2>
     <p>Detectar la presencia de un IPS y comprender su comportamiento es esencial para planificar técnicas de evasión efectivas. Las respuestas (o su ausencia) ante escaneos modificados permiten inferir qué mecanismos de defensa están activos y cómo adaptarse a ellos sin ser detectado.</p>
   </section>
 
   <section>
-    <h2>Medidas</h2>
+    <h2>11. Medidas</h2>
     <ul>
       <li>Registrar qué técnicas activan alertas y cuáles logran evadir el IPS</li>
       <li>Comparar respuestas entre escaneos normales y evasivos</li>
@@ -98,27 +133,27 @@
   </section>
 
   <section>
-    <h2>Contramedidas</h2>
+    <h2>12. Contramedidas</h2>
     <ul>
       <li>Actualizar las firmas del IPS para detectar técnicas de evasión conocidas</li>
       <li>Configurar umbrales de tráfico y alertas por comportamiento anómalo</li>
-      <li>Implementar inspección profunda de paquetes (DPI) para detectar fragmentación y manipulación</li>
+      <li>Implementar inspección profunda de paquetes (DPI)</li>
       <li>Correlacionar eventos en SIEM para identificar patrones evasivos</li>
     </ul>
   </section>
 
   <section>
-    <h2>Riesgos y advertencias</h2>
+    <h2>13. Riesgos y advertencias</h2>
     <p>El uso de técnicas de evasión puede activar contramedidas automáticas como bloqueos, alertas o cuarentenas. Este laboratorio debe ejecutarse únicamente en entornos controlados y con fines educativos. No aplicar en redes reales sin autorización expresa.</p>
   </section>
 
   <section>
-    <h2>Evidencias</h2>
+    <h2>14. Evidencias</h2>
     <p><em>Espacio reservado para capturas de pantalla de Nmap, hping3, Wireshark, logs del IPS y comparativas de escaneos.</em></p>
   </section>
 
   <section>
-    <h2>Validación cruzada</h2>
+    <h2>15. Validación cruzada</h2>
     <ul>
       <li><a href="https://attack.mitre.org/techniques/T1595/002/" target="_blank">MITRE ATT&CK T1595.002 – Active Scanning</a></li>
       <li><a href="https://attack.mitre.org/techniques/T1562/004/" target="_blank">MITRE ATT&CK T1562.004 – Disable or Modify System Firewall/IPS</a></li>
@@ -127,19 +162,19 @@
     </ul>
   </section>
 
-    <section>
-    <h2>Glosario asociado</h2>
+  <section>
+    <h2>16. Glosario asociado</h2>
     <ul>
-      <li><strong>IPS (Intrusion Prevention System):</strong> Sistema que detecta y bloquea tráfico malicioso en tiempo real.</li>
-      <li><strong>TTL (Time To Live):</strong> Valor que limita la vida útil de un paquete en la red.</li>
-      <li><strong>Fragmentación:</strong> Técnica de evasión que divide un paquete en partes más pequeñas para evitar detección.</li>
-      <li><strong>Firma:</strong> Patrón conocido que un IPS utiliza para identificar amenazas.</li>
-      <li><strong>Escaneo evasivo:</strong> Técnica de reconocimiento diseñada para evitar ser detectada por sistemas de defensa.</li>
+      <li><strong>IPS:</strong> Sistema que detecta y bloquea tráfico malicioso en tiempo real.</li>
+      <li><strong>TTL:</strong> Valor que limita la vida útil de un paquete en la red.</li>
+      <li><strong>Fragmentación:</strong> Técnica que divide un paquete para evadir detección.</li>
+      <li><strong>Firma:</strong> Patrón que un IPS usa para identificar amenazas.</li>
+      <li><strong>Escaneo evasivo:</strong> Reconocimiento diseñado para evitar detección.</li>
     </ul>
   </section>
 
   <section>
-    <h2>Preguntas de refuerzo</h2>
+    <h2>17. Preguntas de refuerzo</h2>
     <ol>
       <li>¿Qué diferencia hay entre un IDS y un IPS?</li>
       <li>¿Qué tipo de tráfico puede activar una firma en un IPS?</li>
@@ -149,8 +184,8 @@
     </ol>
   </section>
 
-  <section>
-    <h2>Rúbrica de evaluación</h2>
+    <section>
+    <h2>18. Rúbrica de evaluación</h2>
     <ul>
       <li>✔️ Ejecuta correctamente técnicas evasivas y captura evidencias</li>
       <li>✔️ Interpreta el comportamiento del IPS ante cada técnica</li>
@@ -160,7 +195,7 @@
   </section>
 
   <section>
-    <h2>Recursos complementarios</h2>
+    <h2>19. Recursos complementarios</h2>
     <ul>
       <li><a href="https://nmap.org/book/man-bypass-firewalls-ids.html" target="_blank">Nmap Firewall/IDS Evasion Techniques</a></li>
       <li><a href="https://linux.die.net/man/8/fragroute" target="_blank">fragroute man page</a></li>
@@ -170,8 +205,23 @@
   </section>
 
   <section>
-    <h2>Créditos y licencia</h2>
+    <h2>20. Créditos y licencia</h2>
     <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>. Su uso está autorizado únicamente con fines educativos, respetando la trazabilidad editorial y la licencia CC BY-NC-SA 4.0.</p>
+  </section>
+
+  <section>
+    <h2>21. Nivel de certificación</h2>
+    <p>Intermedio – Alineado con OSCP, Red Team Operator y eCPTX.</p>
+  </section>
+
+  <section>
+    <h2>22. Mapa de integración</h2>
+    <ul>
+      <li>🔗 Relación directa con el <strong>Lab 21</strong> (Fingerprinting de firewalls)</li>
+      <li>🔜 Prepara el terreno para el <strong>Lab 23</strong> (Bypass de WAF y evasión avanzada)</li>
+      <li>🧪 Refuerza el dominio de técnicas evasivas y análisis de respuestas defensivas</li>
+      <li>🎓 Integra conceptos clave del simulador certificador: <em>Active Scanning</em>, <em>Defense Evasion</em>, <em>Network Monitoring</em></li>
+    </ul>
   </section>
 
 </body>
