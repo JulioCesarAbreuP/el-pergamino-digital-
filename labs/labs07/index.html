@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 07 – Extracción y análisis de hashes de contraseñas</title>
+  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background-color: #1f1f1f;
+      padding: 1em;
+      text-align: center;
+    }
+    nav a {
+      color: #e0e0e0;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    nav a.activo {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 1.5em;
+      color: #ffffff;
+    }
+    .subtitulo {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 2em;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
+    }
+    section {
+      margin-bottom: 2em;
+    }
+    h2 {
+      color: #90caf9;
+    }
+    code {
+      background-color: #1e1e1e;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    footer {
+      text-align: center;
+      padding: 2em;
+      background-color: #1e1e1e;
+      font-size: 0.9em;
+      color: #aaaaaa;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 1.1em; }
+      h1 { font-size: 1.8em; }
+      .subtitulo { font-size: 1.1em; }
+      nav a { display: block; margin: 0.5em 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/el-pergamino-digital/index.html">Inicio</a>
+    <a href="/el-pergamino-digital/labs/" class="activo">Laboratorios</a>
+    <a href="/el-pergamino-digital/glosario/">Glosario</a>
+    <a href="/el-pergamino-digital/simulador/">Simulador</a>
+    <a href="/el-pergamino-digital/modulos/">Módulos</a>
+  </nav>
+
+  <h1>Lab 07 – Extracción y análisis de hashes de contraseñas</h1>
+  <p class="subtitulo">Obtención, análisis y descifrado de hashes desde sistemas comprometidos como parte del análisis post-explotación</p>
+
+  <main>
+    <section>
+      <h2>Objetivo</h2>
+      <p>Aprender a extraer hashes de contraseñas desde sistemas comprometidos, identificar su tipo, evaluar su fortaleza y aplicar técnicas de cracking ético para validar su resistencia.</p>
+    </section>
+
+    <section>
+      <h2>Alcance y limitaciones</h2>
+      <p><strong>Alcance:</strong> Extracción de hashes en entornos Windows y Linux, análisis de tipo de hash, uso de herramientas de cracking offline.</p>
+      <p><strong>Limitaciones:</strong> No se realiza explotación remota ni escalada de privilegios. El laboratorio se centra en el análisis post-explotación.</p>
+      <p><strong>Máquinas sugeridas:</strong> Metasploitable2, Windows 10 vulnerable, Kali Linux como atacante.</p>
+    </section>
+
+    <section>
+      <h2>Requisitos previos</h2>
+      <ul>
+        <li>Conocimientos básicos de sistemas de autenticación y almacenamiento de contraseñas</li>
+        <li>Familiaridad con comandos de Linux y Windows</li>
+        <li>Entorno: acceso root o SYSTEM a máquinas objetivo</li>
+        <li>Herramientas instaladas: `samdump2`, `hashcat`, `john`, `pwdump`, `unshadow`</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Arquitectura del entorno</h2>
+      <pre>[ Kali (192.168.1.10) ] ←→ [ Metasploitable2 (192.168.1.20) / Windows 10 (192.168.1.30) ]</pre>
+      <p>Se simula un escenario post-explotación con acceso privilegiado a los sistemas objetivo para extraer y analizar hashes.</p>
+    </section>
+
+    <section>
+      <h2>Herramientas y entorno técnico</h2>
+      <ul>
+        <li><strong>samdump2</strong>: extracción de hashes desde SAM y SYSTEM en Windows</li>
+        <li><strong>hashcat</strong>: cracking de hashes con GPU</li>
+        <li><strong>john the ripper</strong>: cracking de hashes con diccionarios</li>
+        <li><strong>unshadow</strong>: combinación de archivos passwd y shadow en Linux</li>
+        <li><strong>pwdump</strong>: extracción de hashes en Windows</li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Procedimiento técnico paso a paso</h2>
+      <ol>
+        <li>En Linux, obtener hashes desde <code>/etc/shadow</code>:
+          <pre><code>sudo unshadow /etc/passwd /etc/shadow &gt; hashes.txt</code></pre>
+        </li>
+        <li>En Windows, extraer SAM y SYSTEM:
+          <pre><code>reg save HKLM\\SAM sam &amp;&amp; reg save HKLM\\SYSTEM system</code></pre>
+        </li>
+        <li>Extraer hashes con <code>samdump2</code>:
+          <pre><code>samdump2 system sam &gt; hashes.txt</code></pre>
+        </li>
+        <li>Identificar tipo de hash (NTLM, MD5, SHA512, etc.)</li>
+        <li>Crackear con <code>john</code>:
+          <pre><code>john --wordlist=/usr/share/wordlists/rockyou.txt hashes.txt</code></pre>
+        </li>
+        <li>Crackear con <code>hashcat</code>:
+          <pre><code>hashcat -m 1000 -a 0 hashes.txt rockyou.txt</code></pre>
+        </li>
+        <li>Comparar resultados, documentar contraseñas débiles</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Resultados esperados</h2>
+      <ul>
+        <li>Extracción exitosa de hashes desde sistemas Linux y Windows</li>
+        <li>Identificación del tipo de hash y su formato</li>
+        <li>Crackeo exitoso de contraseñas débiles mediante diccionario</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Análisis de resultados</h2>
+      <p>Los hashes extraídos revelan contraseñas débiles como <code>123456</code>, <code>password</code> o <code>admin</code>. El uso de algoritmos como NTLM o SHA1 sin sal aumenta la vulnerabilidad. La reutilización de contraseñas entre cuentas es un hallazgo crítico.</p>
+    </section>
+
+    <section>
+      <h2>Medidas</h2>
+      <ul>
+        <li>Documentar hashes y contraseñas crackeadas</li>
+        <li>Clasificar por algoritmo, longitud y complejidad</li>
+        <li>Evaluar impacto de cada contraseña comprometida</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contramedidas</h2>
+      <ul>
+        <li>Implementar políticas de contraseñas robustas (mínimo 12 caracteres, complejidad)</li>
+        <li>Usar algoritmos modernos con sal: bcrypt, scrypt, Argon2</li>
+        <li>Habilitar autenticación multifactor (MFA)</li>
+        <li>Evitar almacenamiento local de hashes sin cifrado</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Riesgos y advertencias</h2>
+      <p>La extracción de hashes requiere privilegios elevados. Su manipulación indebida puede comprometer la integridad del sistema. El uso de herramientas de cracking debe limitarse a entornos controlados y con fines educativos o de auditoría autorizada.</p>
+    </section>
+
+    <section>
+      <h2>Evidencias</h2>
+      <p><em>Espacio reservado para capturas de pantalla de <code>samdump2</code>, <code>john</code>, <code>hashcat</code> y archivos de hashes.</em></p>
+    </section>
+
+    <section>
+      <h2>Validación cruzada</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1003/" target="_blank">MITRE ATT&CK T1003 – OS Credential Dumping</a></li>
+        <li><a href="https://www.cisecurity.org/controls/5" target="_blank">CIS Control 5 – Account Management</a></li>
+        <li><a href="https://pages.nist.gov/800-63-3/sp800-63b.html" target="_blank">NIST SP 800-63B – Digital Identity Guidelines</a></li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Referencias normativas y técnicas</h2>
+      <ul>
+        <li><a href="https://hashcat.net/wiki/" target="_blank">Hashcat Wiki – Tipos de hash y modos</a></li>
+        <li><a href="https://www.openwall.com/john/doc/" target="_blank">John the Ripper – Documentación oficial</a></li>
+        <li><a href="https://pages.nist.gov/800-63-3/sp800-63b.html" target="_blank">NIST SP 800-63B – Digital Identity Guidelines</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Certificaciones asociadas</h2>
+      <ul>
+        <li>ISC2 Certified in Cybersecurity (CC) – Identity and Access Management</li>
+        <li>CompTIA Security+ – Domain 4.4</li>
+        <li>CEH – Password Attacks y Post-Exploitation</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Analogía técnica</h2>
+      <p style="font-family: 'Comic Sans MS'; font-size: 12pt;">
+        Un hash débil es como una cerradura oxidada: basta una ganzúa común para abrirla sin esfuerzo.
+      </p>
+    </section>
+
+    <section>
+      <h2>Nivel de dificultad</h2>
+      <p>Intermedio</p>
+    </section>
+
+    <section>
+      <h2>Checklist final</h2>
+      <ul>
+        <li>[ ] Hashes extraídos desde Linux y/o Windows</li>
+        <li>[ ] Tipo de hash identificado correctamente</li>
+        <li>[ ] Cracking ejecutado con al menos dos herramientas</li>
+        <li>[ ] Contraseñas débiles documentadas</li>
+        <li>[ ] Validación cruzada registrada</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Navegación transversal</h2>
+      <ul>
+        <li><a href="/el-pergamino-digital/index.html">Portada</a></li>
+        <li><a href="/el-pergamino-digital/glosario/">Glosario</a></li>
+        <li><a href="/el-pergamino-digital/simulador/">Simulador</a></li>
+        <li><a href="/el-pergamino-digital/modulos/">Módulos</a></li>
+        <li><a href="/el-pergamino-digital/labs/">Laboratorios</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Reflexión estratégica</h2>
+      <p>La extracción y análisis de hashes permite evaluar la verdadera fortaleza de las credenciales en uso. Más allá del acceso, revela patrones de debilidad estructural en la gestión de identidades. Un pentester ético no solo demuestra que puede romper una cerradura, sino que enseña cómo reforzarla.</p>
+    </section>
+
+    <section>
+      <h2>Disclaimer de advertencia</h2>
+      <p><strong>Advertencia:</strong> Este laboratorio está diseñado exclusivamente para fines educativos y debe ejecutarse en entornos controlados. La extracción y el cracking de hashes en sistemas reales sin autorización puede constituir una violación legal y ética. El Pergamino Digital no se responsabiliza por el uso indebido de las técnicas aquí descritas.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>, alineado con estándares internacionales y diseñado para fortalecer competencias técnicas en ciberseguridad.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll("nav a");
+      links.forEach(link => {
+        if (link.href === window.location.href) {
+          link.classList.add("activo");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
