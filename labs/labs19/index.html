@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 19 – Fingerprinting de sistemas operativos y servicios</title>
+  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background-color: #1f1f1f;
+      padding: 1em;
+      text-align: center;
+    }
+    nav a {
+      color: #e0e0e0;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    nav a.activo {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 1.5em;
+      color: #ffffff;
+    }
+    .subtitulo {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 2em;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
+    }
+    section {
+      margin-bottom: 2em;
+    }
+    h2 {
+      color: #90caf9;
+    }
+    code {
+      background-color: #1e1e1e;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    footer {
+      text-align: center;
+      padding: 2em;
+      background-color: #1e1e1e;
+      font-size: 0.9em;
+      color: #aaaaaa;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 1.1em; }
+      h1 { font-size: 1.8em; }
+      .subtitulo { font-size: 1.1em; }
+      nav a { display: block; margin: 0.5em 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/el-pergamino-digital/index.html">Inicio</a>
+    <a href="/el-pergamino-digital/labs/" class="activo">Laboratorios</a>
+    <a href="/el-pergamino-digital/glosario/">Glosario</a>
+    <a href="/el-pergamino-digital/simulador/">Simulador</a>
+    <a href="/el-pergamino-digital/modulos/">Módulos</a>
+  </nav>
+
+  <h1>Lab 19 – Fingerprinting de sistemas operativos y servicios</h1>
+  <p class="subtitulo">Identificación precisa de sistemas operativos, versiones y tecnologías mediante análisis pasivo y activo</p>
+
+  <main>
+    <section>
+      <h2>Objetivo</h2>
+      <p>Aplicar técnicas de fingerprinting para identificar el sistema operativo, servicios y tecnologías utilizadas por un host objetivo, utilizando herramientas activas y pasivas.</p>
+    </section>
+
+    <section>
+      <h2>Alcance y limitaciones</h2>
+      <p><strong>Alcance:</strong> Detección de sistema operativo, banner grabbing, análisis de TTL, huellas de red, y correlación con bases de datos de firmas.</p>
+      <p><strong>Limitaciones:</strong> No se realiza explotación ni modificación del sistema. El laboratorio se limita a observación y análisis de respuestas del sistema.</p>
+      <p><strong>Escenario sugerido:</strong> Kali Linux analizando un host vulnerable (Metasploitable2, Windows XP, etc.) en red virtual controlada.</p>
+    </section>
+
+    <section>
+      <h2>Requisitos previos</h2>
+      <ul>
+        <li>Conocimientos de protocolos TCP/IP, TTL, puertos y servicios comunes</li>
+        <li>Familiaridad con herramientas de escaneo y análisis de red</li>
+        <li>Entorno: Kali Linux, host objetivo vulnerable, red virtual</li>
+        <li>Herramientas: <code>nmap</code>, <code>hping3</code>, <code>p0f</code>, <code>netcat</code>, <code>Wireshark</code></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Arquitectura del entorno</h2>
+      <pre>
+[ Kali Linux (192.168.1.10) ]
+        ↓
+[ Host objetivo (192.168.1.20) – Sistema desconocido ]
+      </pre>
+      <p>El atacante simula una fase de fingerprinting para inferir el sistema operativo y servicios del objetivo.</p>
+    </section>
+
+    <section>
+      <h2>Herramientas y entorno técnico</h2>
+      <ul>
+        <li><strong>Nmap</strong>: detección de SO y versiones con <code>-O</code> y <code>-sV</code></li>
+        <li><strong>p0f</strong>: fingerprinting pasivo basado en tráfico</li>
+        <li><strong>hping3</strong>: manipulación de paquetes y análisis de respuestas</li>
+        <li><strong>Netcat</strong>: banner grabbing manual</li>
+        <li><strong>Wireshark</strong>: análisis de TTL, MSS, y opciones TCP</li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Procedimiento técnico paso a paso</h2>
+      <ol>
+        <li>Fingerprinting activo con Nmap:
+          <pre><code>nmap -O -sV 192.168.1.20</code></pre>
+        </li>
+        <li>Banner grabbing manual con Netcat:
+          <pre><code>nc 192.168.1.20 80</code></pre>
+          <p>Enviar: <code>HEAD / HTTP/1.0</code> y presionar Enter dos veces</p>
+        </li>
+        <li>Fingerprinting pasivo con p0f:
+          <pre><code>p0f -i eth0</code></pre>
+          <p>Observar conexiones entrantes y su sistema operativo estimado</p>
+        </li>
+        <li>Manipulación de paquetes con hping3:
+          <pre><code>hping3 -S -p 80 -c 1 192.168.1.20</code></pre>
+          <p>Analizar TTL, tamaño de ventana y flags TCP</p>
+        </li>
+        <li>Captura de tráfico con Wireshark:
+          <p>Filtrar por IP objetivo y analizar campos IP y TCP para inferir sistema operativo</p>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Resultados esperados</h2>
+      <ul>
+        <li>Identificación tentativa del sistema operativo (Linux, Windows, versión aproximada)</li>
+        <li>Detección de servicios y versiones mediante banners y escaneo</li>
+        <li>Correlación de TTL, MSS y opciones TCP con firmas conocidas</li>
+        <li>Confirmación cruzada entre fingerprinting activo y pasivo</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Análisis de resultados</h2>
+      <p>El fingerprinting permite inferir el sistema operativo y servicios sin necesidad de autenticación. Las técnicas activas generan tráfico detectable, mientras que las pasivas requieren observación silenciosa. La combinación de ambas mejora la precisión y reduce falsos positivos. Esta información es clave para seleccionar exploits y evaluar la superficie de ataque.</p>
+    </section>
+
+    <section>
+      <h2>Medidas</h2>
+      <ul>
+        <li>Registrar firmas detectadas por cada herramienta</li>
+        <li>Comparar resultados entre métodos activos y pasivos</li>
+        <li>Documentar TTL, MSS, banners y respuestas HTTP</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contramedidas</h2>
+      <ul>
+        <li>Ofuscar respuestas de red (TCP/IP stack hardening)</li>
+        <li>Deshabilitar banners innecesarios en servicios (Apache, SSH, etc.)</li>
+        <li>Implementar firewalls que filtren escaneos y manipulación de paquetes</li>
+        <li>Monitorear tráfico anómalo con IDS (Snort, Suricata)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Riesgos y advertencias</h2>
+      <p>El fingerprinting activo puede ser detectado por sistemas de defensa y generar alertas. El uso de herramientas como hping3 puede ser interpretado como actividad hostil. Este laboratorio debe realizarse en entornos controlados y con fines educativos.</p>
+    </section>
+
+    <section>
+      <h2>Evidencias</h2>
+      <p><em>Espacio reservado para capturas de pantalla de Nmap, p0f, Netcat, Wireshark y hping3.</em></p>
+    </section>
+
+    <section>
+      <h2>Validación cruzada</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1046/" target="_blank">MITRE ATT&CK T1046 – Network Service Discovery</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1036/" target="_blank">MITRE ATT&CK T1036 – Masquerading</a></li>
+        <li><a href="https://cas.docs.cisecurity.org/en/latest/source/Controls12/" target="_blank">CIS Control 12 – Network Infrastructure Management</a></li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Referencias normativas y técnicas</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1046/" target="_blank">MITRE ATT&CK T1046 – Network Service Discovery</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1036/" target="_blank">MITRE ATT&CK T1036 – Masquerading</a></li>
+        <li><a href="https://cas.docs.cisecurity.org/en/latest/source/Controls12/" target="_blank">CIS Control 12 – Network Infrastructure Management</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Certificaciones asociadas</h2>
+      <ul>
+        <li>CompTIA PenTest+ – Domain 2.0: Information Gathering</li>
+        <li>eJPT – Passive and Active Reconnaissance</li>
+        <li>OSCP – Host Discovery and Enumeration</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Analogía técnica</h2>
+      <p style="font-family: 'Comic Sans MS'; font-size: 12pt;">
+        Hacer fingerprinting es como deducir el modelo de un coche por el sonido del motor, el escape y la forma de las luces: cada detalle revela su identidad.
+      </p>
+    </section>
+
+    <section>
+      <h2>Nivel de dificultad</h2>
+      <p>Intermedio</p>
+    </section>
+
+    <section>
+      <h2>Checklist final</h2>
+      <ul>
+        <li>[ ] Fingerprinting activo con Nmap completado</li>
+        <li>[ ] Banner grabbing manual realizado</li>
+        <li>[ ] Análisis pasivo con p0f ejecutado</li>
+        <li>[ ] TTL y MSS analizados con Wireshark</li>
+        <li>[ ] Validación cruzada registrada</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Navegación transversal</h2>
+      <ul>
+        <li><a href="/el-pergamino-digital/index.html">Portada</a></li>
+        <li><a href="/el-pergamino-digital/glosario/">Glosario</a></li>
+        <li><a href="/el-pergamino-digital/simulador/">Simulador</a></li>
+        <li><a href="/el-pergamino-digital/modulos/">Módulos</a></li>
+        <li><a href="/el-pergamino-digital/labs/">Laboratorios</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Reflexión estratégica</h2>
+      <p>El fingerprinting es una forma de leer entre líneas. Cada paquete, cada respuesta, cada banner es una pista. Este laboratorio entrena la capacidad de deducir sin tocar, de observar sin alterar, y de construir inteligencia técnica desde la superficie.</p>
+    </section>
+
+    <section>
+      <h2>Disclaimer de advertencia</h2>
+      <p><strong>Advertencia:</strong> Este laboratorio está diseñado exclusivamente para fines educativos y debe ejecutarse en entornos controlados. El uso de técnicas de fingerprinting en redes o sistemas sin autorización puede constituir una actividad ilegal. El Pergamino Digital no se responsabiliza por el uso indebido de las técnicas aquí descritas.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>, alineado con estándares internacionales y diseñado para fortalecer competencias técnicas en ciberseguridad.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll("nav a");
+      links.forEach(link => {
+        if (link.href === window.location.href) {
+          link.classList.add("activo");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
