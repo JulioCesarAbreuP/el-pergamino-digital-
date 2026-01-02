@@ -1,1 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 23 – Bypass de WAF y evasión avanzada en aplicaciones web</title>
+  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 2em;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      color: #90caf9;
+    }
+    code {
+      background-color: #1e1e1e;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      background-color: #1e1e1e;
+      padding: 1em;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    a {
+      color: #90caf9;
+    }
+  </style>
+</head>
+<body>
 
+  <h1>Lab 23 – Bypass de WAF y evasión avanzada en aplicaciones web</h1>
+  <h2>Manipulación de payloads para evadir firewalls de aplicaciones web y análisis de respuestas</h2>
+
+  <section>
+    <h2>1. Objetivo</h2>
+    <p>Este laboratorio permite al analista ofensivo identificar y evadir mecanismos de protección implementados por un WAF (Web Application Firewall). Se exploran técnicas de codificación, fragmentación, manipulación de parámetros y variaciones sintácticas para lograr la ejecución de payloads sin ser detectados. El objetivo es comprender cómo los WAF inspeccionan las solicitudes HTTP y cómo adaptarse para superarlos.</p>
+  </section>
+
+  <section>
+    <h2>2. Nivel de dificultad</h2>
+    <p>Avanzado</p>
+  </section>
+
+  <section>
+    <h2>3. Herramientas utilizadas</h2>
+    <ul>
+      <li><code>Burp Suite</code></li>
+      <li><code>curl</code></li>
+      <li><code>Wfuzz</code></li>
+      <li><code>ModSecurity</code> (como WAF en entorno controlado)</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>4. Entorno de laboratorio</h2>
+    <p>Máquina atacante con Kali Linux, servidor web con WAF activo (ModSecurity), aplicación vulnerable (DVWA o similar), red virtual controlada.</p>
+  </section>
+
+  <section>
+    <h2>5. Escenario</h2>
+    <p>Un analista ofensivo necesita probar la eficacia de un WAF frente a ataques de inyección. El objetivo es identificar qué patrones son bloqueados, cómo responde el WAF y qué técnicas permiten evadirlo para ejecutar payloads sin ser detectados.</p>
+  </section>
+
+  <section>
+    <h2>6. Pasos previos</h2>
+    <ul>
+      <li>Instalar y configurar ModSecurity en el servidor web</li>
+      <li>Activar reglas OWASP Core Rule Set (CRS)</li>
+      <li>Verificar conectividad entre atacante y servidor</li>
+      <li>Iniciar Burp Suite y configurar proxy en el navegador</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>7. Desarrollo</h2>
+    <ol>
+      <li>Enviar un payload clásico de SQLi:
+        <pre><code>curl -X GET "http://192.168.1.50/vulnerable.php?id=1' OR '1'='1"</code></pre>
+      </li>
+      <li>Observar respuesta del WAF (bloqueo, redirección, código 403)</li>
+      <li>Codificar el payload en URL encoding:
+        <pre><code>%27%20OR%20%271%27%3D%271</code></pre>
+      </li>
+      <li>Fragmentar el payload con parámetros intermedios:
+        <pre><code>id=1%27/**/OR/**/%271%27=%271</code></pre>
+      </li>
+      <li>Usar Burp Suite para modificar headers y user-agent</li>
+      <li>Probar variaciones con Wfuzz:
+        <pre><code>wfuzz -u "http://192.168.1.50/vulnerable.php?id=FUZZ" -w payloads.txt</code></pre>
+      </li>
+    </ol>
+  </section>
+
+    <section>
+    <h2>8. Resultados esperados</h2>
+    <ul>
+      <li>Identificación de reglas activas del WAF</li>
+      <li>Bloqueo de payloads clásicos y aceptación de variantes evasivas</li>
+      <li>Registro de respuestas HTTP diferenciadas (403, 200, redirecciones)</li>
+      <li>Confirmación de ejecución de payloads tras evasión</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>9. Análisis de resultados</h2>
+    <p>El WAF bloquea solicitudes que coinciden con patrones definidos en sus reglas. Al modificar la forma del payload sin alterar su lógica, es posible evadir estas reglas. El análisis de respuestas HTTP y logs del WAF permite identificar qué técnicas son efectivas y cuáles son detectadas.</p>
+  </section>
+
+  <section>
+    <h2>10. Conclusiones</h2>
+    <p>Los WAF no son infalibles. Su eficacia depende de la calidad de las reglas y su capacidad de interpretar variaciones sintácticas. Comprender su lógica permite al atacante adaptar sus técnicas para evadir la detección y lograr la ejecución del payload.</p>
+  </section>
+
+  <section>
+    <h2>11. Medidas</h2>
+    <ul>
+      <li>Documentar qué payloads fueron bloqueados y cuáles evadieron el WAF</li>
+      <li>Registrar respuestas HTTP y códigos asociados</li>
+      <li>Comparar comportamiento con y sin codificación o fragmentación</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>12. Contramedidas</h2>
+    <ul>
+      <li>Actualizar y endurecer las reglas del WAF (OWASP CRS)</li>
+      <li>Implementar validación del lado del servidor</li>
+      <li>Correlacionar eventos en SIEM para detectar intentos de evasión</li>
+      <li>Aplicar listas blancas de parámetros y estructuras válidas</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>13. Riesgos y advertencias</h2>
+    <p>Las técnicas de evasión pueden generar falsos negativos y permitir ataques exitosos. Este laboratorio debe ejecutarse en entornos controlados. No aplicar en sistemas reales sin autorización expresa.</p>
+  </section>
+
+  <section>
+    <h2>14. Evidencias</h2>
+    <p><em>Espacio reservado para capturas de pantalla de Burp Suite, curl, Wfuzz, respuestas HTTP y logs del WAF.</em></p>
+  </section>
+
+  <section>
+    <h2>15. Validación cruzada</h2>
+    <ul>
+      <li><a href="https://attack.mitre.org/techniques/T1562/006/" target="_blank">MITRE ATT&CK T1562.006 – Indicator Removal on Host: Indicator Blocking</a></li>
+      <li><a href="https://owasp.org/www-project-modsecurity-core-rule-set/" target="_blank">OWASP ModSecurity Core Rule Set</a></li>
+      <li><a href="https://www.cisecurity.org/controls/application-software-security" target="_blank">CIS Control 16 – Application Software Security</a></li>
+      <li><a href="https://csrc.nist.gov/publications/detail/sp/800-95/final" target="_blank">NIST SP 800-95 – Guide to Secure Web Services</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>16. Glosario asociado</h2>
+    <ul>
+      <li><strong>WAF:</strong> Firewall que protege aplicaciones web inspeccionando solicitudes HTTP</li>
+      <li><strong>Payload:</strong> Carga útil que contiene una instrucción maliciosa</li>
+      <li><strong>Codificación:</strong> Transformación del payload para cambiar su forma sin alterar su función</li>
+      <li><strong>Fragmentación:</strong> División del payload en partes para evadir detección</li>
+      <li><strong>Bypass:</strong> Técnica para eludir un mecanismo de seguridad</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>17. Preguntas de refuerzo</h2>
+    <ol>
+      <li>¿Qué diferencia hay entre un firewall tradicional y un WAF?</li>
+      <li>¿Qué tipo de payloads suelen ser detectados por un WAF?</li>
+      <li>¿Cómo puede la codificación ayudar a evadir un WAF?</li>
+      <li>¿Qué riesgos implica una evasión exitosa en un entorno real?</li>
+      <li>¿Qué técnicas defensivas pueden mitigar estas evasiones?</li>
+    </ol>
+  </section>
+
+    <section>
+    <h2>18. Rúbrica de evaluación</h2>
+    <ul>
+      <li>✔️ Ejecuta correctamente técnicas de evasión y captura evidencias</li>
+      <li>✔️ Interpreta el comportamiento del WAF ante cada variante</li>
+      <li>✔️ Relaciona técnicas con estándares y certificaciones</li>
+      <li>✔️ Aplica medidas y contramedidas con criterio técnico</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>19. Recursos complementarios</h2>
+    <ul>
+      <li><a href="https://portswigger.net/web-security/waf-bypass" target="_blank">PortSwigger – WAF Bypass Techniques</a></li>
+      <li><a href="https://owasp.org/www-community/attacks/Bypassing_Web_Application_Firewalls" target="_blank">OWASP – Bypassing WAFs</a></li>
+      <li><a href="https://coreruleset.org/" target="_blank">OWASP Core Rule Set (CRS)</a></li>
+      <li><a href="https://www.modsecurity.org/" target="_blank">ModSecurity – Open Source WAF</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>20. Créditos y licencia</h2>
+    <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>. Su uso está autorizado únicamente con fines educativos, respetando la trazabilidad editorial y la licencia CC BY-NC-SA 4.0.</p>
+  </section>
+
+  <section>
+    <h2>21. Nivel de certificación</h2>
+    <p>Avanzado – Alineado con OSWE, Red Team Operator y eWPTXv2.</p>
+  </section>
+
+  <section>
+    <h2>22. Mapa de integración</h2>
+    <ul>
+      <li>🔗 Continúa el enfoque del <strong>Lab 22</strong> (Detección de IPS y evasión básica)</li>
+      <li>🧪 Refuerza el dominio de evasión en capa 7 y manipulación de payloads</li>
+      <li>🎓 Integra conceptos clave del simulador certificador: <em>Web Application Defense Evasion</em>, <em>Payload Obfuscation</em>, <em>WAF Fingerprinting</em></li>
+    </ul>
+  </section>
+
+</body>
+</html>
