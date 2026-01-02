@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lab 26 – Hardenización de Linux</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 26 – Evaluación de Hardenización de Sistemas Linux</title>
+  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
 
   <style>
     :root { color-scheme: dark; }
@@ -14,6 +15,7 @@
       color: #e0e0e0;
       margin: 0;
       padding: 0;
+      line-height: 1.6;
     }
 
     nav {
@@ -28,9 +30,14 @@
       text-decoration: none;
     }
 
+    nav a:hover {
+      text-decoration: underline;
+    }
+
     h1 {
       text-align: center;
       margin-top: 1.5em;
+      color: #ffffff;
     }
 
     .subtitulo {
@@ -45,15 +52,41 @@
       padding: 2em;
     }
 
+    section {
+      margin-bottom: 2.5em;
+    }
+
     h2 {
       color: #90caf9;
+      border-bottom: 1px solid #333;
+      padding-bottom: 0.3em;
+    }
+
+    code {
+      background-color: #1e1e1e;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+    }
+
+    pre {
+      background-color: #1e1e1e;
+      padding: 1em;
+      border-radius: 6px;
+      overflow-x: auto;
     }
 
     footer {
       text-align: center;
       padding: 2em;
       background-color: #1e1e1e;
+      font-size: 0.9em;
       color: #aaaaaa;
+    }
+
+    @media (max-width: 600px) {
+      body { font-size: 1.05em; }
+      nav a { display: block; margin: 0.5em 0; }
     }
   </style>
 </head>
@@ -61,23 +94,152 @@
 <body>
 
 <nav>
-  <a href="../../index.html">Inicio</a>
-  <a href="../">Laboratorios</a>
+  <a href="/el-pergamino-digital/index.html">Inicio</a>
+  <a href="/el-pergamino-digital/labs/">Laboratorios</a>
+  <a href="/el-pergamino-digital/glosario/">Glosario</a>
+  <a href="/el-pergamino-digital/simulador/">Simulador</a>
 </nav>
 
 <h1>Lab 26 – Evaluación de Hardenización de Sistemas Linux</h1>
-<p class="subtitulo">Aplicación de buenas prácticas de seguridad en entornos Linux</p>
+<p class="subtitulo">Aplicación de técnicas de hardening para reforzar la seguridad en entornos Linux</p>
 
 <main>
-  <section>
-    <h2>Objetivo</h2>
-    <p>Evaluar configuraciones de hardening en sistemas Linux para reducir superficie de ataque.</p>
-  </section>
+
+<section>
+  <h2>Objetivo</h2>
+  <p>Evaluar el nivel de endurecimiento (hardening) de un sistema Linux mediante la revisión de configuraciones críticas, servicios activos, permisos, políticas de autenticación y controles de auditoría, con el fin de reducir la superficie de ataque.</p>
+</section>
+
+<section>
+  <h2>Alcance y limitaciones</h2>
+  <p>El laboratorio se ejecuta exclusivamente en entornos controlados. No cubre auditorías forenses ni respuesta a incidentes. No debe aplicarse directamente en sistemas de producción sin autorización.</p>
+</section>
+
+<section>
+  <h2>Requisitos previos</h2>
+  <ul>
+    <li>Conocimientos básicos de administración Linux</li>
+    <li>Acceso root o sudo</li>
+    <li>Máquina Linux (Ubuntu, Debian, Rocky o similar)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Arquitectura del entorno</h2>
+  <p>Una máquina Linux objetivo evaluada desde la propia consola local o vía SSH en una red virtual aislada.</p>
+</section>
+
+<section>
+  <h2>Herramientas y entorno técnico</h2>
+  <ul>
+    <li><code>Lynis</code></li>
+    <li><code>chkrootkit</code></li>
+    <li><code>auditd</code></li>
+    <li><code>systemctl</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Procedimiento técnico</h2>
+  <pre><code>sudo apt install lynis
+sudo lynis audit system</code></pre>
+
+  <pre><code>systemctl list-unit-files --type=service</code></pre>
+
+  <pre><code>sudo chkrootkit</code></pre>
+</section>
+
+<section>
+  <h2>Resultados esperados</h2>
+  <ul>
+    <li>Listado de debilidades de configuración</li>
+    <li>Servicios innecesarios identificados</li>
+    <li>Puntuación de hardening del sistema</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Análisis de resultados</h2>
+  <p>Los hallazgos permiten identificar configuraciones inseguras, servicios expuestos y prácticas débiles que incrementan el riesgo de compromiso del sistema.</p>
+</section>
+
+<section>
+  <h2>Medidas</h2>
+  <ul>
+    <li>Deshabilitar servicios innecesarios</li>
+    <li>Aplicar políticas de contraseñas fuertes</li>
+    <li>Habilitar auditoría y logging</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Contramedidas</h2>
+  <ul>
+    <li>Hardening continuo</li>
+    <li>Auditorías periódicas</li>
+    <li>Automatización con benchmarks CIS</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Riesgos y advertencias</h2>
+  <p>Un hardening mal aplicado puede afectar la disponibilidad del sistema. Validar siempre en entornos de prueba.</p>
+</section>
+
+<section>
+  <h2>Evidencias</h2>
+  <p><em>Espacio reservado para capturas de pantalla, logs y reportes.</em></p>
+</section>
+
+<section>
+  <h2>Validación cruzada</h2>
+  <ul>
+    <li><a href="https://www.cisecurity.org/benchmark/linux" target="_blank">CIS Linux Benchmarks</a></li>
+    <li><a href="https://attack.mitre.org/" target="_blank">MITRE ATT&CK</a></li>
+    <li><a href="https://csrc.nist.gov/publications/sp800" target="_blank">NIST SP 800</a></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Certificaciones asociadas</h2>
+  <p>Security+, Linux+, CySA+, GSEC</p>
+</section>
+
+<section>
+  <h2>Analogía técnica</h2>
+  <p>Como reforzar murallas, cerrar portones y limitar accesos en un castillo medieval.</p>
+</section>
+
+<section>
+  <h2>Nivel de dificultad</h2>
+  <p>Intermedio – Avanzado</p>
+</section>
+
+<section>
+  <h2>Checklist final</h2>
+  <ul>
+    <li>✔ Auditoría ejecutada</li>
+    <li>✔ Hallazgos documentados</li>
+    <li>✔ Medidas aplicadas</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Reflexión estratégica</h2>
+  <p>El hardening no es un estado final, sino un proceso continuo que debe adaptarse a nuevas amenazas y cambios operativos.</p>
+</section>
+
+<section>
+  <h2>Disclaimer</h2>
+  <p>Este laboratorio es exclusivamente educativo. Cualquier uso fuera de entornos autorizados es responsabilidad del ejecutor.</p>
+</section>
+
 </main>
 
 <footer>
-  Proyecto El Pergamino Digital · Uso educativo
+  Proyecto <strong>El Pergamino Digital</strong> · Ciberseguridad ofensiva y defensiva
 </footer>
 
 </body>
 </html>
+
