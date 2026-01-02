@@ -1,1 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 12 – Movimiento lateral y pivoteo en redes internas</title>
+  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background-color: #1f1f1f;
+      padding: 1em;
+      text-align: center;
+    }
+    nav a {
+      color: #e0e0e0;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    nav a.activo {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 1.5em;
+      color: #ffffff;
+    }
+    .subtitulo {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 2em;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
+    }
+    section {
+      margin-bottom: 2em;
+    }
+    h2 {
+      color: #90caf9;
+    }
+    code {
+      background-color: #1e1e1e;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    footer {
+      text-align: center;
+      padding: 2em;
+      background-color: #1e1e1e;
+      font-size: 0.9em;
+      color: #aaaaaa;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 1.1em; }
+      h1 { font-size: 1.8em; }
+      .subtitulo { font-size: 1.1em; }
+      nav a { display: block; margin: 0.5em 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/el-pergamino-digital/index.html">Inicio</a>
+    <a href="/el-pergamino-digital/labs/" class="activo">Laboratorios</a>
+    <a href="/el-pergamino-digital/glosario/">Glosario</a>
+    <a href="/el-pergamino-digital/simulador/">Simulador</a>
+    <a href="/el-pergamino-digital/modulos/">Módulos</a>
+  </nav>
 
+  <h1>Lab 12 – Movimiento lateral y pivoteo en redes internas</h1>
+  <p class="subtitulo">Exploración de técnicas para expandir el acceso en redes comprometidas y alcanzar objetivos internos</p>
+
+  <main>
+    <section>
+      <h2>Objetivo</h2>
+      <p>Aplicar técnicas de movimiento lateral y pivoteo para acceder a sistemas internos desde una máquina comprometida, utilizando herramientas como proxychains, SSH pivoting y port forwarding.</p>
+    </section>
+
+    <section>
+      <h2>Alcance y limitaciones</h2>
+      <p><strong>Alcance:</strong> Acceso a redes internas desde una máquina comprometida, descubrimiento de hosts internos, uso de túneles y proxys para escalar el alcance del atacante.</p>
+      <p><strong>Limitaciones:</strong> No se permite el uso de estas técnicas fuera de entornos de laboratorio. No se ejecutan exploits reales.</p>
+      <p><strong>Escenario sugerido:</strong> Red interna con al menos tres máquinas: atacante, pivote comprometido y objetivo interno.</p>
+    </section>
+
+    <section>
+      <h2>Requisitos previos</h2>
+      <ul>
+        <li>Conocimientos de redes, rutas, puertos y servicios</li>
+        <li>Familiaridad con SSH, netcat, nmap, proxychains y túneles</li>
+        <li>Entorno: Kali Linux, máquina pivote (Metasploitable2), máquina interna (Windows o Linux)</li>
+        <li>Herramientas instaladas: <code>proxychains</code>, <code>ssh</code>, <code>nmap</code>, <code>netsh</code>, <code>iptables</code>, <code>chisel</code></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Arquitectura del entorno</h2>
+      <pre>
+[ Kali (192.168.1.10) ]
+        ↓
+[ Pivote (192.168.1.20) ]
+        ↓
+[ Objetivo interno (10.10.10.5) ]
+      </pre>
+      <p>El atacante compromete el pivote y lo utiliza como trampolín para alcanzar el objetivo interno.</p>
+    </section>
+
+    <section>
+      <h2>Herramientas y entorno técnico</h2>
+      <ul>
+        <li><strong>proxychains</strong>: redirección de tráfico a través del pivote</li>
+        <li><strong>SSH pivoting</strong>: túneles dinámicos y estáticos</li>
+        <li><strong>netsh / iptables</strong>: redirección de puertos</li>
+        <li><strong>nmap</strong>: escaneo de red interna desde el pivote</li>
+        <li><strong>chisel</strong>: túnel TCP sobre HTTP</li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Procedimiento técnico paso a paso</h2>
+      <ol>
+        <li>Acceder al pivote (192.168.1.20) con sesión establecida (SSH, Meterpreter, etc.)</li>
+        <li>Configurar túnel dinámico con SSH:
+          <pre><code>ssh -D 9050 user@192.168.1.20</code></pre>
+        </li>
+        <li>Editar <code>/etc/proxychains.conf</code> para usar <code>socks5 127.0.0.1 9050</code></li>
+        <li>Escanear red interna desde Kali a través del pivote:
+          <pre><code>proxychains nmap -sT -Pn 10.10.10.0/24</code></pre>
+        </li>
+        <li>Alternativa: usar <code>chisel</code> para crear túnel HTTP:
+          <pre><code>./chisel server -p 8000 --reverse</code> (en Kali)
+./chisel client kali_ip:8000 R:1080:socks</code></pre>
+        </li>
+        <li>Usar <code>proxychains</code> con el nuevo túnel para escaneo o acceso a servicios internos</li>
+        <li>Documentar hosts descubiertos, puertos abiertos y rutas alcanzadas</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Resultados esperados</h2>
+      <ul>
+        <li>Acceso exitoso al pivote comprometido</li>
+        <li>Escaneo de red interna desde el atacante a través del pivote</li>
+        <li>Detección de hosts y servicios en la red 10.10.10.0/24</li>
+        <li>Establecimiento de túneles funcionales (SSH, chisel, netsh, etc.)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Análisis de resultados</h2>
+      <p>El movimiento lateral permite al atacante expandir su alcance más allá del punto inicial de compromiso. El uso de túneles y proxys permite evadir controles de red y acceder a sistemas que de otro modo serían inaccesibles. La visibilidad del atacante depende de la configuración de los sistemas defensivos internos.</p>
+    </section>
+
+    <section>
+      <h2>Medidas</h2>
+      <ul>
+        <li>Documentar cada técnica de pivoteo utilizada</li>
+        <li>Registrar rutas alcanzadas y servicios descubiertos</li>
+        <li>Evaluar impacto potencial de cada acceso lateral</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contramedidas</h2>
+      <ul>
+        <li>Segmentación de red y control de tráfico este-oeste</li>
+        <li>Monitoreo de túneles y conexiones inusuales</li>
+        <li>Restricción de reenvío de puertos y uso de proxys internos</li>
+        <li>Implementación de detección de comportamiento lateral (EDR, NDR)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Riesgos y advertencias</h2>
+      <p>El pivoteo puede comprometer múltiples sistemas si no se detecta a tiempo. Este laboratorio debe realizarse en entornos virtuales controlados. El uso de estas técnicas en redes reales sin autorización es ilegal y antiético.</p>
+    </section>
+
+    <section>
+      <h2>Evidencias</h2>
+      <p><em>Espacio reservado para capturas de pantalla de túneles SSH, configuraciones de proxychains, escaneos internos y rutas alcanzadas.</em></p>
+    </section>
+
+    <section>
+      <h2>Validación cruzada</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1570/" target="_blank">MITRE ATT&CK T1570 – Lateral Tool Transfer</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1090/" target="_blank">MITRE ATT&CK T1090 – Proxy</a></li>
+        <li><a href="https://www.cisecurity.org/controls/14" target="_blank">CIS Control 14 – Security Monitoring</a></li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Referencias normativas y técnicas</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1570/" target="_blank">MITRE ATT&CK T1570 – Lateral Tool Transfer</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1090/" target="_blank">MITRE ATT&CK T1090 – Proxy</a></li>
+        <li><a href="https://www.cisecurity.org/controls/14" target="_blank">CIS Control 14 – Security Monitoring</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Certificaciones asociadas</h2>
+      <ul>
+        <li>OSCP – Lateral Movement and Pivoting</li>
+        <li>eCPPT – Internal Network Exploitation</li>
+        <li>CompTIA PenTest+ – Domain 4.0: Post-Engagement Activities</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Analogía técnica</h2>
+      <p style="font-family: 'Comic Sans MS'; font-size: 12pt;">
+        El movimiento lateral es como infiltrarse en un castillo por una puerta trasera y luego recorrer pasadizos secretos para llegar al trono sin ser visto.
+      </p>
+    </section>
+
+    <section>
+      <h2>Nivel de dificultad</h2>
+      <p>Avanzado</p>
+    </section>
+
+    <section>
+      <h2>Checklist final</h2>
+      <ul>
+        <li>[ ] Acceso al pivote comprometido establecido</li>
+        <li>[ ] Túneles configurados (SSH, chisel, etc.)</li>
+        <li>[ ] Escaneo interno realizado con éxito</li>
+        <li>[ ] Hosts y servicios internos documentados</li>
+        <li>[ ] Validación cruzada registrada</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Navegación transversal</h2>
+      <ul>
+        <li><a href="/el-pergamino-digital/index.html">Portada</a></li>
+        <li><a href="/el-pergamino-digital/glosario/">Glosario</a></li>
+        <li><a href="/el-pergamino-digital/simulador/">Simulador</a></li>
+        <li><a href="/el-pergamino-digital/modulos/">Módulos</a></li>
+        <li><a href="/el-pergamino-digital/labs/">Laboratorios</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Reflexión estratégica</h2>
+      <p>El movimiento lateral revela la verdadera dimensión de un compromiso. No basta con proteger el perímetro: la defensa debe extenderse a cada nodo interno. Comprender estas técnicas permite anticipar rutas de ataque y fortalecer la arquitectura defensiva desde dentro.</p>
+    </section>
+
+    <section>
+      <h2>Disclaimer de advertencia</h2>
+      <p><strong>Advertencia:</strong> Este laboratorio está diseñado exclusivamente para fines educativos y debe ejecutarse en entornos controlados. El uso de técnicas de pivoteo o movimiento lateral en redes reales sin autorización constituye una violación legal y ética. El Pergamino Digital no se responsabiliza por el uso indebido de las técnicas aquí descritas.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>, alineado con estándares internacionales y diseñado para fortalecer competencias técnicas en ciberseguridad.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll("nav a");
+      links.forEach(link => {
+        if (link.href === window.location.href) {
+          link.classList.add("activo");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
