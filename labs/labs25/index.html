@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lab 25 – Análisis de Seguridad de APIs REST y Técnicas de Autenticación</title>
   <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
 
-  <!-- Estilos integrados -->
+  <!-- Estilos integrados (igual que Lab 24) -->
   <style>
     :root { color-scheme: dark; }
     body {
@@ -33,8 +33,8 @@
     }
     h1 {
       text-align: center;
-      margin-top: 1em;
-      color: #90caf9;
+      margin-top: 1.5em;
+      color: #ffffff;
     }
     .subtitulo {
       text-align: center;
@@ -86,18 +86,14 @@
     <a href="../../modulos.html">Módulos</a>
   </nav>
 
-  <!-- Título principal y subtítulo -->
+  <!-- Título y subtítulo exactos -->
   <h1>Lab 25 – Análisis de Seguridad de APIs REST y Técnicas de Autenticación</h1>
-  <p class="subtitulo">Exploración de mecanismos de autenticación, autorización y seguridad avanzada en APIs REST</p>
+  <p class="subtitulo">Exploración de mecanismos de autenticación y control de acceso en APIs REST</p>
 
-  <!-- Contenido técnico estructurado -->
+  <!-- CONTENIDO -->
   <section>
     <h2>Objetivo</h2>
-    <p>
-      Este laboratorio capacita al analista en identificar y evaluar mecanismos de seguridad
-      en APIs REST, validando autenticación, autorización, control de acceso y resistencia
-      a ataques comunes como fuerza bruta, manipulación de tokens y bypass de controles.
-    </p>
+    <p>Este laboratorio capacita al analista en identificar y evaluar mecanismos de seguridad en APIs REST, validando autenticación, autorización, control de acceso y resistencia a ataques comunes como fuerza bruta, manipulación de tokens y bypass de controles.</p>
   </section>
 
   <section>
@@ -121,10 +117,7 @@
 
   <section>
     <h2>Desarrollo</h2>
-    <p>
-      Enviar peticiones con herramientas como <code>curl</code> o Postman para validar
-      autenticación 200/401/403 y modificar tokens para analizar bypass.
-    </p>
+    <p>Enviar peticiones con herramientas como <code>curl</code> o Postman para validar autenticación (200/401/403) y manipular tokens para analizar bypass.</p>
   </section>
 
   <section>
@@ -159,15 +152,12 @@
 
   <section>
     <h2>Riesgos y advertencias</h2>
-    <p>
-      La manipulación de tokens y bypass puede provocar accesos no autorizados si se aplica
-      fuera de entornos controlados. Sólo uso educativo.
-    </p>
+    <p>La manipulación de tokens puede provocar accesos no autorizados si se aplica fuera de entornos controlados. Solo uso educativo.</p>
   </section>
 
   <section>
     <h2>Evidencias</h2>
-    <p>Espacio reservado para capturas de pantalla de peticiones, respuestas y logs.</p>
+    <p><em>Espacio para capturas de pantalla de peticiones, respuestas y logs.</em></p>
   </section>
 
   <section>
@@ -196,21 +186,24 @@
 
   <section>
     <h2>Rúbrica de evaluación</h2>
-    <p>✔ Autenticación comprobada ✔ Autorización verificada ✔ Tokens evaluados</p>
+  <ul>
+    <li>✔ Autenticación comprobada</li>
+    <li>✔ Autorización verificada</li>
+    <li>✔ Tokens evaluados</li>
+  </ul>
   </section>
 
   <section>
     <h2>Recursos complementarios</h2>
-    <p>
-    Documentación oficial de API Security, OWASP API Security Top 10
-    </p>
+    <ul>
+      <li><a href="https://owasp.org/www-project-api-security/">OWASP API Security</a></li>
+      <li><a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0 RFC</a></li>
+    </ul>
   </section>
 
   <section>
     <h2>Créditos y licencia</h2>
-    <p>
-    Este laboratorio forma parte del proyecto El Pergamino Digital, con licencia educativa.
-    </p>
+    <p>Este laboratorio forma parte del proyecto El Pergamino Digital, con licencia educativa.</p>
   </section>
 
   <section>
@@ -220,13 +213,11 @@
 
   <section>
     <h2>Mapa de integración</h2>
-    <p>
-    Integra conceptos de control de APIs con evasión y defensa de servicios web.
-    </p>
+    <p>Integra conceptos de control de APIs con evasión y defensa de servicios web.</p>
   </section>
 
   <!-- Navegación transversal -->
-  <nav>
+  <nav style="text-align:center; margin-top:2em;">
     <a href="../labs24/">Lab anterior</a> |
     <a href="../index.html">Listado de laboratorios</a> |
     <a href="../labs26/">Lab siguiente</a>
