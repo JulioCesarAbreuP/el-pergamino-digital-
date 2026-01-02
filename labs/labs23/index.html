@@ -2,8 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lab 23 – Detección de IPS y evasión básica</title>
+  <title>Lab 23 – Bypass de WAF y evasión avanzada en aplicaciones web</title>
 
   <style>
     :root { color-scheme: dark; }
@@ -55,6 +54,12 @@
       border-radius: 4px;
       font-family: monospace;
     }
+    pre {
+      background-color: #1e1e1e;
+      padding: 1em;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
     footer {
       text-align: center;
       padding: 2em;
@@ -73,73 +78,135 @@
 
 <body>
 
-  <nav>
-    <a href="../../index.html">Inicio</a>
-    <a href="../index.html">Laboratorios</a>
-    <a href="../../glosario.html">Glosario</a>
-    <a href="../../simulador.html">Simulador</a>
-    <a href="../../modulos.html">Módulos</a>
-  </nav>
+<nav>
+  <a href="../../index.html">Inicio</a>
+  <a href="../index.html" class="activo">Laboratorios</a>
+  <a href="../../glosario.html">Glosario</a>
+  <a href="../../simulador.html">Simulador</a>
+</nav>
 
-  <header>
-    <h1>Lab 23 – Detección de sistemas de prevención de intrusos (IPS)</h1>
-    <p class="subtitulo">
-      Identificación de mecanismos defensivos y evasión básica de controles de red
-    </p>
-  </header>
+<h1>Lab 23 – Bypass de WAF y evasión avanzada en aplicaciones web</h1>
+<p class="subtitulo">
+  Manipulación de payloads para evadir firewalls de aplicaciones web y análisis de respuestas
+</p>
 
-  <main>
+<main>
 
-    <section>
-      <h2>Objetivo</h2>
-      <p>
-        Identificar la presencia de sistemas de prevención de intrusos (IPS) mediante
-        el análisis del comportamiento de la red frente a tráfico evasivo y técnicas
-        de escaneo controladas.
-      </p>
-    </section>
+<section>
+  <h2>1. Objetivo</h2>
+  <p>
+    Identificar y evadir mecanismos de protección implementados por un WAF (Web Application Firewall)
+    mediante técnicas de codificación, fragmentación y manipulación de payloads, comprendiendo
+    cómo inspeccionan las solicitudes HTTP.
+  </p>
+</section>
 
-    <section>
-      <h2>Alcance y limitaciones</h2>
-      <p>
-        Este laboratorio se ejecuta exclusivamente en entornos controlados y
-        máquinas vulnerables diseñadas para entrenamiento. No debe aplicarse
-        en redes de producción.
-      </p>
-    </section>
+<section>
+  <h2>2. Nivel de dificultad</h2>
+  <p>Avanzado</p>
+</section>
 
-    <section>
-      <h2>Herramientas utilizadas</h2>
-      <ul>
-        <li><code>nmap</code></li>
-        <li><code>hping3</code></li>
-      </ul>
-    </section>
+<section>
+  <h2>3. Herramientas utilizadas</h2>
+  <ul>
+    <li>Burp Suite</li>
+    <li>curl</li>
+    <li>Wfuzz</li>
+    <li>ModSecurity (WAF)</li>
+  </ul>
+</section>
 
-    <section>
-      <h2>Resultados esperados</h2>
-      <p>
-        Detección de respuestas anómalas, bloqueos temporales, resets de conexión
-        o alteraciones en el comportamiento normal del tráfico.
-      </p>
-    </section>
+<section>
+  <h2>4. Entorno de laboratorio</h2>
+  <p>
+    Kali Linux como máquina atacante, servidor web con ModSecurity activo,
+    aplicación vulnerable (DVWA o similar) y red virtual controlada.
+  </p>
+</section>
 
-    <section>
-      <h2>Reflexión estratégica</h2>
-      <p>
-        Un IPS no siempre se manifiesta como un bloqueo evidente. La verdadera
-        detección requiere observar patrones sutiles, latencias, modificaciones
-        en las respuestas y correlación de eventos.
-      </p>
-    </section>
+<section>
+  <h2>5. Escenario</h2>
+  <p>
+    Evaluar la eficacia de un WAF frente a ataques de inyección y analizar
+    qué técnicas permiten evadir las reglas activas sin ser detectado.
+  </p>
+</section>
 
-  </main>
+<section>
+  <h2>6. Desarrollo</h2>
 
-  <footer>
-    <p>
-      El Pergamino Digital · Laboratorios de Ciberseguridad · Uso educativo y ético
-    </p>
-  </footer>
+  <p>Payload clásico SQLi:</p>
+  <pre><code>curl -X GET "http://192.168.1.50/vulnerable.php?id=1' OR '1'='1"</code></pre>
+
+  <p>Payload codificado:</p>
+  <pre><code>%27%20OR%20%271%27%3D%271</code></pre>
+
+  <p>Payload fragmentado:</p>
+  <pre><code>id=1%27/**/OR/**/%271%27=%271</code></pre>
+
+  <p>Fuzzing con Wfuzz:</p>
+  <pre><code>wfuzz -u "http://192.168.1.50/vulnerable.php?id=FUZZ" -w payloads.txt</code></pre>
+</section>
+
+<section>
+  <h2>7. Resultados esperados</h2>
+  <ul>
+    <li>Bloqueo de payloads clásicos</li>
+    <li>Aceptación de variantes evasivas</li>
+    <li>Diferencias en códigos HTTP (403, 200)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>8. Análisis de resultados</h2>
+  <p>
+    Los WAF detectan patrones estáticos. Variaciones sintácticas pueden evadir
+    reglas sin alterar la lógica del ataque.
+  </p>
+</section>
+
+<section>
+  <h2>9. Contramedidas</h2>
+  <ul>
+    <li>Actualizar OWASP CRS</li>
+    <li>Validación estricta del lado servidor</li>
+    <li>Correlación de eventos en SIEM</li>
+  </ul>
+</section>
+
+<section>
+  <h2>10. Riesgos y advertencias</h2>
+  <p>
+    Este laboratorio debe ejecutarse únicamente en entornos controlados.
+    No aplicar técnicas de evasión en sistemas reales sin autorización.
+  </p>
+</section>
+
+<section>
+  <h2>11. Evidencias</h2>
+  <p><em>Espacio reservado para capturas de Burp, curl, Wfuzz y logs del WAF.</em></p>
+</section>
+
+<section>
+  <h2>12. Validación cruzada</h2>
+  <ul>
+    <li>MITRE ATT&CK T1562.006</li>
+    <li>OWASP ModSecurity CRS</li>
+    <li>CIS Control 16</li>
+    <li>NIST SP 800-95</li>
+  </ul>
+</section>
+
+<section>
+  <h2>13. Nivel de certificación</h2>
+  <p>Avanzado – Alineado con OSWE, eWPTXv2 y Red Team Operator</p>
+</section>
+
+</main>
+
+<footer>
+  El Pergamino Digital · Laboratorio 23 · Licencia CC BY-NC-SA 4.0
+</footer>
 
 </body>
 </html>
