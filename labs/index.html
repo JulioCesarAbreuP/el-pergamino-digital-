@@ -3,9 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>L1aboratorios – El Pergamino Digital</title>
-  <link rel="stylesheet" href="/el-pergamino-digital/assets/css/style.css" />
-  <script src="/el-pergamino-digital/assets/js/script.js"></script>
+  <title>Lab 01 – Wireshark y tcpdump</title>
+
+  <!-- Estilos embebidos -->
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      background-color: #1a1a1a;
+      padding: 1em;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+
+    nav a.activo {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 1.5em;
+    }
+
+    .subtitulo {
+      text-align: center;
+      color: #555;
+      margin-bottom: 2em;
+    }
+
+    .contenedor-lab {
+      padding: 2em;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .contenedor-lab section {
+      margin-bottom: 2em;
+    }
+
+    .contenedor-lab h2 {
+      color: #003366;
+      margin-bottom: 0.5em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2em;
+      background-color: #f1f1f1;
+      font-size: 0.9em;
+    }
+  </style>
+
   <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
 </head>
 <body>
@@ -18,39 +78,40 @@
       <a href="/el-pergamino-digital/simulador/">Simulador</a>
       <a href="/el-pergamino-digital/modulos/">Módulos</a>
     </nav>
-    <h1>Laboratorios Técnicos</h1>
-    <p class="subtitulo">Prácticas certificadoras alineadas con estándares internacionales</p>
+    <h1>Lab 01 – Monitorización de tráfico con Wireshark y tcpdump</h1>
+    <p class="subtitulo">Análisis de paquetes y tráfico en red como base para la detección de amenazas</p>
   </header>
 
-  <main class="contenedor-labs">
-    <section class="grid-labs">
-      <a href="/el-pergamino-digital/labs/labs01/" class="lab-card">
-        <h2>🧪 Lab 01</h2>
-        <p>Monitorización de tráfico con Wireshark y tcpdump</p>
-      </a>
-      <a href="/el-pergamino-digital/labs/labs02/" class="lab-card">
-        <h2>🔍 Lab 02</h2>
-        <p>Descubrimiento de red y fingerprinting con Nmap</p>
-      </a>
-      <a href="/el-pergamino-digital/labs/labs03/" class="lab-card">
-        <h2>🌐 Lab 03</h2>
-        <p>Análisis de cabeceras HTTP y exposición de metadatos</p>
-      </a>
-      <a href="/el-pergamino-digital/labs/labs04/" class="lab-card">
-        <h2>🔓 Lab 04</h2>
-        <p>Captura de credenciales en protocolos inseguros (FTP, Telnet, HTTP)</p>
-      </a>
-      <a href="/el-pergamino-digital/labs/labs05/" class="lab-card">
-        <h2>🛡️ Lab 05</h2>
-        <p>Escaneo de vulnerabilidades con OpenVAS y análisis de resultados</p>
-      </a>
+  <main class="contenedor-lab">
+    <section>
+      <h2>1. Objetivo técnico</h2>
+      <p>Capturar y analizar tráfico de red con herramientas de inspección profunda de paquetes.</p>
     </section>
+
+    <section>
+      <h2>2. Herramientas utilizadas</h2>
+      <ul>
+        <li>Wireshark</li>
+        <li>tcpdump</li>
+      </ul>
+    </section>
+
+    <!-- Secciones 3 a 22 se completarán progresivamente -->
   </main>
 
   <footer>
     <p>Este proyecto forma parte de <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a></p>
   </footer>
 
-  <script src="/el-pergamino-digital/assets/js/script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = document.querySelectorAll("nav a");
+      links.forEach(link => {
+        if (link.href === window.location.href) {
+          link.classList.add("activo");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
