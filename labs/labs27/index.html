@@ -1,213 +1,293 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Lab 27 – Etiquetado de criticidad y clasificación de riesgo en activos</title>
-  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     :root { color-scheme: dark; }
+
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', system-ui, sans-serif;
       background-color: #121212;
       color: #e0e0e0;
       margin: 0;
-      padding: 2em;
+      padding: 0;
       line-height: 1.6;
     }
-    h1, h2 {
-      color: #90caf9;
-    }
-    code {
-      background-color: #1e1e1e;
-      padding: 0.2em 0.4em;
-      border-radius: 4px;
-      font-family: Consolas, monospace;
-    }
-    pre {
-      background-color: #1e1e1e;
+
+    nav {
+      background-color: #1f1f1f;
       padding: 1em;
-      border-radius: 6px;
-      overflow-x: auto;
+      text-align: center;
     }
-    a {
+
+    nav a {
+      color: #e0e0e0;
+      margin: 0 1em;
+      text-decoration: none;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 1.5em;
+      color: #ffffff;
+    }
+
+    .subtitulo {
+      text-align: center;
+      color: #bbbbbb;
+      margin-bottom: 2em;
+    }
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
+    }
+
+    section {
+      margin-bottom: 2.5em;
+    }
+
+    h2 {
       color: #90caf9;
+      border-bottom: 1px solid #2a2a2a;
+      padding-bottom: 0.3em;
+    }
+
+    ul {
+      margin-left: 1.5em;
+    }
+
+    footer {
+      background-color: #1e1e1e;
+      text-align: center;
+      padding: 2em;
+      font-size: 0.9em;
+      color: #aaaaaa;
     }
   </style>
 </head>
+
 <body>
 
-  <h1>Lab 27 – Etiquetado de criticidad y clasificación de riesgo en activos</h1>
-  <h2>Aplicación de criterios técnicos y operativos para priorizar activos según impacto y exposición</h2>
+<nav>
+  <a href="/el-pergamino-digital/">Inicio</a>
+  <a href="/el-pergamino-digital/labs/">Laboratorios</a>
+  <a href="/el-pergamino-digital/glosario/">Glosario</a>
+  <a href="/el-pergamino-digital/simulador/">Simulador</a>
+</nav>
 
-  <section>
-    <h2>1. Objetivo</h2>
-    <p>Este laboratorio permite al analista aplicar criterios de clasificación de activos según su criticidad, valor, exposición y riesgo asociado. Se utilizan matrices de impacto/probabilidad, etiquetas de confidencialidad e integridad, y se simula su integración en una CMDB o sistema de gestión de activos.</p>
-  </section>
+<h1>Lab 27 – Etiquetado de criticidad y clasificación de riesgo en activos</h1>
+<p class="subtitulo">
+  Aplicación de criterios técnicos y operativos para priorizar activos según impacto y exposición
+</p>
 
-  <section>
-    <h2>2. Nivel de dificultad</h2>
-    <p>Intermedio</p>
-  </section>
+<main>
 
-  <section>
-    <h2>3. Herramientas utilizadas</h2>
-    <ul>
-      <li><code>GLPI</code> o <code>Snipe-IT</code> (para etiquetado)</li>
-      <li><code>Excel / LibreOffice Calc</code> (para matrices de riesgo)</li>
-      <li><code>Plantillas de clasificación</code> (según ISO/IEC 27001, CIS, NIST)</li>
-    </ul>
-  </section>
+<section>
+  <h2>Objetivo</h2>
+  <p>
+    Este laboratorio permite al analista aplicar criterios de clasificación de activos según su criticidad,
+    valor, exposición y riesgo asociado. Se utilizan matrices de impacto y probabilidad, etiquetas de
+    confidencialidad e integridad, y se simula su integración en una CMDB o sistema de gestión de activos.
+  </p>
+</section>
 
-  <section>
-    <h2>4. Entorno de laboratorio</h2>
-    <p>Instancia local de GLPI o Snipe-IT con activos cargados, hoja de cálculo con matriz de riesgo, acceso a documentación de políticas de clasificación y confidencialidad.</p>
-  </section>
+<section>
+  <h2>Nivel de dificultad</h2>
+  <p>Intermedio</p>
+</section>
 
-  <section>
-    <h2>5. Escenario</h2>
-    <p>Una organización necesita priorizar sus activos para definir controles de seguridad proporcionales. El analista debe clasificar los activos según su criticidad, etiquetarlos en la CMDB y generar una matriz de riesgo que relacione impacto y probabilidad de compromiso.</p>
-  </section>
+<section>
+  <h2>Herramientas utilizadas</h2>
+  <ul>
+    <li>GLPI o Snipe-IT (etiquetado de activos)</li>
+    <li>Excel o LibreOffice Calc (matrices de riesgo)</li>
+    <li>Plantillas de clasificación (ISO/IEC 27001, CIS, NIST)</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>6. Pasos previos</h2>
-    <ul>
-      <li>Importar o registrar al menos 10 activos en la CMDB</li>
-      <li>Definir criterios de clasificación: confidencialidad, integridad, disponibilidad, valor operativo</li>
-      <li>Preparar plantilla de matriz de riesgo (5x5 o 3x3)</li>
-    </ul>
-  </section>
+<section>
+  <h2>Entorno de laboratorio</h2>
+  <p>
+    Instancia local de GLPI o Snipe-IT con activos registrados, hoja de cálculo con matriz de riesgo
+    y acceso a documentación de políticas de clasificación y confidencialidad.
+  </p>
+</section>
 
-  <section>
-    <h2>7. Desarrollo</h2>
-    <ol>
-      <li>Asignar etiquetas de criticidad a cada activo (Alta, Media, Baja)</li>
-      <li>Etiquetar nivel de confidencialidad (Pública, Interna, Restringida, Crítica)</li>
-      <li>Evaluar impacto potencial de pérdida o compromiso</li>
-      <li>Estimar probabilidad de ocurrencia (exposición, historial, vulnerabilidad)</li>
-      <li>Ubicar cada activo en la matriz de riesgo</li>
-      <li>Documentar justificación de cada clasificación</li>
-    </ol>
-  </section>
+<section>
+  <h2>Escenario</h2>
+  <p>
+    Una organización necesita priorizar sus activos para definir controles de seguridad proporcionales.
+    El analista debe clasificar los activos según su criticidad, etiquetarlos en la CMDB y generar
+    una matriz de riesgo que relacione impacto y probabilidad de compromiso.
+  </p>
+</section>
 
-    <section>
-    <h2>8. Resultados esperados</h2>
-    <ul>
-      <li>Activos clasificados según su nivel de criticidad y confidencialidad</li>
-      <li>Matriz de riesgo con ubicación justificada de cada activo</li>
-      <li>Etiquetas visibles en la CMDB o inventario</li>
-      <li>Documentación de criterios aplicados y decisiones tomadas</li>
-    </ul>
-  </section>
+<section>
+  <h2>Pasos previos</h2>
+  <ul>
+    <li>Registrar al menos 10 activos en la CMDB</li>
+    <li>Definir criterios de confidencialidad, integridad y disponibilidad</li>
+    <li>Preparar una matriz de riesgo 3x3 o 5x5</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>9. Análisis de resultados</h2>
-    <p>La clasificación de activos permite priorizar esfuerzos de protección y asignar controles proporcionales al riesgo. Al aplicar etiquetas de criticidad y confidencialidad, se facilita la toma de decisiones en respuesta a incidentes, auditorías y planificación de seguridad.</p>
-  </section>
+<section>
+  <h2>Desarrollo</h2>
+  <ul>
+    <li>Asignar etiquetas de criticidad (Alta, Media, Baja)</li>
+    <li>Etiquetar nivel de confidencialidad</li>
+    <li>Evaluar impacto de pérdida o compromiso</li>
+    <li>Estimar probabilidad según exposición y contexto</li>
+    <li>Ubicar activos en la matriz de riesgo</li>
+    <li>Documentar la justificación de cada decisión</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>10. Conclusiones</h2>
-    <p>Una clasificación clara y documentada de los activos es esencial para una gestión eficaz del riesgo. Este ejercicio demuestra cómo aplicar criterios técnicos y operativos para construir una base sólida de gobierno de activos, alineada con estándares internacionales.</p>
-  </section>
+<section>
+  <h2>Resultados esperados</h2>
+  <ul>
+    <li>Activos clasificados por criticidad</li>
+    <li>Matriz de riesgo justificada</li>
+    <li>Etiquetas visibles en la CMDB</li>
+    <li>Documentación técnica completa</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>11. Medidas</h2>
-    <ul>
-      <li>Registrar etiquetas aplicadas a cada activo</li>
-      <li>Guardar la matriz de riesgo con fecha y responsable</li>
-      <li>Comparar clasificaciones con políticas internas o estándares externos</li>
-    </ul>
-  </section>
+<section>
+  <h2>Análisis de resultados</h2>
+  <p>
+    La clasificación de activos permite priorizar esfuerzos de protección y asignar controles proporcionales
+    al riesgo. Las etiquetas facilitan la respuesta a incidentes, auditorías y planificación estratégica.
+  </p>
+</section>
 
-  <section>
-    <h2>12. Contramedidas</h2>
-    <ul>
-      <li>Revisar periódicamente las etiquetas asignadas</li>
-      <li>Evitar clasificaciones genéricas o sin justificación</li>
-      <li>Aplicar control de acceso a los datos de clasificación</li>
-      <li>Capacitar al personal en criterios de evaluación de riesgo</li>
-    </ul>
-  </section>
+<section>
+  <h2>Conclusiones</h2>
+  <p>
+    Una clasificación clara y documentada es esencial para una gestión eficaz del riesgo. Este laboratorio
+    demuestra cómo aplicar criterios técnicos alineados con estándares internacionales.
+  </p>
+</section>
 
-  <section>
-    <h2>13. Riesgos y advertencias</h2>
-    <p>Una clasificación incorrecta puede llevar a sobreproteger activos irrelevantes o descuidar activos críticos. Las etiquetas deben basarse en criterios objetivos y mantenerse actualizadas. No compartir públicamente matrices de riesgo sin anonimizar los activos.</p>
-  </section>
+<section>
+  <h2>Medidas</h2>
+  <ul>
+    <li>Registrar etiquetas aplicadas</li>
+    <li>Guardar matrices con fecha y responsable</li>
+    <li>Comparar con políticas y estándares</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>14. Evidencias</h2>
-    <p><em>Espacio reservado para capturas de pantalla de etiquetas aplicadas en GLPI o Snipe-IT, matriz de riesgo en hoja de cálculo, y documentación de criterios utilizados.</em></p>
-  </section>
+<section>
+  <h2>Contramedidas</h2>
+  <ul>
+    <li>Revisar periódicamente las clasificaciones</li>
+    <li>Evitar etiquetas genéricas</li>
+    <li>Controlar acceso a la información de riesgo</li>
+    <li>Capacitar al personal</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>15. Validación cruzada</h2>
-    <ul>
-      <li><a href="https://www.cisecurity.org/controls/inventory-and-control-of-enterprise-assets" target="_blank">CIS Control 1 – Inventory and Control of Enterprise Assets</a></li>
-      <li><a href="https://www.iso.org/standard/54534.html" target="_blank">ISO/IEC 27001 A.8.2 – Information Classification</a></li>
-      <li><a href="https://csrc.nist.gov/publications/detail/sp/800-30/rev-1/final" target="_blank">NIST SP 800-30 – Guide for Conducting Risk Assessments</a></li>
-    </ul>
-  </section>
+<section>
+  <h2>Riesgos y advertencias</h2>
+  <p>
+    Una clasificación incorrecta puede generar sobreprotección o exposición innecesaria.
+    No compartir matrices de riesgo sin anonimizar los activos.
+  </p>
+</section>
 
-  <section>
-    <h2>16. Glosario asociado</h2>
-    <ul>
-      <li><strong>Criticidad:</strong> Grado de impacto que tendría la pérdida o compromiso de un activo</li>
-      <li><strong>Confidencialidad:</strong> Propiedad que limita el acceso a la información solo a quienes están autorizados</li>
-      <li><strong>Matriz de riesgo:</strong> Herramienta que cruza impacto y probabilidad para priorizar riesgos</li>
-      <li><strong>Etiqueta:</strong> Clasificación asignada a un activo para indicar su nivel de sensibilidad o prioridad</li>
-      <li><strong>Clasificación de activos:</strong> Proceso de categorizar activos según su valor, criticidad y riesgo</li>
-    </ul>
-  </section>
+<section>
+  <h2>Evidencias</h2>
+  <p>
+    Espacio reservado para capturas de GLPI o Snipe-IT, matrices de riesgo y documentación asociada.
+  </p>
+</section>
 
-  <section>
-    <h2>17. Preguntas de refuerzo</h2>
-    <ol>
-      <li>¿Qué criterios se utilizan para clasificar un activo como crítico?</li>
-      <li>¿Qué diferencia hay entre impacto y probabilidad en una matriz de riesgo?</li>
-      <li>¿Qué riesgos implica etiquetar incorrectamente un activo?</li>
-      <li>¿Cómo se relaciona la clasificación de activos con la gestión de incidentes?</li>
-      <li>¿Qué estándares internacionales recomiendan clasificar los activos?</li>
-    </ol>
-  </section>
+<section>
+  <h2>Validación cruzada</h2>
+  <ul>
+    <li>CIS Control 1 – Inventory and Control of Enterprise Assets</li>
+    <li>ISO/IEC 27001 A.8.2 – Information Classification</li>
+    <li>NIST SP 800-30 – Risk Assessment</li>
+  </ul>
+</section>
 
-    <section>
-    <h2>18. Rúbrica de evaluación</h2>
-    <ul>
-      <li>✔️ Clasifica correctamente los activos según criticidad y confidencialidad</li>
-      <li>✔️ Aplica etiquetas visibles y coherentes en la CMDB</li>
-      <li>✔️ Construye una matriz de riesgo justificada</li>
-      <li>✔️ Relaciona la clasificación con estándares y controles técnicos</li>
-    </ul>
-  </section>
+<section>
+  <h2>Glosario asociado</h2>
+  <ul>
+    <li><strong>Criticidad:</strong> Impacto del compromiso de un activo</li>
+    <li><strong>Confidencialidad:</strong> Restricción de acceso a información</li>
+    <li><strong>Matriz de riesgo:</strong> Cruce impacto/probabilidad</li>
+    <li><strong>Etiqueta:</strong> Clasificación visible del activo</li>
+    <li><strong>Clasificación de activos:</strong> Proceso de categorización</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>19. Recursos complementarios</h2>
-    <ul>
-      <li><a href="https://www.iso.org/standard/54534.html" target="_blank">ISO/IEC 27001 – A.8.2 Information Classification</a></li>
-      <li><a href="https://www.cisecurity.org/controls" target="_blank">CIS Controls v8 – Control 1</a></li>
-      <li><a href="https://csrc.nist.gov/publications/detail/sp/800-30/rev-1/final" target="_blank">NIST SP 800-30 – Risk Assessment Guide</a></li>
-      <li><a href="https://www.itgovernance.co.uk/blog/how-to-classify-information-according-to-iso-27001" target="_blank">Guía práctica de clasificación según ISO 27001</a></li>
-    </ul>
-  </section>
+<section>
+  <h2>Preguntas de refuerzo</h2>
+  <ul>
+    <li>¿Qué hace crítico a un activo?</li>
+    <li>¿Cómo se diferencia impacto y probabilidad?</li>
+    <li>¿Qué riesgos implica etiquetar mal?</li>
+    <li>¿Cómo apoya esto la gestión de incidentes?</li>
+    <li>¿Qué estándares lo recomiendan?</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>20. Créditos y licencia</h2>
-    <p>Este laboratorio forma parte del proyecto <a href="https://pergamino-digital-ciberseguridad.blogspot.com/?m=1" target="_blank">El Pergamino Digital</a>. Su uso está autorizado únicamente con fines educativos, respetando la trazabilidad editorial y la licencia CC BY-NC-SA 4.0.</p>
-  </section>
+<section>
+  <h2>Rúbrica de evaluación</h2>
+  <ul>
+    <li>✔ Clasificación correcta</li>
+    <li>✔ Etiquetado coherente</li>
+    <li>✔ Matriz justificada</li>
+    <li>✔ Alineación con estándares</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>21. Nivel de certificación</h2>
-    <p>Intermedio – Alineado con ISO/IEC 27001, CIS Controls v8 y NIST SP 800-30.</p>
-  </section>
+<section>
+  <h2>Recursos complementarios</h2>
+  <ul>
+    <li>ISO/IEC 27001 – Information Classification</li>
+    <li>CIS Controls v8 – Control 1</li>
+    <li>NIST SP 800-30</li>
+  </ul>
+</section>
 
-  <section>
-    <h2>22. Mapa de integración</h2>
-    <ul>
-      <li>🔗 Continúa el enfoque del <strong>Lab 26</strong> (Integración de CMDB)</li>
-      <li>🧪 Refuerza el dominio de clasificación, etiquetado y priorización de activos</li>
-      <li>🎓 Integra conceptos clave del simulador certificador: <em>Asset Risk Classification</em>, <em>Criticality Tagging</em>, <em>Risk Matrix Modeling</em></li>
-    </ul>
-  </section>
+<section>
+  <h2>Créditos y licencia</h2>
+  <p>
+    Laboratorio perteneciente al proyecto <strong>El Pergamino Digital</strong>.
+    Uso educativo bajo licencia CC BY-NC-SA 4.0.
+  </p>
+</section>
+
+<section>
+  <h2>Nivel de certificación</h2>
+  <p>
+    Intermedio – Alineado con ISO/IEC 27001, CIS Controls v8 y NIST SP 800-30.
+  </p>
+</section>
+
+<section>
+  <h2>Mapa de integración</h2>
+  <ul>
+    <li>🔗 Continúa la gestión de riesgos y gobierno de activos</li>
+    <li>🧪 Refuerza CMDB, clasificación y priorización</li>
+    <li>🎓 Base para GRC, Blue Team y Auditoría</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  El Pergamino Digital · Formación técnica y estratégica en ciberseguridad
+</footer>
 
 </body>
 </html>
+
