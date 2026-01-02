@@ -1,64 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lab 25 – Análisis de Seguridad de APIs REST y Técnicas de Autenticación</title>
-  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 25 – Análisis de Seguridad de APIs REST</title>
 
-  <!-- Estilos integrados (igual que Lab 24) -->
   <style>
     :root { color-scheme: dark; }
+
     body {
       font-family: 'Segoe UI', sans-serif;
       background-color: #121212;
       color: #e0e0e0;
       margin: 0;
-      padding: 2em;
+      padding: 0;
       line-height: 1.6;
     }
+
     nav {
       background-color: #1f1f1f;
       padding: 1em;
       text-align: center;
     }
+
     nav a {
       color: #e0e0e0;
       margin: 0 1em;
       text-decoration: none;
     }
-    nav a.activo {
-      font-weight: bold;
-      text-decoration: underline;
-    }
+
     h1 {
       text-align: center;
       margin-top: 1.5em;
       color: #ffffff;
     }
+
     .subtitulo {
       text-align: center;
       color: #bbbbbb;
       margin-bottom: 2em;
     }
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
+    }
+
     section {
       margin-bottom: 2em;
     }
+
     h2 {
       color: #90caf9;
     }
+
     code {
       background-color: #1e1e1e;
       padding: 0.2em 0.4em;
       border-radius: 4px;
       font-family: Consolas, monospace;
     }
-    pre {
-      background-color: #1e1e1e;
-      padding: 1em;
-      border-radius: 6px;
-      overflow-x: auto;
-    }
+
     footer {
       text-align: center;
       padding: 2em;
@@ -66,10 +69,8 @@
       font-size: 0.9em;
       color: #aaaaaa;
     }
+
     @media (max-width: 600px) {
-      body { font-size: 1.1em; }
-      h1 { font-size: 1.8em; }
-      .subtitulo { font-size: 1.1em; }
       nav a { display: block; margin: 0.5em 0; }
     }
   </style>
@@ -77,7 +78,6 @@
 
 <body>
 
-  <!-- Navegación principal -->
   <nav>
     <a href="../../index.html">Inicio</a>
     <a href="../index.html">Laboratorios</a>
@@ -86,147 +86,108 @@
     <a href="../../modulos.html">Módulos</a>
   </nav>
 
-  <!-- Título y subtítulo exactos -->
-  <h1>Lab 25 – Análisis de Seguridad de APIs REST y Técnicas de Autenticación</h1>
-  <p class="subtitulo">Exploración de mecanismos de autenticación y control de acceso en APIs REST</p>
+  <h1>Lab 25 – Análisis de Seguridad de APIs REST</h1>
+  <p class="subtitulo">
+    Evaluación de autenticación, autorización y control de acceso en servicios REST
+  </p>
 
-  <!-- CONTENIDO -->
-  <section>
-    <h2>Objetivo</h2>
-    <p>Este laboratorio capacita al analista en identificar y evaluar mecanismos de seguridad en APIs REST, validando autenticación, autorización, control de acceso y resistencia a ataques comunes como fuerza bruta, manipulación de tokens y bypass de controles.</p>
-  </section>
+  <main>
 
-  <section>
-    <h2>Alcance y limitaciones</h2>
-    <p>Pruebas exclusivamente en entornos controlados. No se aplican técnicas fuera de redes propias autorizadas.</p>
-  </section>
+    <section>
+      <h2>Objetivo</h2>
+      <p>
+        Analizar los mecanismos de seguridad implementados en APIs REST, identificando
+        debilidades en autenticación, autorización y manejo de tokens.
+      </p>
+    </section>
 
-  <section>
-    <h2>Requisitos previos</h2>
-    <ul>
-      <li>Conocimientos de HTTP/REST</li>
-      <li>Herramientas como Postman, curl, Burp Suite</li>
-      <li>API Vulnerable de prueba (local o en laboratorio)</li>
-    </ul>
-  </section>
+    <section>
+      <h2>Alcance y limitaciones</h2>
+      <p>
+        Las pruebas se realizan únicamente en entornos controlados y APIs de laboratorio.
+      </p>
+    </section>
 
-  <section>
-    <h2>Entorno de laboratorio</h2>
-    <p>API REST con autenticación básica, token JWT y OAuth2 para pruebas de autenticación y autorización.</p>
-  </section>
+    <section>
+      <h2>Requisitos previos</h2>
+      <ul>
+        <li>Conocimientos básicos de HTTP y REST</li>
+        <li>Uso de herramientas como <code>curl</code> o Postman</li>
+        <li>API vulnerable de prueba</li>
+      </ul>
+    </section>
 
-  <section>
-    <h2>Desarrollo</h2>
-    <p>Enviar peticiones con herramientas como <code>curl</code> o Postman para validar autenticación (200/401/403) y manipular tokens para analizar bypass.</p>
-  </section>
+    <section>
+      <h2>Entorno de laboratorio</h2>
+      <p>
+        API REST con autenticación basada en tokens (JWT u OAuth2),
+        desplegada en red virtual controlada.
+      </p>
+    </section>
 
-  <section>
-    <h2>Resultados esperados</h2>
-    <ul>
-      <li>Detección de controles de autenticación</li>
-      <li>Evaluación de decisiones de autorización</li>
-      <li>Comprobación de resistencia frente a modificación de tokens</li>
-    </ul>
-  </section>
+    <section>
+      <h2>Desarrollo</h2>
+      <p>
+        Se envían solicitudes autenticadas y no autenticadas para evaluar
+        respuestas <code>200</code>, <code>401</code> y <code>403</code>,
+        además de manipular tokens para comprobar controles.
+      </p>
+    </section>
 
-  <section>
-    <h2>Análisis de resultados</h2>
-    <p>Explicar cómo los controles HTTP 401/403 y JWT invalidados impiden o permiten accesos no autorizados.</p>
-  </section>
+    <section>
+      <h2>Resultados esperados</h2>
+      <ul>
+        <li>Identificación de controles de autenticación</li>
+        <li>Validación de autorización por rol</li>
+        <li>Detección de fallos en validación de tokens</li>
+      </ul>
+    </section>
 
-  <section>
-    <h2>Medidas</h2>
-    <ul>
-      <li>Documentar fallas observadas en autenticación</li>
-      <li>Revisar lógica de control de sesiones</li>
-    </ul>
-  </section>
+    <section>
+      <h2>Análisis de resultados</h2>
+      <p>
+        Se interpretan las respuestas HTTP y el comportamiento del backend
+        ante solicitudes manipuladas.
+      </p>
+    </section>
 
-  <section>
-    <h2>Contramedidas</h2>
-    <ul>
-      <li>Implementar validación fuerte de tokens</li>
-      <li>Aplicar límites de intentos y bloqueo de fuerza bruta</li>
-    </ul>
-  </section>
+    <section>
+      <h2>Contramedidas</h2>
+      <ul>
+        <li>Validación estricta de tokens</li>
+        <li>Control de acceso por rol</li>
+        <li>Registro y monitoreo de eventos</li>
+      </ul>
+    </section>
 
-  <section>
-    <h2>Riesgos y advertencias</h2>
-    <p>La manipulación de tokens puede provocar accesos no autorizados si se aplica fuera de entornos controlados. Solo uso educativo.</p>
-  </section>
+    <section>
+      <h2>Riesgos y advertencias</h2>
+      <p>
+        El análisis de APIs fuera de entornos autorizados puede
+        constituir una violación legal.
+      </p>
+    </section>
 
-  <section>
-    <h2>Evidencias</h2>
-    <p><em>Espacio para capturas de pantalla de peticiones, respuestas y logs.</em></p>
-  </section>
+    <section>
+      <h2>Evidencias</h2>
+      <p>
+        Espacio reservado para capturas de peticiones, respuestas y logs.
+      </p>
+    </section>
 
-  <section>
-    <h2>Validación cruzada</h2>
-    <ul>
-      <li>MITRE ATT&CK API Abuse</li>
-      <li>CIS Controls – Application Software Security</li>
-      <li>NIST SP 800-95 – Guide to Secure Web Services</li>
-    </ul>
-  </section>
+    <section>
+      <h2>Mapa de integración</h2>
+      <p>
+        Continúa el enfoque de seguridad en aplicaciones web y servicios.
+      </p>
+    </section>
 
-  <section>
-    <h2>Certificaciones asociadas</h2>
-    <p>Security+, CEH, eWPTx2</p>
-  </section>
+  </main>
 
-  <section>
-    <h2>Glosario asociado</h2>
-    <p>API, JWT, OAuth2, Autenticación, Autorización</p>
-  </section>
-
-  <section>
-    <h2>Preguntas de refuerzo</h2>
-    <p>¿Cómo validar JWT? ¿Qué diferencia hay entre autenticación y autorización?</p>
-  </section>
-
-  <section>
-    <h2>Rúbrica de evaluación</h2>
-  <ul>
-    <li>✔ Autenticación comprobada</li>
-    <li>✔ Autorización verificada</li>
-    <li>✔ Tokens evaluados</li>
-  </ul>
-  </section>
-
-  <section>
-    <h2>Recursos complementarios</h2>
-    <ul>
-      <li><a href="https://owasp.org/www-project-api-security/">OWASP API Security</a></li>
-      <li><a href="https://tools.ietf.org/html/rfc6749">OAuth 2.0 RFC</a></li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Créditos y licencia</h2>
-    <p>Este laboratorio forma parte del proyecto El Pergamino Digital, con licencia educativa.</p>
-  </section>
-
-  <section>
-    <h2>Nivel de certificación</h2>
-    <p>Intermedio – OSCP / eWPTx2</p>
-  </section>
-
-  <section>
-    <h2>Mapa de integración</h2>
-    <p>Integra conceptos de control de APIs con evasión y defensa de servicios web.</p>
-  </section>
-
-  <!-- Navegación transversal -->
-  <nav style="text-align:center; margin-top:2em;">
-    <a href="../labs24/">Lab anterior</a> |
-    <a href="../index.html">Listado de laboratorios</a> |
-    <a href="../labs26/">Lab siguiente</a>
-  </nav>
-
-  <!-- Footer -->
   <footer>
-    © El Pergamino Digital – Proyecto formativo y estructural de ciberseguridad
+    © El Pergamino Digital – Proyecto formativo de ciberseguridad
   </footer>
 
 </body>
 </html>
+
