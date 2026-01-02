@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://juliocesarabreup.github.io/el-pergamino-digital/sitemap.xml
