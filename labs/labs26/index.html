@@ -1,232 +1,83 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lab 26 – Evaluación de Hardenización de Sistemas Linux y Buenas Prácticas</title>
-  <link rel="icon" href="/el-pergamino-digital/assets/favicon.png" type="image/png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 26 – Hardenización de Linux</title>
 
-  <!-- Estilos integrados -->
   <style>
     :root { color-scheme: dark; }
+
     body {
       font-family: 'Segoe UI', sans-serif;
       background-color: #121212;
       color: #e0e0e0;
       margin: 0;
-      padding: 2em;
-      line-height: 1.6;
+      padding: 0;
     }
+
     nav {
       background-color: #1f1f1f;
       padding: 1em;
       text-align: center;
     }
+
     nav a {
       color: #e0e0e0;
       margin: 0 1em;
       text-decoration: none;
     }
-    nav a.activo {
-      font-weight: bold;
-      text-decoration: underline;
-    }
+
     h1 {
       text-align: center;
       margin-top: 1.5em;
-      color: #ffffff;
     }
+
     .subtitulo {
       text-align: center;
       color: #bbbbbb;
       margin-bottom: 2em;
     }
-    section {
-      margin-bottom: 2em;
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2em;
     }
+
     h2 {
       color: #90caf9;
     }
-    code {
-      background-color: #1e1e1e;
-      padding: 0.2em 0.4em;
-      border-radius: 4px;
-      font-family: Consolas, monospace;
-    }
-    pre {
-      background-color: #1e1e1e;
-      padding: 1em;
-      border-radius: 6px;
-      overflow-x: auto;
-    }
+
     footer {
       text-align: center;
       padding: 2em;
       background-color: #1e1e1e;
-      font-size: 0.9em;
       color: #aaaaaa;
     }
-    @media (max-width: 600px) {
-      body { font-size: 1.1em; }
-      h1 { font-size: 1.8em; }
-      .subtitulo { font-size: 1.1em; }
-      nav a { display: block; margin: 0.5em 0; }
-    }
   </style>
-
 </head>
+
 <body>
 
-  <!-- Navegación principal -->
-  <nav>
-    <a href="../../index.html">Inicio</a>
-    <a href="../index.html">Laboratorios</a>
-    <a href="../../glosario.html">Glosario</a>
-    <a href="../../simulador.html">Simulador</a>
-    <a href="../../modulos.html">Módulos</a>
-  </nav>
+<nav>
+  <a href="../../index.html">Inicio</a>
+  <a href="../">Laboratorios</a>
+</nav>
 
-  <!-- Título + subtítulo -->
-  <h1>Lab 26 – Evaluación de Hardenización de Sistemas Linux y Buenas Prácticas</h1>
-  <p class="subtitulo">Aplicación de técnicas de hardening para reforzar seguridad en entornos Linux</p>
+<h1>Lab 26 – Evaluación de Hardenización de Sistemas Linux</h1>
+<p class="subtitulo">Aplicación de buenas prácticas de seguridad en entornos Linux</p>
 
-  <!-- Contenido -->
+<main>
   <section>
     <h2>Objetivo</h2>
-    <p>Este laboratorio se centra en aplicar y verificar mejores prácticas de hardening en sistemas Linux, reduciendo la superficie de ataque y reforzando configuraciones de seguridad.</p>
+    <p>Evaluar configuraciones de hardening en sistemas Linux para reducir superficie de ataque.</p>
   </section>
+</main>
 
-  <section>
-    <h2>Alcance y limitaciones</h2>
-    <p>Solo en entornos controlados. No realizar pruebas de hardening en sistemas productivos sin respaldo y autorización.</p>
-  </section>
-
-  <section>
-    <h2>Requisitos previos</h2>
-    <ul>
-      <li>Conocimientos de administración de Linux</li>
-      <li>Acceso a consola de sistema</li>
-      <li>Herramientas como Lynis, auditd, ufw</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Entorno de laboratorio</h2>
-    <p>Sistema Linux base (Ubuntu/Debian/CentOS) con usuario root o sudo para aplicar hardening.</p>
-  </section>
-
-  <section>
-    <h2>Desarrollo</h2>
-    <p>Aplicar recomendaciones de CIS Benchmark, activar firewall, revisión de servicios y auditoría.</p>
-  </section>
-
-  <section>
-    <h2>Resultados esperados</h2>
-    <ul>
-      <li>Servicios innecesarios deshabilitados</li>
-      <li>Firewall activo y seguro</li>
-      <li>Permisos de archivos ajustados</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Análisis de resultados</h2>
-    <p>Comparar antes y después del hardening. Detectar brechas persistentes y riesgos mitigados.</p>
-  </section>
-
-  <section>
-    <h2>Medidas</h2>
-    <ul>
-      <li>Auditoría con Lynis</li>
-      <li>Aplicar RBAC</li>
-      <li>Restricción de usuarios con sudo</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Contramedidas</h2>
-    <ul>
-      <li>Deshabilitar servicios innecesarios</li>
-      <li>Configurar firewall de manera restrictiva</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Riesgos y advertencias</h2>
-    <p>Hardening inadecuado puede bloquear servicios legítimos. Siempre respaldar antes de aplicar cambios.</p>
-  </section>
-
-  <section>
-    <h2>Evidencias</h2>
-    <p>Espacio reservado para capturas de comandos, logs y reportes.</p>
-  </section>
-
-  <section>
-    <h2>Validación cruzada</h2>
-    <ul>
-      <li>MITRE ATT&CK – Hardening Checklist</li>
-      <li>CIS Controls – Secure Configuration</li>
-      <li>NIST SP 800-123 – Guide to General Server Security</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Certificaciones asociadas</h2>
-    <p>Security+, GSEC, eJPTv2</p>
-  </section>
-
-  <section>
-    <h2>Glosario asociado</h2>
-    <p>Hardening, CIS Benchmark, firewall, auditoría</p>
-  </section>
-
-  <section>
-    <h2>Preguntas de refuerzo</h2>
-    <p>¿Qué pasos reduce la superficie de ataque? ¿Cómo auditar servicios activos?</p>
-  </section>
-
-  <section>
-    <h2>Rúbrica de evaluación</h2>
-  <ul>
-    <li>✔ Hardening aplicado</li>
-    <li>✔ Auditorías realizadas</li>
-  </ul>
-  </section>
-
-  <section>
-    <h2>Recursos complementarios</h2>
-    <ul>
-      <li><a href="https://cisecurity.org/benchmark/linux">CIS Linux Benchmark</a></li>
-      <li><a href="https://github.com/CISOfy/lynis">Lynis – Audit tool</a></li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Créditos y licencia</h2>
-    <p>Este laboratorio forma parte de El Pergamino Digital – licencia educativa.</p>
-  </section>
-
-  <section>
-    <h2>Nivel de certificación</h2>
-    <p>Intermedio – GSEC / Security+</p>
-  </section>
-
-  <section>
-    <h2>Mapa de integración</h2>
-    <p>Relaciona hardening con defensas generales y configuración segura persistentemente.</p>
-  </section>
-
-  <!-- Navegación transversal -->
-  <nav style="text-align:center; margin-top:2em;">
-    <a href="../labs25/">Lab anterior</a> |
-    <a href="../index.html">Listado de laboratorios</a> |
-    <a href="../labs27/">Lab siguiente</a>
-  </nav>
-
-  <!-- Footer -->
-  <footer>
-    © El Pergamino Digital – Proyecto formativo y estructural de ciberseguridad
-  </footer>
+<footer>
+  Proyecto El Pergamino Digital · Uso educativo
+</footer>
 
 </body>
 </html>
